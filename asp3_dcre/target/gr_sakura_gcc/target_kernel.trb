@@ -1,0 +1,9 @@
+# -*- coding: utf-8 -*-
+#
+#		パス2の生成スクリプトのターゲット依存部（GR-SAKURA用）
+#
+
+#
+#  生成スクリプトのプロセッサ依存部
+#
+IncludeTrb("prc_kernel.trb")

@@ -1,0 +1,36 @@
+#
+#		Makefile のmbed（RZ/A1用）
+#
+#  $Id$
+# 
+
+#
+#  mbedディレクトリ名の定義
+#
+MBEDDIR = $(SRCDIR)/mbed
+
+#
+#  コンパイルオプション
+#
+INCLUDES := $(INCLUDES)\
+	-I$(MBEDDIR)\
+	-I$(MBEDDIR)/hal\
+	-I$(MBEDDIR)/platform\
+	-I$(MBEDDIR)/target
+COPTS := $(COPTS)
+LDFLAGS := $(LDFLAGS)
+CDEFS := $(CDEFS)
+
+#
+#  システムサービスに関する定義
+#
+SYSSVC_DIRS := $(SYSSVC_DIRS)\
+	$(MBEDDIR)/hal\
+	$(MBEDDIR)/target
+SYSSVC_ASMOBJS := $(SYSSVC_ASMOBJS)
+#START_OBJS = 
+SYSSVC_COBJS := $(SYSSVC_COBJS)\
+	mbed_api.o mbed_lp_ticker_api.o mbed_gpio.o mbed_pinmap_common.o\
+	mbed_us_ticker_api.o mbed_ticker_api.o
+#CFG_DMY := 
+

@@ -1,0 +1,348 @@
+# -*- coding: utf-8 -*-
+#
+#   TOPPERS/ASP Kernel
+#       Toyohashi Open Platform for Embedded Real-Time Systems/
+#       Advanced Standard Profile Kernel
+# 
+#   Copyright (C) 2015 by FUJI SOFT INCORPORATED, JAPAN
+#   Copyright (C) 2015,2016 by Embedded and Real-Time Systems Laboratory
+#               Graduate School of Information Science, Nagoya Univ., JAPAN
+# 
+#   上記著作権者は，以下の(1)～(4)の条件を満たす場合に限り，本ソフトウェ
+#   ア（本ソフトウェアを改変したものを含む．以下同じ）を使用・複製・改
+#   変・再配布（以下，利用と呼ぶ）することを無償で許諾する．
+#   (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+#       権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+#       スコード中に含まれていること．
+#   (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+#       用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+#       者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+#       の無保証規定を掲載すること．
+#   (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+#       用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+#       と．
+#     (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+#         作権表示，この利用条件および下記の無保証規定を掲載すること．
+#     (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+#         報告すること．
+#   (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+#       害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
+#       また，本ソフトウェアのユーザまたはエンドユーザからのいかなる理
+#       由に基づく請求からも，上記著作権者およびTOPPERSプロジェクトを
+#       免責すること．
+# 
+#   本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+#   よびTOPPERSプロジェクトは，本ソフトウェアに関して，特定の使用目的
+#   に対する適合性も含めて，いかなる保証も行わない．また，本ソフトウェ
+#   アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
+#   の責任を負わない．
+# 
+#   $Id$
+# 
+
+#
+#		パス2の生成スクリプトのコア依存部（RX63x用）
+#
+
+# 
+#  割込み番号と割込みハンドラ番号の定義
+# 
+#  RX630では割込み番号と割込みハンドラ番号が1対1で対応する．
+# 
+$INTNO_VALID = [ 16, 21, 23, *(27..59), 62, *(64..79), 90, 91, 92, 93, 98, 102, *(106..112), 114, *(122..167), *(170..203), *(214..253) ]
+$INHNO_VALID = $INTNO_VALID
+
+# 
+#  例外番号の定義
+# 
+#  固定ベクタテーブルのベクタテーブルアドレスの小さい順番に例外番号を割振る．
+#  (予約領域も含む)
+# 
+
+$EXCNO_VALID = [ 20, 23, 25, 30 ]
+
+# 
+#  INT割込みの番号
+# 
+
+$INTNO_INT = [ *(64..79) ]
+
+# 
+#  割込み番号，割込みハンドラ番号，例外番号の範囲
+# 
+# (予約領域も含む)
+# 
+
+$INTNO_RANGE = [ *(0..255) ]
+$INHNO_RANGE = $INTNO_RANGE
+$EXCNO_RANGE = [ *(0..31)  ]
+
+# 
+#  ATT_ISRで使用できる割込み番号とそれに対応する割込みハンドラ番号
+# 
+
+$INTNO_ATTISR_VALID = $INTNO_VALID
+$INHNO_ATTISR_VALID = $INHNO_VALID
+
+
+# 
+#  DEF_INT／DEF_EXCで使用できる割込みハンドラ番号／CPU例外ハンドラ番号
+# 
+
+$INHNO_DEFINH_VALID = $INHNO_VALID
+$EXCNO_DEFEXC_VALID = $EXCNO_VALID
+
+
+# 
+#  CFG_INTで使用できる割込み番号と割込み優先度
+# 
+
+$INTNO_CFGINT_VALID = $INHNO_VALID
+$INTPRI_CFGINT_VALID = [ *(-7..-1) ]
+
+
+# 
+#  ターゲット非依存部に含まれる標準の割込み管理機能/例外管理機能の初期化処理を使用する
+# 
+
+$OMIT_INITIALIZE_INTERRUPT = false
+$OMIT_INITIALIZE_EXCEPTION = false
+
+
+# 
+#  スタックサイズのチェック方法指定
+# 
+
+$CHECK_STKSZ_ALIGN = 4
+
+
+# 
+#  タスクスタックサイズの最小値
+# 
+#  タスク起動時に4byte,
+#  割込み入口処理にて48byte, CPU例外入口処理にて84byte,
+#  であるため, 最小値は88byteとする.
+# 
+
+$TARGET_MIN_STKSZ = 88
+
+# 
+#  定数定義
+# 
+
+$TA_POSEDGE = $TA_EDGE
+
+#
+#  ターゲット定義の割込み要求ライン属性
+#
+$TARGET_INTATR = $TA_POSEDGE|$TA_NEGEDGE|$TA_BOTHEDGE|$TA_LOWLEVEL
+
+# 
+# ターゲット依存の割込みハンドラ属性の定義
+# 
+
+$TARGET_INHATR = $TA_NONKERNEL
+
+
+# 
+# カーネル管理外割込みハンドラは固定させないため,
+# INTNO_FIX_KERNEL
+# INHNO_FIX_KERNEL
+# INHNO_FIX_NONKERNEL
+# INHNO_FIX_NONKERNEL
+# を定義しない.
+# 
+
+$USE_INHINIB_TABLE = true
+$USE_INTINIB_TABLE = true
+
+#
+#  標準テンプレートファイルのインクルード
+#
+IncludeTrb("kernel/kernel.trb")
+
+#
+#  割込み番号から割込み優先度及び属性を取り出すテーブル
+#
+$kernelCfgC.comment_header("Interrupt Level and Attribute Table")
+
+$kernelCfgC.add("const CFG_INT_INFO _kernel_cfg_int_table[#{$INTNO_RANGE.length}] = {")
+$INTNO_RANGE.each do |intnoVal|
+  if $cfgData[:CFG_INT].has_key?(intnoVal)
+    $kernelCfgC.append("\t{ #{-$cfgData[:CFG_INT][intnoVal][:intpri].val}, #{$cfgData[:CFG_INT][intnoVal][:intatr]} }")
+  else
+    $kernelCfgC.append("\t{  0, 0xFFFFFFFF }")
+  end
+  $kernelCfgC.append(",") if intnoVal < ($INTNO_RANGE.length - 1)
+  $kernelCfgC.add("\t/* #{sprintf("%02u", intnoVal)} */ ")
+end
+$kernelCfgC.add2("};")
+
+$kernelCfgAsm = GenFile.new("kernel_cfg_asm.S")
+
+#
+#  割込みベクタ及び割込みハンドラ定義
+#
+$kernelCfgAsm.add(<<EOS)
+;
+;  RX630アーキテクチャ依存出力ファイル
+;
+;  割込みベクタ及び割込みハンドラ定義
+;
+
+
+	.section P, CODE
+	.global	_kernel_interrupt
+	.global	__kernel_default_int_handler
+	.global	__kernel_default_exc_handler
+EOS
+
+$INHNO_RANGE.each do |inhnoVal|
+  if $cfgData[:DEF_INH].has_key?(inhnoVal)
+    $kernelCfgAsm.add(<<EOS)
+	.global	_#{$cfgData[:DEF_INH][inhnoVal][:inthdr]}
+	.global	__kernel_#{$cfgData[:DEF_INH][inhnoVal][:inthdr]}_#{inhnoVal}_entry
+__kernel_#{$cfgData[:DEF_INH][inhnoVal][:inthdr]}_#{inhnoVal}_entry:
+	pushm	r1-r5
+	mov.l	\##{inhnoVal}, r1
+	mov.l	\#_#{$cfgData[:DEF_INH][inhnoVal][:inthdr]}, r2
+	bra.a	_kernel_interrupt
+EOS
+    $kernelCfgAsm.add
+  end
+end
+
+$kernelCfgAsm.add(<<EOS)
+	.global	__kernel_default_int_handler_entry
+__kernel_default_int_handler_entry:
+	pushm	r1-r5
+	mov.l	\#0FFFFFFFFH, r1
+	mov.l	\#__kernel_default_int_handler, r2
+	bra.a	_kernel_interrupt
+
+	.global	__kernel_break_int_handler_entry
+__kernel_break_int_handler_entry:
+	rts
+EOS
+$kernelCfgAsm.add
+
+$kernelCfgAsm.add(<<EOS)
+	.global	_kernel_exception
+EOS
+
+$EXCNO_VALID.each do |excnoVal|
+  if $cfgData[:DEF_EXC].has_key?(excnoVal)
+    $kernelCfgAsm.add(<<EOS)
+	.global	_#{$cfgData[:DEF_EXC][excnoVal][:exchdr]}
+	.global	__kernel_#{$cfgData[:DEF_EXC][excnoVal][:exchdr]}_#{excnoVal}_entry
+__kernel_#{$cfgData[:DEF_EXC][excnoVal][:exchdr]}_#{excnoVal}_entry:
+	pushm	r1-r5
+	mov.l	\##{excnoVal}, r1
+	mov.l	\#_#{$cfgData[:DEF_EXC][excnoVal][:exchdr]}, r2
+	bra.a	_kernel_exception
+EOS
+    $kernelCfgAsm.add
+  end
+end
+
+$kernelCfgAsm.add(<<EOS)
+	.global	__kernel_default_exc_handler_entry
+__kernel_default_exc_handler_entry:
+	pushm	r1-r5
+	mov.l	\#0FFFFFFFFH, r1
+	mov.l	\#__kernel_default_exc_handler, r2
+	bra.a	_kernel_exception
+EOS
+$kernelCfgAsm.add
+
+$kernelCfgAsm.append(<<EOS)
+;
+;  可変ベクタテーブル
+;
+
+	.global	_start
+
+	.global	_vvector_table
+
+
+	.section .rvectors, ROMDATA
+
+_vvector_table:
+EOS
+
+$INHNO_RANGE.each do |inhnoVal|
+  if $cfgData[:DEF_INH].has_key?(inhnoVal)
+    $kernelCfgAsm.append("	.lword	__kernel_#{$cfgData[:DEF_INH][inhnoVal][:inthdr]}_#{inhnoVal}_entry")
+  elsif inhnoVal != 0
+    $kernelCfgAsm.append("	.lword	__kernel_default_int_handler_entry")
+  else
+    $kernelCfgAsm.append("	.lword	__kernel_break_int_handler_entry")
+  end
+  $kernelCfgAsm.add("		; #{sprintf("%02d", inhnoVal)} ")
+end
+
+$kernelCfgAsm.add2
+
+$kernelCfgAsm.append(<<EOS)
+;
+;  固定ベクタテーブル
+;
+
+	.global	_fvector_table
+
+	.section .fvectors, ROMDATA
+
+_fvector_table:
+	 .word	 0FFFFFFFFH 	 ; Endian Select Register (little)
+	 .space	 004H
+	 .word	 0FFFFFFFFH 	 ; OFS1
+	 .word	 0FFFFFFFFH 	 ; OFS0
+	 .space	 010H
+	 .word	 0FFFFFFFFH 	 ; 制御コード, IDコード1 - 3
+	 .word	 0FFFFFFFFH 	 ; IDコード4 - 7
+	 .word	 0FFFFFFFFH 	 ; IDコード8 - 11
+	 .word	 0FFFFFFFFH 	 ; IDコード12 - 15
+EOS
+(12..30).each do |excnoVal|
+  if $cfgData[:DEF_EXC].has_key?(excnoVal)
+    $kernelCfgAsm.append("	.word	 __kernel_#{$cfgData[:DEF_EXC][excnoVal][:exchdr]}_#{excnoVal}_entry")
+  elsif $EXCNO_VALID.include?(excnoVal)
+    $kernelCfgAsm.append("	.word	 __kernel_default_exc_handler_entry")
+  else
+    $kernelCfgAsm.append("	.word	 0")
+  end
+  $kernelCfgAsm.add("		; #{excnoVal} ")
+end
+
+$kernelCfgAsm.add("	.word	 _start		; 31:Reset")
+$kernelCfgAsm.add2(".end")
+
+#
+#  割込み要求ライン属性に関するターゲット依存のエラーチェック
+#
+$cfgData[:CFG_INT].each do |key, params|
+  # IRQ割込み番号かどうかをチェック
+  if $INTNO_INT.include?(key)
+    # TA_POSEDGEとTA_NEGEDGEが同時に設定されている場合
+    if (params[:intatr].val & ($TA_POSEDGE|$TA_NEGEDGE)) == $TA_POSEDGE|$TA_NEGEDGE
+      error_illegal_sym("E_RSATR", params, :intatr, :intno)
+    end
+    # TA_POSEDGEとTA_BOTHEDGEが同時に設定されている場合
+    if (params[:intatr].val & ($TA_POSEDGE|$TA_BOTHEDGE)) == $TA_POSEDGE|$TA_BOTHEDGE
+      error_illegal_sym("E_RSATR", params, :intatr, :intno)
+    end
+    # TA_NEGEDGEとTA_BOTHEDGEが同時に設定されている場合
+    if (params[:intatr].val & ($TA_NEGEDGE|$TA_BOTHEDGE)) == $TA_NEGEDGE|$TA_BOTHEDGE
+      error_illegal_sym("E_RSATR", params, :intatr, :intno)
+    end
+    # TA_POSEDGEとTA_NEGEDGEとTA_BOTHEDGEが同時に設定されている場合
+    if (params[:intatr].val & ($TA_POSEDGE|$TA_NEGEDGE|$TA_BOTHEDGE)) == $TA_POSEDGE|$TA_NEGEDGE|$TA_BOTHEDGE
+      error_illegal_sym("E_RSATR", params, :intatr, :intno)
+    end
+  else
+    # IRQ割込み以外の割込みに対して割込み属性が指定されている場合
+    if (params[:intatr].val & (~($TA_ENAINT|$TA_EDGE))) != 0
+      error_illegal_sym("E_RSATR", params, :intatr, :intno)
+    end
+  end
+end
