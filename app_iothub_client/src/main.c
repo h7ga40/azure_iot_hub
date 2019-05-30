@@ -170,12 +170,6 @@ int wolfSSL_Debugging_ON(void);
  */
 static void main_initialize()
 {
-	FILINFO fno;
-#if FF_USE_LFN
-	char lfn[FF_MAX_LFN + 1];
-	fno.lfname = lfn;
-	fno.lfsize = FF_MAX_LFN + 1;
-#endif
 	ER ret;
 
 	//wolfSSL_Debugging_ON();

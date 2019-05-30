@@ -16,6 +16,7 @@ and removing calls to _DoWork will yield the same results. */
 #include "iothub_client_ll.h"
 #include "iothub_message.h"
 #include "iothubtransporthttp.h"
+#include "iothubtransportmqtt.h"
 #include "iothubtransportmqtt_websockets.h"
 
 #ifdef _MSC_VER
@@ -130,14 +131,14 @@ static void SendConfirmationCallback(IOTHUB_CLIENT_CONFIRMATION_RESULT result, v
 {
 	EVENT_INSTANCE* eventInstance = (EVENT_INSTANCE*)userContextCallback;
 
-	(void)printf("Confirmation[%d] received for message tracking id = %zu with result = %s\r\n", callbackCounter, eventInstance->messageTrackingId, MU_ENUM_TO_STRING(IOTHUB_CLIENT_CONFIRMATION_RESULT, result));
+	(void)printf("Confirmation[%d] received for message tracking id = %u with result = %s\r\n", callbackCounter, eventInstance->messageTrackingId, MU_ENUM_TO_STRING(IOTHUB_CLIENT_CONFIRMATION_RESULT, result));
 
 	/* Some device specific action code goes here... */
 	callbackCounter++;
 	IoTHubMessage_Destroy(eventInstance->messageHandle);
 }
 
-void iothub_client_run(void)
+void iothub_client_run(int proto)
 {
 	IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle;
 
@@ -159,13 +160,24 @@ void iothub_client_run(void)
 	}
 	else
 	{
-#if 1
-		(void)printf("Starting the IoTHub client sample HTTP...\r\n");
-		IOTHUB_CLIENT_TRANSPORT_PROVIDER protocol = HTTP_Protocol;
-#else
-		(void)printf("Starting the IoTHub client sample MQTT...\r\n");
-		IOTHUB_CLIENT_TRANSPORT_PROVIDER protocol = MQTT_WebSocket_Protocol;
-#endif
+		IOTHUB_CLIENT_TRANSPORT_PROVIDER protocol;
+		switch (proto) {
+		case 0:
+			(void)printf("Starting the IoTHub client sample HTTP...\r\n");
+			protocol = HTTP_Protocol;
+			break;
+		case 1:
+			(void)printf("Starting the IoTHub client sample MQTT...\r\n");
+			protocol = MQTT_Protocol;
+			break;
+		case 2:
+			(void)printf("Starting the IoTHub client sample MQTT over WebSocket...\r\n");
+			protocol = MQTT_WebSocket_Protocol;
+			break;
+		default:
+			platform_deinit();
+			return;
+		}
 
 		if ((iotHubClientHandle = IoTHubClient_LL_CreateFromConnectionString(connectionString, protocol)) == NULL)
 		{
@@ -293,6 +305,6 @@ void iothub_client_run(void)
 
 int iothub_client_main(int argc, char **argv)
 {
-	iothub_client_run();
+	iothub_client_run(0);
 	return 0;
 }
