@@ -41,6 +41,7 @@
 #include "azure_c_shared_utility/optimize_size.h"
 #include "azure_c_shared_utility/xio.h"
 #include "azure_c_shared_utility/tlsio_wolfssl.h"
+#include "azure_c_shared_utility/tlsio_mbedtls.h"
 #include "target_syssvc.h"
 
 int platform_init(void)
@@ -50,7 +51,8 @@ int platform_init(void)
 
 const IO_INTERFACE_DESCRIPTION* platform_get_default_tlsio(void)
 {
-	return tlsio_wolfssl_get_interface_description();
+	//return tlsio_wolfssl_get_interface_description();
+	return tlsio_mbedtls_get_interface_description();
 }
 
 STRING_HANDLE platform_get_platform_info(PLATFORM_INFO_OPTION options)

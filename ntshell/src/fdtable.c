@@ -298,7 +298,7 @@ int shell_poll(struct pollfd *fds, nfds_t nfds, int timeout)
 
 ER shell_get_evts(struct fd_events *evts, TMO tmout)
 {
-	int count = 0;
+	int count;
 	SYSTIM prev, now;
 	FLGPTN flgptn;
 
@@ -314,6 +314,7 @@ ER shell_get_evts(struct fd_events *evts, TMO tmout)
 #else
 		waitptn = *((FLGPTN *)&evts->readfds) | *((FLGPTN *)&evts->errorfds);
 #endif
+		count = 0;
 		for (int fd = 0; fd < fd_table_count; fd++) {
 			fp = &fd_table[fd];
 

@@ -9,6 +9,7 @@
 		<project>musl-1.1.18</project>
 		<project>ntshell</project>
 		<project>wolfssl-3.15.7</project>
+		<project>mbedtls-2.16.1</project>
 		<project>zlib-1.2.11</project>
 	</projects>
 	<buildSpec>

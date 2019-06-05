@@ -927,7 +927,7 @@
 /* #undef USE_AXTLS */
 
 /* if CyaSSL/WolfSSL is enabled */
-#define USE_CYASSL 1
+/* #undef USE_CYASSL */
 
 /* to enable Apple OS native SSL/TLS support */
 /* #undef USE_DARWINSSL */
@@ -951,7 +951,7 @@
 /* #undef USE_MANUAL */
 
 /* if mbedTLS is enabled */
-/* #undef USE_MBEDTLS */
+#define USE_MBEDTLS 1
 
 /* Define to enable metalink support */
 /* #undef USE_METALINK */

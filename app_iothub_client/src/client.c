@@ -18,6 +18,7 @@ and removing calls to _DoWork will yield the same results. */
 #include "iothubtransporthttp.h"
 #include "iothubtransportmqtt.h"
 #include "iothubtransportmqtt_websockets.h"
+#include "iothub_client_options.h"
 
 #ifdef _MSC_VER
 extern int sprintf_s(char* dst, size_t dstSizeInBytes, const char* format, ...);
@@ -217,6 +218,12 @@ void iothub_client_run(int proto)
 			{
 				printf("failure to set option \"MinimumPollingTime\"\r\n");
 			}
+
+			bool traceOn = 1;
+			if (IoTHubClient_LL_SetOption(iotHubClientHandle, OPTION_LOG_TRACE, &traceOn) != IOTHUB_CLIENT_OK)
+			{
+				printf("failure to set option \"log trace on\"\r\n");
+			}
 #endif
 #ifdef SET_TRUSTED_CERT_IN_SAMPLES
 			// For mbed add the certificate information
@@ -240,9 +247,7 @@ void iothub_client_run(int proto)
 				double humidity = 0;
 				do
 				{
-					//(void)printf("iterator: [%d], callbackCounter: [%d]. \r\n", iterator, callbackCounter);
-
-					if (iterator < MESSAGE_COUNT && (iterator <= callbackCounter))
+					if ((iterator < MESSAGE_COUNT) && (iterator <= callbackCounter))
 					{
 						temperature = minTemperature + (rand() % 10);
 						humidity = minHumidity + (rand() % 20);
@@ -264,8 +269,10 @@ void iothub_client_run(int proto)
 								(void)printf("ERROR: Map_AddOrUpdate Failed!\r\n");
 							}
 
-							(void)IoTHubMessage_SetContentTypeSystemProperty(messages[iterator].messageHandle, "application/json");
-							(void)IoTHubMessage_SetContentEncodingSystemProperty(messages[iterator].messageHandle, "utf-8");
+							if (proto == 0) {
+								(void)IoTHubMessage_SetContentTypeSystemProperty(messages[iterator].messageHandle, "application/json");
+								(void)IoTHubMessage_SetContentEncodingSystemProperty(messages[iterator].messageHandle, "utf-8");
+							}
 
 							if (IoTHubClient_LL_SendEventAsync(iotHubClientHandle, messages[iterator].messageHandle, SendConfirmationCallback, &messages[iterator]) != IOTHUB_CLIENT_OK)
 							{
@@ -276,12 +283,11 @@ void iothub_client_run(int proto)
 								(void)printf("IoTHubClient_LL_SendEventAsync accepted message [%d] for transmission to IoT Hub.\r\n", iterator);
 							}
 						}
+						iterator++;
 					}
 
 					IoTHubClient_LL_DoWork(iotHubClientHandle);
 					ThreadAPI_Sleep(1);
-
-					iterator++;
 
 					if (callbackCounter >= MESSAGE_COUNT)
 					{
@@ -305,6 +311,6 @@ void iothub_client_run(int proto)
 
 int iothub_client_main(int argc, char **argv)
 {
-	iothub_client_run(0);
+	iothub_client_run(1);
 	return 0;
 }

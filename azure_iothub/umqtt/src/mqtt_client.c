@@ -112,6 +112,7 @@ static void set_error_callback(MQTT_CLIENT* mqtt_client, MQTT_CLIENT_EVENT_ERROR
 
 static STRING_HANDLE construct_trace_log_handle(MQTT_CLIENT* mqtt_client)
 {
+#ifndef NO_LOGGING
     STRING_HANDLE trace_log;
     if (mqtt_client->logTrace)
     {
@@ -122,6 +123,9 @@ static STRING_HANDLE construct_trace_log_handle(MQTT_CLIENT* mqtt_client)
         trace_log = NULL;
     }
     return trace_log;
+#else
+    return NULL;
+#endif
 }
 
 static uint16_t byteutil_read_uint16(uint8_t** buffer, size_t byteLen)
@@ -444,6 +448,7 @@ static void onBytesReceived(void* context, const unsigned char* buffer, size_t s
     {
         if (mqtt_codec_bytesReceived(mqtt_client->codec_handle, buffer, size) != 0)
         {
+            mqtt_codec_reset(mqtt_client->codec_handle);
             set_error_callback(mqtt_client, MQTT_CLIENT_PARSE_ERROR);
         }
     }
@@ -1214,12 +1219,14 @@ int mqtt_client_disconnect(MQTT_CLIENT_HANDLE handle, ON_MQTT_DISCONNECTED_CALLB
                 }
                 else
                 {
+#ifndef NO_LOGGING
                     if (mqtt_client->logTrace)
                     {
                         STRING_HANDLE trace_log = STRING_construct("DISCONNECT");
                         log_outgoing_trace(mqtt_client, trace_log);
                         STRING_delete(trace_log);
                     }
+#endif
                     result = 0;
                 }
                 BUFFER_delete(disconnectPacket);
@@ -1279,13 +1286,14 @@ void mqtt_client_dowork(MQTT_CLIENT_HANDLE handle)
                         (void)sendPacketItem(mqtt_client, BUFFER_u_char(pingPacket), size);
                         BUFFER_delete(pingPacket);
                         (void)tickcounter_get_current_ms(mqtt_client->packetTickCntr, &mqtt_client->timeSincePing);
-
+#ifndef NO_LOGGING
                         if (mqtt_client->logTrace)
                         {
                             STRING_HANDLE trace_log = STRING_construct("PINGREQ");
                             log_outgoing_trace(mqtt_client, trace_log);
                             STRING_delete(trace_log);
                         }
+#endif
                     }
                 }
             }
