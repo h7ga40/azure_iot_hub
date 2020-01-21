@@ -1,7 +1,7 @@
 /*
  *  TOPPERS PROJECT Home Network Working Group Software
  * 
- *  Copyright (C) 2014-2017 Cores Co., Ltd. Japan
+ *  Copyright (C) 2014-2019 Cores Co., Ltd. Japan
  * 
  *  上記著作権者は，以下の(1)～(4)の条件を満たす場合に限り，本ソフトウェ
  *  ア（本ソフトウェアを改変したものを含む．以下同じ）を使用・複製・改
@@ -55,19 +55,12 @@
  *  各タスクの優先度の定義
  */
 
-#define MAIN_PRIORITY	5		/* メインタスクの優先度 */
-
-#define MAIN_STACK_SIZE		2048	/* メインタスクのスタック領域のサイズ */
-
 #define NUM_MAIN_DATAQUEUE	1	/* メインタスクで待ち受けているデータキューのサイズ */
 
 /*
  *  関数のプロトタイプ宣言
  */
 #ifndef TOPPERS_MACRO_ONLY
-
-/* メインタスク */
-extern void main_task(intptr_t exinf);
 
 #endif /* TOPPERS_MACRO_ONLY */
 

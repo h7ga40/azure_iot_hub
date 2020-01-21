@@ -1,7 +1,7 @@
 /*
  *  TOPPERS PROJECT Home Network Working Group Software
  * 
- *  Copyright (C) 2017 Cores Co., Ltd. Japan
+ *  Copyright (C) 2017-2019 Cores Co., Ltd. Japan
  * 
  *  上記著作権者は，以下の(1)～(4)の条件を満たす場合に限り，本ソフトウェ
  *  ア（本ソフトウェアを改変したものを含む．以下同じ）を使用・複製・改
@@ -142,6 +142,9 @@ int delete_fd_by_id(IO_TYPE *type, int id)
 int delete_fp(struct SHELL_FILE *fp)
 {
 	ER ret;
+
+	if (fp->type == NULL)
+		return 0;
 
 	fp->type->delete(fp);
 

@@ -1,7 +1,7 @@
 /*
  *  TOPPERS PROJECT Home Network Working Group Software
  * 
- *  Copyright (C) 2014-2017 Cores Co., Ltd. Japan
+ *  Copyright (C) 2014-2019 Cores Co., Ltd. Japan
  * 
  *  上記著作権者は，以下の(1)～(4)の条件を満たす場合に限り，本ソフトウェ
  *  ア（本ソフトウェアを改変したものを含む．以下同じ）を使用・複製・改
@@ -54,16 +54,26 @@
  *  各タスクの優先度の定義
  */
 
-#define NTSHELL_PRIORITY	8		/* ntshellタスクの優先度 */
+#define NTSHELL_PRIORITY	5		/* ntshellタスクの優先度 */
+#define SHELLCMD_PRIORITY	8		/* shellcmdタスクの優先度 */
 
-#define NTSHELL_STACK_SIZE	10240	/* ntshellタスクのスタック領域のサイズ */
-
-#define NUM_NTSHELL_DATAQUEUE	1	/* ntshellタスクで待ち受けているデータキューのサイズ */
+#define NTSHELL_STACK_SIZE	2048	/* ntshellタスクのスタック領域のサイズ */
+#define SHELLCMD_STACK_SIZE	10240	/* shellcmdタスクのスタック領域のサイズ */
 
 /*
  *  関数のプロトタイプ宣言
  */
 #ifndef TOPPERS_MACRO_ONLY
+
+typedef struct task_base_t {
+	void (*on_start)(struct task_base_t *task, ID tskid);
+	void (*on_end)(struct task_base_t *task);
+	int (*get_timer)(struct task_base_t *task);
+	void (*progress)(struct task_base_t *task, int elapse);
+	void (*process)(struct task_base_t *task, uint32_t event);
+	int timer;
+	void *exinf;
+} task_base_t;
 
 typedef struct
 {
@@ -73,19 +83,27 @@ typedef struct
 
 extern cmd_table_info_t cmd_table_info;
 
-extern PRI main_task_priority;
+extern void main_initialize();
+extern void main_finalize();
 
 /* ntshellの初期化 */
 void sys_init(intptr_t exinf);
 
+#define NTSHELL_EVENT_WAKEUP		0x00000001
+#define NTSHELL_EVENT_NETIF_CHANGED	0x00000002
+#define NTSHELL_EVENT_LINK_UP		0x00000004
+#define NTSHELL_EVENT_UP			0x00000008
+#define NTSHELL_EVENT_NTP_ASYNC		0x00000010
+#define NTSHELL_EVENT_NTP_SYNC		0x00000020
+
 /* ntshellタスク初期化 */
-void ntshell_task_init(ID portid);
+void ntshell_task_init(task_base_t **tasks, int task_count);
 
 /* ntshellタスク */
 void ntshell_task(intptr_t exinf);
 
-/* 開始 */
-void ntshell_change_netif_link(uint8_t link_up, uint8_t up);
+/* shellcmdタスク */
+void shellcmd_task(intptr_t exinf);
 
 /* コマンド実行 */
 int cmd_execute(const char *text, void *extobj);

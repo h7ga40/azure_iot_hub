@@ -1,7 +1,7 @@
 /*
  *  TOPPERS PROJECT Home Network Working Group Software
  *
- *  Copyright (C) 2017 Cores Co., Ltd. Japan
+ *  Copyright (C) 2017-2019 Cores Co., Ltd. Japan
  *
  *  上記著作権者は，以下の(1)～(4)の条件を満たす場合に限り，本ソフトウェ
  *  ア（本ソフトウェアを改変したものを含む．以下同じ）を使用・複製・改
@@ -261,7 +261,7 @@ void file_delete(struct SHELL_FILE *fp)
 int shell_close(int fd)
 {
 	struct SHELL_FILE *fp = fd_to_fp(fd);
-	if (fp == NULL)
+	if ((fp == NULL) || (fp->type == NULL))
 		return -EBADF;
 
 	int ret = fp->type->close(fp);
@@ -274,7 +274,7 @@ int shell_close(int fd)
 ssize_t shell_read(int fd, void *data, size_t len)
 {
 	struct SHELL_FILE *fp = fd_to_fp(fd);
-	if (fp == NULL)
+	if ((fp == NULL) || (fp->type == NULL))
 		return -EBADF;
 
 	return fp->type->read(fp, (unsigned char *)data, len);
@@ -284,7 +284,7 @@ int shell_readv(int fd, const struct iovec *iov, int iovcnt)
 {
 	int result = 0;
 	struct SHELL_FILE *fp = fd_to_fp(fd);
-	if (fp == NULL)
+	if ((fp == NULL) || (fp->type == NULL))
 		return -EBADF;
 
 	const struct iovec *end = &iov[iovcnt];
@@ -298,7 +298,7 @@ int shell_readv(int fd, const struct iovec *iov, int iovcnt)
 ssize_t shell_write(int fd, const void *data, size_t len)
 {
 	struct SHELL_FILE *fp = fd_to_fp(fd);
-	if (fp == NULL)
+	if ((fp == NULL) || (fp->type == NULL))
 		return -EBADF;
 
 	return fp->type->write(fp, (unsigned char *)data, len);
@@ -308,7 +308,7 @@ int shell_writev(int fd, const struct iovec *iov, int iovcnt)
 {
 	int result = 0;
 	struct SHELL_FILE *fp = fd_to_fp(fd);
-	if (fp == NULL)
+	if ((fp == NULL) || (fp->type == NULL))
 		return -EBADF;
 
 	const struct iovec *end = &iov[iovcnt];
@@ -322,7 +322,7 @@ int shell_writev(int fd, const struct iovec *iov, int iovcnt)
 int shell_llseek(int fd, off_t ptr, off_t *result, int dir)
 {
 	struct SHELL_FILE *fp = fd_to_fp(fd);
-	if (fp == NULL)
+	if ((fp == NULL) || (fp->type == NULL))
 		return -EBADF;
 
 	off_t ret = fp->type->seek(fp, ptr, dir);

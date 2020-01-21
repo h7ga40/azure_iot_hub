@@ -58,6 +58,9 @@
 static const char THIS_FILE[] = __FILE__;
 #endif
 
+extern bool_t sio_isr_snd(ID siopid);
+extern bool_t sio_isr_rcv(ID siopid, char c);
+
 static unsigned char stdio_xi(struct ntstdio_t *handle);
 static void stdio_xo(struct ntstdio_t *handle, unsigned char c);
 static void stdio_serial_irq_handler(uint32_t id, SerialIrq event);
@@ -132,13 +135,10 @@ void sys_init(intptr_t exinf)
 	serial_irq_set(serial, RxIrq, true);
 }
 
-ID serial_portid;
-
 void stdio_open(ID portid)
 {
 	struct SHELL_FILE *fp;
 
-	serial_portid = portid;
 	serial_ctl_por(portid, IOCTL_CRLF | IOCTL_FCSND | IOCTL_FCRCV);
 
 	fp = fd_to_fp(STDIN_FILENO);
@@ -272,9 +272,6 @@ int sio_tcsetattr(struct SHELL_FILE *fp, int optional_actions, const struct term
 
 int sio_ioctl(struct SHELL_FILE *fp, int request, void *arg)
 {
-	if ((fp == NULL) || (fp->type != &IO_TYPE_SIO))
-		return -EBADF;
-
 	switch (request) {
 	case TIOCGWINSZ:
 		return 0;
@@ -347,8 +344,27 @@ static unsigned char ntstdio_xi(struct ntstdio_t *handle, struct SHELL_FILE *fp)
 	return c;
 }
 
-extern volatile int ntshell_state;
-extern ID serial_portid;
+void stdio_input(unsigned char c)
+{
+	struct SHELL_FILE *fp = fd_to_fp(STDIN_FILENO);
+	stdio_sio_t *uart = (stdio_sio_t *)((struct ntstdio_t *)fp->exinf)->exinf;
+	serial_t *serial = (serial_t *)&uart->serial;
+	ER ret;
+	FLGPTN flgptn = 0;
+
+	uart->rx_buf[uart->rx_pos_w++] = c;
+	if (uart->rx_pos_w >= sizeof(uart->rx_buf))
+		uart->rx_pos_w = 0;
+
+	if (fp->readevt_w == fp->readevt_r) fp->readevt_w++;
+
+	FD_SET(STDIN_FILENO, (fd_set *)&flgptn);
+
+	ret = set_flg(FLG_SELECT_WAIT, flgptn);
+	if (ret != E_OK) {
+		syslog(LOG_ERROR, "set_flg => %d", ret);
+	}
+}
 
 static void serial_rx_irq_handler(int fd)
 {
@@ -359,7 +375,7 @@ static void serial_rx_irq_handler(int fd)
 	if (serial_readable(serial)) {
 		unsigned char c = (unsigned char)serial_getc(serial);
 
-		if (ntshell_state == 1) {
+		if (fd != STDIN_FILENO) {
 			ER ret;
 			FLGPTN flgptn = 0;
 
@@ -418,12 +434,12 @@ static void ntstdio_xo(struct ntstdio_t *handle, struct SHELL_FILE *fp, unsigned
 	if (lock)
 		unl_cpu();
 
-	do {
+	while (uart->tx_pos_w != uart->tx_pos_r) {
 		FLGPTN flgptn = 0, waitptn = 0;
 		FD_SET(fp->fd, (fd_set *)&waitptn);
 
-		ret = wai_flg(FLG_SELECT_WAIT, waitptn, TWF_ORW, &flgptn);
-		if (ret != E_OK) {
+		ret = twai_flg(FLG_SELECT_WAIT, waitptn, TWF_ORW, &flgptn, 1000);
+		if ((ret != E_OK) && (ret != E_TMOUT)) {
 			syslog(LOG_ERROR, "wai_flg => %d", ret);
 			break;
 		}
@@ -432,9 +448,9 @@ static void ntstdio_xo(struct ntstdio_t *handle, struct SHELL_FILE *fp, unsigned
 		if (ret != E_OK) {
 			syslog(LOG_ERROR, "clr_flg => %d", ret);
 		}
-	} while (fp->writeevt_w == fp->writeevt_r);
+	}
 
-	fp->writeevt_r++;
+	if (fp->writeevt_w != fp->writeevt_r) fp->writeevt_r++;
 
 	if (lock)
 		loc_cpu();
