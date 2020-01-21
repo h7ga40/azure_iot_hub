@@ -810,7 +810,7 @@
 #define NTLM_WB_FILE "/usr/bin/ntlm_auth"
 
 /* cpu-machine-OS */
-#define OS "arm-none-eabi"
+#define OS "rx-elf"
 
 /* Name of package */
 #define PACKAGE "curl"

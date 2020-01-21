@@ -48,38 +48,38 @@ long no_implement(const char *text)
 	return -ENOSYS;
 }
 
-long __syscall_nr(long n, ...)
+long __syscall_nr(long n, long a, long b, long c, long d, long e, long f)
 {
 	long ret = -ENOSYS;
-	va_list ap;
-
-	va_start(ap, n);
 
 	switch (n) {
 	case __NR_setresgid:
-		no_implement("setresgid");
+		ret = no_implement("setresgid");
 		break;
 	case __NR_setresuid:
-		no_implement("setresuid");
+		ret = no_implement("setresuid");
 		break;
 	case __NR_setgid:
-		no_implement("setgid");
+		ret = no_implement("setgid");
 		break;
 	case __NR_setregid:
-		no_implement("setregid");
+		ret = no_implement("setregid");
 		break;
 	case __NR_setreuid:
-		no_implement("setreuid");
+		ret = no_implement("setreuid");
 		break;
 	case __NR_setuid:
-		no_implement("setuid");
+		ret = no_implement("setuid");
 		break;
 	default:
-		no_implement("syscall");
+		if (n == (long)SYS_getrandom) {
+			ret = shell_getrandom((void *)a, (size_t)b, (unsigned int)c);
+		}
+		else {
+			ret = no_implement("syscall");
+		}
 		break;
 	}
-
-	va_end(ap);
 
 	return ret;
 }
@@ -154,7 +154,8 @@ long SYS_fcntl64(long a, long b, long c) {
 	return shell_fcntl((int)a, (int)b, (void *)c);
 }
 
-long SYS_fdatasync() {
+long SYS_fdatasync(long a) {
+	//int fdatasync(int fd)
 	return no_implement("fdatasync\n");
 }
 
@@ -170,12 +171,13 @@ long SYS_ftruncate64(long a, long b, long c) {
 	return shell_ftruncate((int)a, ((off_t)b << 32) | (off_t)c);
 }
 
-long SYS_futex() {
-	int futex(int *uaddr, int op, int val, const struct timespec *timeout, int *uaddr2, int val3);
+long SYS_futex(long a, long b, long c, long d, long e, long f) {
+	//int futex(int *uaddr, int op, int val, const struct timespec *timeout, int *uaddr2, int val3);
 	return no_implement("futex\n");
 }
 
-long SYS_futimesat() {
+long SYS_futimesat(long a, long b, long c) {
+	//int futimesat(int dirfd, const char *pathname, const struct timeval times[2])
 	return no_implement("futimesat\n");
 }
 
@@ -251,7 +253,8 @@ long SYS_mprotect(long a, long b, long c) {
 	return shell_mprotect((void *)a, (size_t)b, (int)c);
 }
 
-long SYS_munmap() {
+long SYS_munmap(long a, long b) {
+	//int munmap(void *start, size_t len)
 	return no_implement("munmap\n");
 }
 
@@ -263,11 +266,15 @@ long SYS_poll(long a, long b, long c) {
 	return shell_poll((struct pollfd *)a, (nfds_t)b, (int)c);
 }
 
-long SYS_pread64() {
+long SYS_pread64(long a, long b, long c, long d) {
+	//#define pread64 pread
+	//ssize_t pread(int fd, void *buf, size_t size, off_t ofs)
 	return no_implement("pread64\n");
 }
 
-long SYS_pwrite64() {
+long SYS_pwrite64(long a, long b, long c, long d) {
+	//#define pwrite64 pwrite
+	//ssize_t pwrite(int fd, const void *buf, size_t size, off_t ofs)
 	return no_implement("pwrite64\n");
 }
 
@@ -307,7 +314,8 @@ long SYS_rt_sigprocmask(long a, long b, long c) {
 	return shell_sigprocmask((int)a, (const sigset_t *)b, (sigset_t *)c);
 }
 
-long SYS_rt_sigqueueinfo() {
+long SYS_rt_sigqueueinfo(long a, long b, long c) {
+	//int rt_sigqueueinfo(pid_t tgid, int sig, siginfo_t *uinfo)
 	return no_implement("rt_sigqueueinfo\n");
 }
 
@@ -331,11 +339,13 @@ long SYS_shutdown(long a, long b) {
 	return shell_shutdown((int)a, (int)b);
 }
 
-long SYS_sched_setscheduler() {
+long SYS_sched_setscheduler(long a, long b, long c) {
+	//int sched_setscheduler(pid_t pid, int sched, const struct sched_param *param)
 	return no_implement("sched_setscheduler\n");
 }
 
-long SYS_set_robust_list() {
+long SYS_set_robust_list(long a, long b) {
+	//long set_robust_list(struct robust_list_head *head, size_t len)
 	return no_implement("set_robust_list\n");
 }
 
@@ -371,11 +381,13 @@ long SYS_unlink(long a) {
 	return shell_unlink((const char *)a);
 }
 
-long SYS_utimensat() {
+long SYS_utimensat(long a, long b, long c, long d) {
+	//int utimensat(int fd, const char *path, const struct timespec times[2], int flags)
 	return no_implement("utimensat\n");
 }
 
-long SYS_utimes() {
+long SYS_utimes(long a, long b) {
+	//int utimes(const char *path, const struct timeval times[2])
 	return no_implement("utimes\n");
 }
 
@@ -392,58 +404,58 @@ long SYS_nanosleep(long a, long b)
 	return shell_nanosleep((const struct timespec *)a, (struct timespec *)b);
 }
 
-long SYS_dup()
-{
+long SYS_dup(long a) {
+	//int dup(int fd)
 	return no_implement("dup\n");
 }
 
-long SYS_dup2()
-{
+long SYS_dup2(long a, long b) {
+	//int dup2(int old, int new)
 	return no_implement("dup2\n");
 }
 
-long SYS_pipe()
-{
+long SYS_pipe(long a) {
+	//int pipe(int fd[2])
 	return no_implement("pipe\n");
 }
 
-long SYS_readlink()
-{
+long SYS_readlink(long a, long b, long c) {
+	//ssize_t readlink(const char *restrict path, char *restrict buf, size_t bufsize)
 	return no_implement("readlink\n");
 }
 
-long SYS_symlink()
-{
+long SYS_symlink(long a, long b) {
+	//int symlink(const char *existing, const char *new)
 	return no_implement("symlink\n");
 }
 
-long SYS_umask()
-{
+long SYS_umask(long a) {
+	//mode_t umask(mode_t mode)
 	return no_implement("umask\n");
 }
 
-long SYS_execve()
-{
+long SYS_execve(long a, long b, long c) {
+	//int execve(const char *path, char *const argv[], char *const envp[])
 	return no_implement("execve\n");
 }
 
-long SYS_fork()
-{
+long SYS_fork() {
+	//pid_t fork(void)
 	return no_implement("fork\n");
 }
 
-long SYS_wait4()
-{
+long SYS_wait4(long a, long b, long c, long d) {
+	//pid_t wait4(pid_t pid, int *status, int options, struct rusage *usage)
 	return no_implement("wait4\n");
 }
 
-long SYS_socketpair()
-{
+long SYS_socketpair(long a, long b, long c, long d) {
+	//int socketpair(int domain, int type, int protocol, int fd[2])
 	return no_implement("socketpair\n");
 }
 
-long SYS_flock()
-{
+long SYS_flock(long a, long b) {
+	//int flock(int fd, int op)
 	return no_implement("flock\n");
 }
 
@@ -495,4 +507,9 @@ long SYS_setuid32()
 long SYS_tgkill()
 {
 	return no_implement("tgkill\n");
+}
+
+long SYS_getrandom(long a, long b, long c)
+{
+	return shell_getrandom((void *)a, (size_t)b, (unsigned int)c);;
 }

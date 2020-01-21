@@ -1,0 +1,17 @@
+{
+    "configurations": [
+        {
+            "name": "GR-SAKURA",
+            "includePath": [
+                "${workspaceFolder}/../musl-1.1.18/include",
+                "${workspaceFolder}/../mbedtls-2.16.1/include"
+            ],
+            "windowsSdkVersion": "10.0.17763.0",
+            "compilerPath": "C:\\Program Files (x86)\\GCC for Renesas RX 4.8.4.201902-GNURX-ELF\\rx-elf\\rx-elf\\bin\\rx-elf-gcc.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-x64"
+        }
+    ],
+    "version": 4
+}

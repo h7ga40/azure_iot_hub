@@ -1,0 +1,33 @@
+{
+    "configurations": [
+        {
+            "name": "GR-SAKURA",
+            "includePath": [
+                "${workspaceFolder}/../musl-1.1.18/include",
+                "${workspaceFolder}/../asp3_dcre/include",
+                "${workspaceFolder}/../asp3_dcre/mbed",
+                "${workspaceFolder}/../asp3_dcre/arch/gcc",
+                "${workspaceFolder}/../asp3_dcre/arch/rx630_gcc",
+                "${workspaceFolder}/../asp3_dcre/target/gr_sakura_gcc",
+                "${workspaceFolder}/../azure_iothub/c-utility/inc",
+                "${workspaceFolder}/../azure_iothub/c-utility/pal/toppers",
+                "${workspaceFolder}/../azure_iothub/iothub_client/inc",
+                "${workspaceFolder}/../azure_iothub/iothub_client/inc/internal",
+                "${workspaceFolder}/../azure_iothub/deps/parson",
+                "${workspaceFolder}/../azure_iothub/umqtt/inc",
+                "${workspaceFolder}/../mbedtls-2.16.1/include",
+                "${workspaceFolder}/../zlib-1.2.11/src"
+            ],
+            "defines": [
+                "USE_WOLFSSL=1",
+                "get_time=azure_get_time"
+            ],
+            "windowsSdkVersion": "10.0.17763.0",
+            "compilerPath": "C:\\Program Files (x86)\\GCC for Renesas RX 4.8.4.201902-GNURX-ELF\\rx-elf\\rx-elf\\bin\\rx-elf-gcc.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-x64"
+        }
+    ],
+    "version": 4
+}

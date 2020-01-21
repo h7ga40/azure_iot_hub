@@ -1,0 +1,17 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+    "terminal.integrated.setLocaleVariables": true,
+    "terminal.integrated.shell.windows": "C:\\msys64\\usr\\bin\\bash.exe",
+    "terminal.integrated.shellArgs.windows": [
+        "--login",
+        "-i"
+    ],
+    "terminal.integrated.env.windows": {
+        "PATH": "C:\\Program Files (x86)\\GCC for Renesas RX 4.8.4.201902-GNURX-ELF\\rx-elf\\rx-elf\\bin",
+        "CHERE_INVOKING": "1",
+        "MSYS2_PATH_TYPE": "inherit",
+        "MSYSTEM": "MINGW64"
+    },
+    "C_Cpp.intelliSenseEngine": "Tag Parser",
+    "C_Cpp.default.intelliSenseMode": "gcc-x64"
+}
