@@ -373,9 +373,6 @@ tget_net_buf_down (T_NET_BUF **buf, uint_t minlen, uint_t maxlen, TMO tmout)
 			(*buf)->idix  = (uint8_t)ix;
 			(*buf)->len   = net_buf_table[ix].size;
 			(*buf)->flags = 0;
-#ifdef IF_ETHER_MULTI_NIC
-			(*buf)->conn_pos = 0;
-#endif
 
 #if NET_COUNT_ENABLE & PROTO_FLG_NET_BUF
 			NET_COUNT_NET_BUF(net_buf_table[ix].allocs, 1);

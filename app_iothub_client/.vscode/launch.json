@@ -5,10 +5,10 @@
             "name": "C++ Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/Debug/${workspaceFolderBasename}.elf",
+            "program": "${workspaceFolder}/Debug/${workspaceFolderBasename}.elf",
             "args": [],
             "stopAtEntry": true,
-            "cwd": "${workspaceRoot}",
+            "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
             "debugServerArgs": "-f interface/cmsis-dap.cfg -f target/renesas_rza1h_swd.cfg",
@@ -31,7 +31,7 @@
                 "debugServerPath": "/usr/local/gnu-mcu-eclipse/openocd/0.10.0-12-20190422-2015/bin/openocd",
                 "setupCommands": [
                     {
-                        "text": "-environment-cd ${workspaceRoot}/Debug",
+                        "text": "-environment-cd ${workspaceFolder}/Debug",
                         "description": "set cwd",
                         "ignoreFailures": false
                     },
@@ -99,7 +99,7 @@
                 "debugServerPath": "/usr/local/gnu-mcu-eclipse/openocd/0.10.0-12-20190422-2015/bin/openocd",
                 "setupCommands": [
                     {
-                        "text": "-environment-cd ${workspaceRoot}/Debug",
+                        "text": "-environment-cd ${workspaceFolder}/Debug",
                         "description": "set cwd",
                         "ignoreFailures": false
                     },
@@ -159,11 +159,11 @@
                 ]
             },
             "windows": {
-                "MIDebuggerPath": "C:\\Program Files (x86)\\GCC for Renesas RX 4.8.4.201902-GNURX-ELF\\rx-elf\\rx-elf\\bin\\rx-elf-gdb.exe",
+                "MIDebuggerPath": "C:\\Program Files (x86)\\GCC for Renesas RX 8.3.0.201904-GNURX-ELF\\rx-elf\\rx-elf\\bin\\rx-elf-gdb.exe",
                 "debugServerPath": "C:\\Renesas\\e2_studio_7\\DebugComp\\RX\\e2-server-gdb.exe",
                 "setupCommands": [
                     {
-                        "text": "-environment-cd ${workspaceRoot}\\Debug",
+                        "text": "-environment-cd ${workspaceFolder}\\Debug",
                         "description": "set cwd",
                         "ignoreFailures": false
                     },

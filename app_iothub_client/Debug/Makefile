@@ -381,6 +381,7 @@ endif
 #  ソースファイルのあるディレクトリに関する定義
 #
 vpath %.c $(KERNEL_DIRS) $(SYSSVC_DIRS) $(APPL_DIRS)
+vpath %.cpp $(KERNEL_DIRS) $(SYSSVC_DIRS) $(APPL_DIRS)
 vpath %.S $(KERNEL_DIRS) $(SYSSVC_DIRS) $(APPL_DIRS)
 vpath %.cfg $(APPL_DIRS)
 vpath %.cdl $(APPL_DIRS)
@@ -548,7 +549,7 @@ check.timestamp: cfg2_out.db $(OBJNAME).syms $(OBJNAME).srec
 .PHONY: clean
 clean:
 	rm -f \#* *~ $(OBJDIR)/*.o $(DEPDIR)/*.d $(CLEAN_FILES) check.timestamp
-	rm -f $(OBJFILE) $(OBJNAME).syms $(OBJNAME).srec $(OBJNAME).bin
+	rm -f $(OBJFILE) $(OBJNAME).syms $(OBJNAME).srec $(OBJNAME).bin $(OBJNAME).mot
 	rm -f kernel_cfg.timestamp $(CFG2_OUT_SRCS) cfg2_out.db
 	rm -f offset.timestamp $(OFFSET_H)
 	rm -f cfg1_out.syms cfg1_out.srec $(CFG1_OUT)

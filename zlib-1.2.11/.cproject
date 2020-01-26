@@ -23,7 +23,7 @@
 			</storageModule>
 			<storageModule moduleId="com.renesas.cdt.managedbuild.core.toolchainInfo">
 				<option id="toolchain.id" value="RENESAS_GCC_RX"/>
-				<option id="toolchain.version" value="4.8.4.201803"/>
+				<option id="toolchain.version" value="8.3.0.201904"/>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 				<configuration artifactExtension="a" artifactName="zlib" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="rm -rf *.lst *.lis *.lpp *.map" description="" id="com.renesas.cdt.managedbuild.gcc.rx.ui.configuration.debug.lib.1049066835" name="Debug" parent="com.renesas.cdt.managedbuild.gcc.rx.ui.configuration.debug.lib">
