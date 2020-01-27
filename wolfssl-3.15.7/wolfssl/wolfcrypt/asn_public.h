@@ -282,32 +282,32 @@ typedef struct Cert {
    keyType    = RSA_KEY (default)
 */
 WOLFSSL_API int wc_InitCert(Cert*);
-WOLFSSL_API int  wc_MakeCert_ex(Cert* cert, byte* derBuffer, word32 derSz,
+WOLFSSL_API int wc_MakeCert_ex(Cert* cert, byte* derBuffer, word32 derSz,
                                 int keyType, void* key, WC_RNG* rng);
-WOLFSSL_API int  wc_MakeCert(Cert*, byte* derBuffer, word32 derSz, RsaKey*,
+WOLFSSL_API int wc_MakeCert(Cert*, byte* derBuffer, word32 derSz, RsaKey*,
                              ecc_key*, WC_RNG*);
 #ifdef WOLFSSL_CERT_REQ
-    WOLFSSL_API int  wc_MakeCertReq_ex(Cert*, byte* derBuffer, word32 derSz,
+    WOLFSSL_API int wc_MakeCertReq_ex(Cert*, byte* derBuffer, word32 derSz,
                                        int, void*);
-    WOLFSSL_API int  wc_MakeCertReq(Cert*, byte* derBuffer, word32 derSz,
+    WOLFSSL_API int wc_MakeCertReq(Cert*, byte* derBuffer, word32 derSz,
                                     RsaKey*, ecc_key*);
 #endif
-WOLFSSL_API int  wc_SignCert_ex(int requestSz, int sType, byte* buffer,
+WOLFSSL_API int wc_SignCert_ex(int requestSz, int sType, byte* buffer,
                                 word32 buffSz, int keyType, void* key,
                                 WC_RNG* rng);
-WOLFSSL_API int  wc_SignCert(int requestSz, int sigType, byte* derBuffer,
+WOLFSSL_API int wc_SignCert(int requestSz, int sigType, byte* derBuffer,
                              word32 derSz, RsaKey*, ecc_key*, WC_RNG*);
-WOLFSSL_API int  wc_MakeSelfCert(Cert*, byte* derBuffer, word32 derSz, RsaKey*,
+WOLFSSL_API int wc_MakeSelfCert(Cert*, byte* derBuffer, word32 derSz, RsaKey*,
                              WC_RNG*);
-WOLFSSL_API int  wc_SetIssuer(Cert*, const char*);
-WOLFSSL_API int  wc_SetSubject(Cert*, const char*);
+WOLFSSL_API int wc_SetIssuer(Cert*, const char*);
+WOLFSSL_API int wc_SetSubject(Cert*, const char*);
 #ifdef WOLFSSL_ALT_NAMES
-    WOLFSSL_API int  wc_SetAltNames(Cert*, const char*);
+    WOLFSSL_API int wc_SetAltNames(Cert*, const char*);
 #endif
-WOLFSSL_API int  wc_SetIssuerBuffer(Cert*, const byte*, int);
-WOLFSSL_API int  wc_SetSubjectBuffer(Cert*, const byte*, int);
-WOLFSSL_API int  wc_SetAltNamesBuffer(Cert*, const byte*, int);
-WOLFSSL_API int  wc_SetDatesBuffer(Cert*, const byte*, int);
+WOLFSSL_API int wc_SetIssuerBuffer(Cert*, const byte*, int);
+WOLFSSL_API int wc_SetSubjectBuffer(Cert*, const byte*, int);
+WOLFSSL_API int wc_SetAltNamesBuffer(Cert*, const byte*, int);
+WOLFSSL_API int wc_SetDatesBuffer(Cert*, const byte*, int);
 
 #ifndef NO_ASN_TIME
 WOLFSSL_API int wc_GetCertDates(Cert* cert, struct tm* before, 
@@ -361,7 +361,7 @@ WOLFSSL_API int wc_SetExtKeyUsageOID(Cert *cert, const char *oid, word32 sz,
 #endif /* WOLFSSL_CERT_EXT */
 
     #ifdef HAVE_NTRU
-        WOLFSSL_API int  wc_MakeNtruCert(Cert*, byte* derBuffer, word32 derSz,
+        WOLFSSL_API int wc_MakeNtruCert(Cert*, byte* derBuffer, word32 derSz,
                                      const byte* ntruKey, word16 keySz,
                                      WC_RNG*);
     #endif
@@ -396,13 +396,13 @@ WOLFSSL_API void wc_FreeDer(DerBuffer** pDer);
 #endif /* WOLFSSL_PEM_TO_DER */
 
 #if defined(WOLFSSL_CERT_EXT) || defined(WOLFSSL_PUB_PEM_TO_DER)
-        #ifndef NO_FILESYSTEM
+    #ifndef NO_FILESYSTEM
         WOLFSSL_API int wc_PemPubKeyToDer(const char* fileName,
-                                               unsigned char* derBuf, int derSz);
-        #endif
+                                          unsigned char* derBuf, int derSz);
+    #endif
 
     WOLFSSL_API int wc_PubKeyPemToDer(const unsigned char*, int,
-                                               unsigned char*, int);
+                                      unsigned char*, int);
 #endif /* WOLFSSL_CERT_EXT || WOLFSSL_PUB_PEM_TO_DER */
 
 #ifdef WOLFSSL_CERT_GEN
@@ -437,9 +437,9 @@ WOLFSSL_API void wc_FreeDer(DerBuffer** pDer);
     /* public key helper */
     WOLFSSL_API int wc_EccPublicKeyDecode(const byte*, word32*,
                                               ecc_key*, word32);
-        WOLFSSL_API int wc_EccPublicKeyToDer(ecc_key*, byte* output,
-                                               word32 inLen, int with_AlgCurve);
-    #endif
+    WOLFSSL_API int wc_EccPublicKeyToDer(ecc_key*, byte* output,
+                                         word32 inLen, int with_AlgCurve);
+#endif
 
 #ifdef HAVE_ED25519
     /* private key helpers */

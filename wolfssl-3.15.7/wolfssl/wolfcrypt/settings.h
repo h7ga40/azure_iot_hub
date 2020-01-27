@@ -292,14 +292,14 @@
 
 #ifdef WOLFSSL_MICROCHIP_PIC32MZ
     #ifndef NO_PIC32MZ_CRYPT
-    #define WOLFSSL_PIC32MZ_CRYPT
+        #define WOLFSSL_PIC32MZ_CRYPT
     #endif
     #ifndef NO_PIC32MZ_RNG
-    #define WOLFSSL_PIC32MZ_RNG
+        #define WOLFSSL_PIC32MZ_RNG
     #endif
     #ifndef NO_PIC32MZ_HASH
-    #define WOLFSSL_PIC32MZ_HASH
-#endif
+        #define WOLFSSL_PIC32MZ_HASH
+    #endif
 #endif
 
 #ifdef MICROCHIP_TCPIP_V5
@@ -663,17 +663,17 @@ extern void uITRON4_free(void *p) ;
 #ifdef FREERTOS_TCP
     #if !defined(NO_WOLFSSL_MEMORY) && !defined(XMALLOC_USER) && \
         !defined(WOLFSSL_STATIC_MEMORY)
-#define XMALLOC(s, h, type)  pvPortMalloc((s))
-#define XFREE(p, h, type)    vPortFree((p))
-#endif
+        #define XMALLOC(s, h, type)  pvPortMalloc((s))
+        #define XFREE(p, h, type)    vPortFree((p))
+    #endif
 
-#define WOLFSSL_GENSEED_FORTEST
+    #define WOLFSSL_GENSEED_FORTEST
 
-#define NO_WOLFSSL_DIR
-#define NO_WRITEV
-#define USE_FAST_MATH
-#define TFM_TIMING_RESISTANT
-#define NO_MAIN_DRIVER
+    #define NO_WOLFSSL_DIR
+    #define NO_WRITEV
+    #define USE_FAST_MATH
+    #define TFM_TIMING_RESISTANT
+    #define NO_MAIN_DRIVER
 #endif
 
 #ifdef WOLFSSL_TIRTOS
@@ -817,11 +817,11 @@ extern void uITRON4_free(void *p) ;
     #endif
 
     #if !defined(XMALLOC_OVERRIDE) && !defined(XMALLOC_USER)
-    #define XMALLOC_OVERRIDE
-    #define XMALLOC(s, h, t)    (void *)_mem_alloc_system((s))
-    #define XFREE(p, h, t)      {void* xp = (p); if ((xp)) _mem_free((xp));}
-    /* Note: MQX has no realloc, using fastmath above */
-#endif
+        #define XMALLOC_OVERRIDE
+        #define XMALLOC(s, h, t)    (void *)_mem_alloc_system((s))
+        #define XFREE(p, h, t)      {void* xp = (p); if ((xp)) _mem_free((xp));}
+        /* Note: MQX has no realloc, using fastmath above */
+    #endif
 #endif
 
 #ifdef FREESCALE_KSDK_MQX
@@ -1371,11 +1371,11 @@ extern void uITRON4_free(void *p) ;
         #define NO_RC4
         #ifndef HAVE_FIPS
             #define WOLFCRYPT_ONLY
-        #define NO_DES3
-        #define NO_SHA
-        #define NO_MD5
-    #else
-        #define TFM_TIMING_RESISTANT
+            #define NO_DES3
+            #define NO_SHA
+            #define NO_MD5
+        #else
+            #define TFM_TIMING_RESISTANT
             #define NO_WOLFSSL_DIR
             #define NO_WRITEV
             #define NO_MAIN_DRIVER

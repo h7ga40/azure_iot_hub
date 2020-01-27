@@ -47,7 +47,7 @@
 /* Check for if compiling misc.c when not needed. */
 #if !defined(WOLFSSL_MISC_INCLUDED) && !defined(NO_INLINE)
     #ifndef WOLFSSL_IGNORE_FILE_WARN
-    #warning misc.c does not need to be compiled when using inline (NO_INLINE not defined)
+        #warning misc.c does not need to be compiled when using inline (NO_INLINE not defined)
     #endif
 
 #else

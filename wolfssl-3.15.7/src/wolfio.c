@@ -202,9 +202,9 @@ int EmbedReceive(WOLFSSL *ssl, char *buf, int sz, void *ctx)
         WOLFSSL_MSG("Embed Receive error");
 
         if (err == SOCKET_EWOULDBLOCK || err == SOCKET_EAGAIN) {
-                WOLFSSL_MSG("\tWould block");
-                return WOLFSSL_CBIO_ERR_WANT_READ;
-            }
+            WOLFSSL_MSG("\tWould block");
+            return WOLFSSL_CBIO_ERR_WANT_READ;
+        }
         else if (err == SOCKET_ECONNRESET) {
             WOLFSSL_MSG("\tConnection reset");
             return WOLFSSL_CBIO_ERR_CONN_RST;
@@ -703,8 +703,8 @@ int wolfIO_Send(SOCKET_T sd, char *buf, int sz, int wrFlags)
         else if (ret > 0) {
             if (FD_ISSET(sockfd, &wfds)) {
                 if (!FD_ISSET(sockfd, &rfds)) {
-                return 0;
-        }
+                    return 0;
+                }
             }
         }
         return SOCKET_ERROR_E;
@@ -1433,7 +1433,7 @@ int EmbedCrlLookup(WOLFSSL_CRL* crl, const char* url, int urlSz)
 WOLFSSL_API void wolfSSL_CTX_SetIORecv(WOLFSSL_CTX *ctx, CallbackIORecv CBIORecv)
 {
     if (ctx != NULL) {
-    ctx->CBIORecv = CBIORecv;
+        ctx->CBIORecv = CBIORecv;
         #ifdef OPENSSL_EXTRA
         ctx->cbioFlag |= WOLFSSL_CBIO_RECV;
         #endif
@@ -1444,7 +1444,7 @@ WOLFSSL_API void wolfSSL_CTX_SetIORecv(WOLFSSL_CTX *ctx, CallbackIORecv CBIORecv
 WOLFSSL_API void wolfSSL_CTX_SetIOSend(WOLFSSL_CTX *ctx, CallbackIOSend CBIOSend)
 {
     if (ctx != NULL) {
-    ctx->CBIOSend = CBIOSend;
+        ctx->CBIOSend = CBIOSend;
         #ifdef OPENSSL_EXTRA
         ctx->cbioFlag |= WOLFSSL_CBIO_SEND;
         #endif

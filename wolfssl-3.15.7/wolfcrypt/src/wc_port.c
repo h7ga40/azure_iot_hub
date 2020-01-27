@@ -38,8 +38,8 @@
 
 /* IPP header files for library initialization */
 #ifdef HAVE_FAST_RSA
-#include <ipp.h>
-#include <ippcp.h>
+    #include <ipp.h>
+    #include <ippcp.h>
 #endif
 
 #ifdef FREESCALE_LTC_TFM

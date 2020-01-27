@@ -129,7 +129,7 @@
 
     #define HAVE_INTEL_AVX1
     #ifndef NO_AVX2_SUPPORT
-    #define HAVE_INTEL_AVX2
+        #define HAVE_INTEL_AVX2
     #endif
 #endif /* USE_INTEL_SPEEDUP */
 
@@ -243,7 +243,7 @@ static int InitSha256(wc_Sha256* sha256)
         static int Transform_Sha256_AVX1_RORX_Len(wc_Sha256* sha256, word32 len);
         static int Transform_Sha256_AVX2_RORX(wc_Sha256 *sha256);
         static int Transform_Sha256_AVX2_RORX_Len(wc_Sha256* sha256, word32 len);
-    #endif
+        #endif
     #endif
     static int (*Transform_Sha256_p)(wc_Sha256* sha256);
                                                        /* = _Transform_Sha256 */
@@ -504,9 +504,9 @@ static int InitSha256(wc_Sha256* sha256)
     #define R(x, n)         (((x) & 0xFFFFFFFFU) >> (n))
 
     #define S(x, n)         rotrFixed(x, n)
-    #define Sigma0(x)       (S(x, 2) ^ S(x, 13) ^ S(x, 22))
-    #define Sigma1(x)       (S(x, 6) ^ S(x, 11) ^ S(x, 25))
-    #define Gamma0(x)       (S(x, 7) ^ S(x, 18) ^ R(x, 3))
+    #define Sigma0(x)       (S(x, 2)  ^ S(x, 13) ^ S(x, 22))
+    #define Sigma1(x)       (S(x, 6)  ^ S(x, 11) ^ S(x, 25))
+    #define Gamma0(x)       (S(x, 7)  ^ S(x, 18) ^ R(x, 3))
     #define Gamma1(x)       (S(x, 17) ^ S(x, 19) ^ R(x, 10))
 
     #define a(i) S[(0-i) & 7]
@@ -527,7 +527,7 @@ static int InitSha256(wc_Sha256* sha256)
     #ifndef XTRANSFORM
          #define XTRANSFORM(S)        Transform_Sha256((S))
          #define XTRANSFORM_LEN(S,L)  Transform_Sha256_Len((S),(L))
-     #endif
+    #endif
 
     static int Transform_Sha256(wc_Sha256* sha256)
     {
@@ -546,7 +546,7 @@ static int InitSha256(wc_Sha256* sha256)
     #elif defined(WOLFSSL_SMALL_STACK)
         word32* W;
         W = (word32*)XMALLOC(sizeof(word32) * WC_SHA256_BLOCK_SIZE, NULL,
-            DYNAMIC_TYPE_TMP_BUFFER);
+                                                       DYNAMIC_TYPE_TMP_BUFFER);
         if (W == NULL)
             return MEMORY_E;
     #else
@@ -596,11 +596,11 @@ static int InitSha256(wc_Sha256* sha256)
 #ifdef XTRANSFORM
 
     static WC_INLINE void AddLength(wc_Sha256* sha256, word32 len)
-{
-    word32 tmp = sha256->loLen;
-    if ( (sha256->loLen += len) < tmp)
-        sha256->hiLen++;                       /* carry low to high */
-}
+    {
+        word32 tmp = sha256->loLen;
+        if ((sha256->loLen += len) < tmp)
+            sha256->hiLen++;                       /* carry low to high */
+    }
 
     static WC_INLINE int Sha256Update(wc_Sha256* sha256, const byte* data, word32 len)
     {
@@ -646,7 +646,7 @@ static int InitSha256(wc_Sha256* sha256)
             #endif
                 {
                     ByteReverseWords(sha256->buffer, sha256->buffer,
-                                                             WC_SHA256_BLOCK_SIZE);
+                                                          WC_SHA256_BLOCK_SIZE);
                 }
         #endif
                 ret = XTRANSFORM(sha256);
@@ -690,7 +690,7 @@ static int InitSha256(wc_Sha256* sha256)
                 ret = XTRANSFORM(sha256);
                 if (ret != 0)
                     break;
-                }
+            }
         }
     #else
         {
@@ -709,7 +709,7 @@ static int InitSha256(wc_Sha256* sha256)
                 if (ret != 0)
                     break;
             }
-            }
+        }
     #endif
 
         if (len > 0) {
@@ -751,7 +751,7 @@ static int InitSha256(wc_Sha256* sha256)
             #endif
                 {
                     ByteReverseWords(sha256->buffer, sha256->buffer,
-                                                             WC_SHA256_BLOCK_SIZE);
+                                                          WC_SHA256_BLOCK_SIZE);
                 }
         #endif
             }
@@ -1040,7 +1040,7 @@ static int InitSha256(wc_Sha256* sha256)
     /* L4 = b */                                     \
     "movl	%" #b ", " L4 "\n\t"                 \
     /* d += h + w_k + Sigma1(e) + Ch(e,f,g) */       \
-    "addl	%"#h", %"#d"\n\t"                \
+    "addl	%" #h ", %" #d "\n\t"                \
 
 #define RND_STEP_RORX_1_7(a, b, c, d, e, f, g, h, i) \
     /* L4 = a ^ b */                                 \
@@ -1404,7 +1404,7 @@ static int InitSha256(wc_Sha256* sha256)
     /* L2 = ((a>>>9) ^ a) >>> 11 */                                   \
     "rorl	$11, " L2 "\n\t"                                      \
     /* d += h + w_k + Sigma1(e) + Ch(e,f,g) */                        \
-    "addl	%"#h", %"#d"\n\t"                                        \
+    "addl	%" #h ", %" #d "\n\t"                                 \
     /* L2 = (((a>>>9) ^ a) >>> 11) ^ a */                             \
     "xorl	%" #a ", " L2 "\n\t"                                  \
     /* h = h + w_k + Sigma1(e) + Ch(e,f,g) + Maj(a,b,c) */            \
@@ -1433,39 +1433,39 @@ static int InitSha256(wc_Sha256* sha256)
 #if defined(HAVE_INTEL_AVX1) /* inline Assember for Intel AVX1 instructions */
 
 #define _VPALIGNR(op1, op2, op3, op4)                    \
-    "vpalignr	$"#op4", %"#op3", %"#op2", %"#op1"\n\t"
+    "vpalignr	$" #op4", %" #op3", %" #op2", %" #op1"\n\t"
 #define VPALIGNR(op1, op2, op3, op4)                     \
         _VPALIGNR(op1, op2, op3, op4)
 #define _VPADDD(op1, op2, op3)                           \
-    "vpaddd	%"#op3", %"#op2", %"#op1"\n\t"
+    "vpaddd	%" #op3", %" #op2", %" #op1"\n\t"
 #define VPADDD(op1, op2, op3)                            \
        _VPADDD(op1, op2, op3)
 #define _VPSRLD(op1, op2, op3)                           \
-    "vpsrld	$"#op3", %"#op2", %"#op1"\n\t"
+    "vpsrld	$" #op3", %" #op2", %" #op1"\n\t"
 #define VPSRLD(op1, op2, op3)        \
        _VPSRLD(op1, op2, op3)
 #define _VPSRLQ(op1, op2, op3)                           \
-    "vpsrlq	$"#op3", %"#op2", %"#op1"\n\t"
+    "vpsrlq	$" #op3", %" #op2", %" #op1"\n\t"
 #define VPSRLQ(op1,op2,op3)        \
        _VPSRLQ(op1,op2,op3)
 #define _VPSLLD(op1,op2,op3)                             \
-    "vpslld	$"#op3", %"#op2", %"#op1"\n\t"
+    "vpslld	$" #op3", %" #op2", %" #op1"\n\t"
 #define VPSLLD(op1,op2,op3)        \
        _VPSLLD(op1,op2,op3)
 #define _VPOR(op1,op2,op3)                               \
-    "vpor	%"#op3", %"#op2", %"#op1"\n\t"
+    "vpor	%" #op3", %" #op2", %" #op1"\n\t"
 #define VPOR(op1,op2,op3)          \
        _VPOR(op1,op2,op3)
 #define _VPXOR(op1,op2,op3)                              \
-    "vpxor	%"#op3", %"#op2", %"#op1"\n\t"
+    "vpxor	%" #op3", %" #op2", %" #op1"\n\t"
 #define VPXOR(op1,op2,op3)         \
        _VPXOR(op1,op2,op3)
 #define _VPSHUFD(op1,op2,op3)                            \
-    "vpshufd	$"#op3", %"#op2", %"#op1"\n\t"
+    "vpshufd	$" #op3", %" #op2", %" #op1"\n\t"
 #define VPSHUFD(op1,op2,op3)       \
        _VPSHUFD(op1,op2,op3)
 #define _VPSHUFB(op1,op2,op3)                            \
-    "vpshufb	%"#op3", %"#op2", %"#op1"\n\t"
+    "vpshufb	%" #op3", %" #op2", %" #op1"\n\t"
 #define VPSHUFB(op1,op2,op3)       \
        _VPSHUFB(op1,op2,op3)
 #define _VPSLLDQ(op1,op2,op3)                            \
@@ -1475,7 +1475,7 @@ static int InitSha256(wc_Sha256* sha256)
 
 #define MsgSched(X0,X1,X2,X3,a,b,c,d,e,f,g,h,_i)                           \
             RND_STEP_0_1(a,b,c,d,e,f,g,h,_i)                               \
-    VPALIGNR (XTMP1, X1, X0, 4)   /* XTMP1 = W[-15] */\
+    VPALIGNR (XTMP1, X1, X0, 4)    /* XTMP1 = W[-15] */                    \
     VPALIGNR (XTMP0, X3, X2, 4)    /* XTMP0 = W[-7] */                     \
             RND_STEP_0_2(a,b,c,d,e,f,g,h,_i)                               \
             RND_STEP_0_3(a,b,c,d,e,f,g,h,_i)                               \
@@ -1498,15 +1498,15 @@ static int InitSha256(wc_Sha256* sha256)
             RND_STEP_1_3(h,a,b,c,d,e,f,g,_i+1)                             \
             RND_STEP_1_4(h,a,b,c,d,e,f,g,_i+1)                             \
     VPXOR    (XTMP1, XTMP5, XTMP2)  /* XTMP1 = s0 */                       \
-    VPSHUFD(XTMP2, X3, 0b11111010)  /* XTMP2 = W[-2] {BBAA}*/\
+    VPSHUFD  (XTMP2, X3, 0b11111010)  /* XTMP2 = W[-2] {BBAA}*/            \
             RND_STEP_1_5(h,a,b,c,d,e,f,g,_i+1)                             \
             RND_STEP_1_6(h,a,b,c,d,e,f,g,_i+1)                             \
-    VPSRLD   (XTMP4, XTMP2, 10)      /* XTMP4 = W[-2] >> 10 {BBAA} */\
-    VPSRLQ   (XTMP3, XTMP2, 19)      /* XTMP3 = W[-2] MY_ROR 19 {xBxA} */\
+    VPSRLD   (XTMP4, XTMP2, 10)      /* XTMP4 = W[-2] >> 10 {BBAA} */      \
+    VPSRLQ   (XTMP3, XTMP2, 19)      /* XTMP3 = W[-2] MY_ROR 19 {xBxA} */  \
             RND_STEP_1_7(h,a,b,c,d,e,f,g,_i+1)                             \
             RND_STEP_1_8(h,a,b,c,d,e,f,g,_i+1)                             \
             RND_STEP_0_1(g,h,a,b,c,d,e,f,_i+2)                             \
-    VPSRLQ   (XTMP2, XTMP2, 17)      /* XTMP2 = W[-2] MY_ROR 17 {xBxA} */\
+    VPSRLQ   (XTMP2, XTMP2, 17)      /* XTMP2 = W[-2] MY_ROR 17 {xBxA} */  \
     VPADDD   (XTMP0, XTMP0, X0)                                            \
             RND_STEP_0_2(g,h,a,b,c,d,e,f,_i+2)                             \
             RND_STEP_0_3(g,h,a,b,c,d,e,f,_i+2)                             \
@@ -1514,17 +1514,17 @@ static int InitSha256(wc_Sha256* sha256)
     VPXOR    (XTMP2, XTMP3, XTMP2)                                         \
     VPADDD   (XTMP0, XTMP0, XTMP1)  /* XTMP0 = W[-16] + W[-7] + s0 */      \
             RND_STEP_0_5(g,h,a,b,c,d,e,f,_i+2)                             \
-    VPXOR    (XTMP4, XTMP4, XTMP2)   /* XTMP4 = s1 {xBxA} */\
+    VPXOR    (XTMP4, XTMP4, XTMP2)   /* XTMP4 = s1 {xBxA} */               \
             RND_STEP_0_6(g,h,a,b,c,d,e,f,_i+2)                             \
-    VPSHUFB  (XTMP4, XTMP4, SHUF_00BA)  /* XTMP4 = s1 {00BA} */\
+    VPSHUFB  (XTMP4, XTMP4, SHUF_00BA)  /* XTMP4 = s1 {00BA} */            \
             RND_STEP_0_7(g,h,a,b,c,d,e,f,_i+2)                             \
-    VPADDD   (XTMP0, XTMP0, XTMP4)  /* XTMP0 = {..., ..., W[1], W[0]} */\
+    VPADDD   (XTMP0, XTMP0, XTMP4)  /* XTMP0 = {..., ..., W[1], W[0]} */   \
             RND_STEP_0_8(g,h,a,b,c,d,e,f,_i+2)                             \
             RND_STEP_1_1(f,g,h,a,b,c,d,e,_i+3)                             \
-    VPSHUFD  (XTMP2, XTMP0, 0b01010000) /* XTMP2 = W[-2] {DDCC} */\
+    VPSHUFD  (XTMP2, XTMP0, 0b01010000) /* XTMP2 = W[-2] {DDCC} */         \
             RND_STEP_1_2(f,g,h,a,b,c,d,e,_i+3)                             \
     VPSRLQ   (XTMP4, XTMP2, 17)      /* XTMP4 = W[-2] MY_ROR 17 {xDxC} */  \
-    VPSRLQ   (XTMP3, XTMP2, 19)       /* XTMP3 = W[-2] MY_ROR 19 {xDxC} */\
+    VPSRLQ   (XTMP3, XTMP2, 19)       /* XTMP3 = W[-2] MY_ROR 19 {xDxC} */ \
             RND_STEP_1_3(f,g,h,a,b,c,d,e,_i+3)                             \
             RND_STEP_1_4(f,g,h,a,b,c,d,e,_i+3)                             \
     VPSRLD   (XTMP5, XTMP2, 10)       /* XTMP5 = W[-2] >> 10 {DDCC} */     \
@@ -1533,7 +1533,7 @@ static int InitSha256(wc_Sha256* sha256)
             RND_STEP_1_6(f,g,h,a,b,c,d,e,_i+3)                             \
     VPXOR    (XTMP5, XTMP4, XTMP5)   /* XTMP5 = s1 {xDxC} */               \
             RND_STEP_1_7(f,g,h,a,b,c,d,e,_i+3)                             \
-    VPSHUFB  (XTMP5, XTMP5, SHUF_DC00) /* XTMP5 = s1 {DC00} */\
+    VPSHUFB  (XTMP5, XTMP5, SHUF_DC00) /* XTMP5 = s1 {DC00} */             \
             RND_STEP_1_8(f,g,h,a,b,c,d,e,_i+3)                             \
     VPADDD   (X0, XTMP5, XTMP0)      /* X0 = {W[3], W[2], W[1], W[0]} */
 
@@ -1541,68 +1541,68 @@ static int InitSha256(wc_Sha256* sha256)
 
 #define MsgSched_RORX(X0,X1,X2,X3,a,b,c,d,e,f,g,h,_i)                      \
             RND_STEP_RORX_0_1(a,b,c,d,e,f,g,h,_i)                          \
-    VPALIGNR (XTMP0, X3, X2, 4)\
-    VPALIGNR (XTMP1, X1, X0, 4)   /* XTMP1 = W[-15] */\
+    VPALIGNR (XTMP0, X3, X2, 4)                                            \
+    VPALIGNR (XTMP1, X1, X0, 4)   /* XTMP1 = W[-15] */                     \
             RND_STEP_RORX_0_2(a,b,c,d,e,f,g,h,_i)                          \
             RND_STEP_RORX_0_3(a,b,c,d,e,f,g,h,_i)                          \
-    VPSRLD   (XTMP2, XTMP1, 7)\
-    VPSLLD   (XTMP3, XTMP1, 25) /* VPSLLD   (XTMP3, XTMP1, (32-7)) */\
+    VPSRLD   (XTMP2, XTMP1, 7)                                             \
+    VPSLLD   (XTMP3, XTMP1, 25) /* VPSLLD   (XTMP3, XTMP1, (32-7)) */      \
             RND_STEP_RORX_0_4(a,b,c,d,e,f,g,h,_i)                          \
             RND_STEP_RORX_0_5(a,b,c,d,e,f,g,h,_i)                          \
     VPSRLD   (XTMP4, XTMP1, 3)  /* XTMP4 = W[-15] >> 3 */                  \
-    VPOR     (XTMP3, XTMP3, XTMP2)  /* XTMP1 = W[-15] MY_ROR 7 */\
+    VPOR     (XTMP3, XTMP3, XTMP2)  /* XTMP1 = W[-15] MY_ROR 7 */          \
             RND_STEP_RORX_0_6(a,b,c,d,e,f,g,h,_i)                          \
             RND_STEP_RORX_0_7(a,b,c,d,e,f,g,h,_i)                          \
             RND_STEP_RORX_0_8(a,b,c,d,e,f,g,h,_i)                          \
-\
+                                                                           \
             RND_STEP_RORX_1_1(h,a,b,c,d,e,f,g,_i+1)                        \
     VPSRLD   (XTMP2, XTMP1,18)                                             \
             RND_STEP_RORX_1_2(h,a,b,c,d,e,f,g,_i+1)                        \
-    VPSLLD   (XTMP1, XTMP1, 14) /* VPSLLD   (XTMP1, XTMP1, (32-18)) */\
+    VPSLLD   (XTMP1, XTMP1, 14) /* VPSLLD   (XTMP1, XTMP1, (32-18)) */     \
             RND_STEP_RORX_1_3(h,a,b,c,d,e,f,g,_i+1)                        \
-    VPXOR    (XTMP3, XTMP3, XTMP1)\
+    VPXOR    (XTMP3, XTMP3, XTMP1)                                         \
             RND_STEP_RORX_1_4(h,a,b,c,d,e,f,g,_i+1)                        \
     VPXOR    (XTMP3, XTMP3, XTMP2)                                         \
                           /* XTMP1 = W[-15] MY_ROR 7 ^ W[-15] MY_ROR 18 */ \
             RND_STEP_RORX_1_5(h,a,b,c,d,e,f,g,_i+1)                        \
-    VPSHUFD(XTMP2, X3, 0b11111010)  /* XTMP2 = W[-2] {BBAA}*/\
+    VPSHUFD  (XTMP2, X3, 0b11111010)  /* XTMP2 = W[-2] {BBAA}*/            \
             RND_STEP_RORX_1_6(h,a,b,c,d,e,f,g,_i+1)                        \
     VPXOR    (XTMP1, XTMP3, XTMP4)  /* XTMP1 = s0 */                       \
             RND_STEP_RORX_1_7(h,a,b,c,d,e,f,g,_i+1)                        \
-    VPSRLD   (XTMP4, XTMP2, 10)      /* XTMP4 = W[-2] >> 10 {BBAA} */\
+    VPSRLD   (XTMP4, XTMP2, 10)      /* XTMP4 = W[-2] >> 10 {BBAA} */      \
             RND_STEP_RORX_1_8(h,a,b,c,d,e,f,g,_i+1)                        \
                                                                            \
             RND_STEP_RORX_0_1(g,h,a,b,c,d,e,f,_i+2)                        \
-    VPSRLQ   (XTMP3, XTMP2, 19)      /* XTMP3 = W[-2] MY_ROR 19 {xBxA} */\
+    VPSRLQ   (XTMP3, XTMP2, 19)      /* XTMP3 = W[-2] MY_ROR 19 {xBxA} */  \
             RND_STEP_RORX_0_2(g,h,a,b,c,d,e,f,_i+2)                        \
-    VPSRLQ   (XTMP2, XTMP2, 17)      /* XTMP2 = W[-2] MY_ROR 17 {xBxA} */\
+    VPSRLQ   (XTMP2, XTMP2, 17)      /* XTMP2 = W[-2] MY_ROR 17 {xBxA} */  \
     VPADDD   (XTMP0, XTMP0, X0)                                            \
             RND_STEP_RORX_0_3(g,h,a,b,c,d,e,f,_i+2)                        \
     VPADDD   (XTMP0, XTMP0, XTMP1)  /* XTMP0 = W[-16] + W[-7] + s0 */      \
             RND_STEP_RORX_0_4(g,h,a,b,c,d,e,f,_i+2)                        \
-    VPXOR    (XTMP2, XTMP2, XTMP3)\
+    VPXOR    (XTMP2, XTMP2, XTMP3)                                         \
             RND_STEP_RORX_0_5(g,h,a,b,c,d,e,f,_i+2)                        \
-    VPXOR    (XTMP4, XTMP4, XTMP2)   /* XTMP4 = s1 {xBxA} */\
+    VPXOR    (XTMP4, XTMP4, XTMP2)   /* XTMP4 = s1 {xBxA} */               \
             RND_STEP_RORX_0_6(g,h,a,b,c,d,e,f,_i+2)                        \
-    VPSHUFB  (XTMP4, XTMP4, SHUF_00BA)  /* XTMP4 = s1 {00BA} */\
+    VPSHUFB  (XTMP4, XTMP4, SHUF_00BA)  /* XTMP4 = s1 {00BA} */            \
             RND_STEP_RORX_0_7(g,h,a,b,c,d,e,f,_i+2)                        \
-    VPADDD   (XTMP0, XTMP0, XTMP4)  /* XTMP0 = {..., ..., W[1], W[0]} */\
+    VPADDD   (XTMP0, XTMP0, XTMP4)  /* XTMP0 = {..., ..., W[1], W[0]} */   \
             RND_STEP_RORX_0_8(g,h,a,b,c,d,e,f,_i+2)                        \
-\
+                                                                           \
             RND_STEP_RORX_1_1(f,g,h,a,b,c,d,e,_i+3)                        \
-    VPSHUFD  (XTMP2, XTMP0, 0b01010000) /* XTMP2 = W[-2] {DDCC} */\
+    VPSHUFD  (XTMP2, XTMP0, 0b01010000) /* XTMP2 = W[-2] {DDCC} */         \
             RND_STEP_RORX_1_2(f,g,h,a,b,c,d,e,_i+3)                        \
-    VPSRLD   (XTMP5, XTMP2, 10)       /* XTMP5 = W[-2] >> 10 {DDCC} */\
+    VPSRLD   (XTMP5, XTMP2, 10)       /* XTMP5 = W[-2] >> 10 {DDCC} */     \
             RND_STEP_RORX_1_3(f,g,h,a,b,c,d,e,_i+3)                        \
-    VPSRLQ   (XTMP3, XTMP2, 19)       /* XTMP3 = W[-2] MY_ROR 19 {xDxC} */\
+    VPSRLQ   (XTMP3, XTMP2, 19)       /* XTMP3 = W[-2] MY_ROR 19 {xDxC} */ \
             RND_STEP_RORX_1_4(f,g,h,a,b,c,d,e,_i+3)                        \
-    VPSRLQ   (XTMP2, XTMP2, 17)      /* XTMP2 = W[-2] MY_ROR 17 {xDxC} */\
+    VPSRLQ   (XTMP2, XTMP2, 17)      /* XTMP2 = W[-2] MY_ROR 17 {xDxC} */  \
             RND_STEP_RORX_1_5(f,g,h,a,b,c,d,e,_i+3)                        \
-    VPXOR    (XTMP2, XTMP2, XTMP3)\
+    VPXOR    (XTMP2, XTMP2, XTMP3)                                         \
             RND_STEP_RORX_1_6(f,g,h,a,b,c,d,e,_i+3)                        \
-    VPXOR    (XTMP5, XTMP5, XTMP2)   /* XTMP5 = s1 {xDxC} */\
+    VPXOR    (XTMP5, XTMP5, XTMP2)   /* XTMP5 = s1 {xDxC} */               \
             RND_STEP_RORX_1_7(f,g,h,a,b,c,d,e,_i+3)                        \
-    VPSHUFB  (XTMP5, XTMP5, SHUF_DC00) /* XTMP5 = s1 {DC00} */\
+    VPSHUFB  (XTMP5, XTMP5, SHUF_DC00) /* XTMP5 = s1 {DC00} */             \
             RND_STEP_RORX_1_8(f,g,h,a,b,c,d,e,_i+3)                        \
     VPADDD   (X0, XTMP5, XTMP0)      /* X0 = {W[3], W[2], W[1], W[0]} */
 
@@ -1645,13 +1645,13 @@ static const ALIGN32 word64 mSHUF_DC00[] =
 static const ALIGN32 word64 mBYTE_FLIP_MASK[] =
     { 0x0405060700010203, 0x0c0d0e0f08090a0b };
 
-#define _Init_Masks(mask1, mask2, mask3)     \
+#define _Init_Masks(mask1, mask2, mask3)       \
     "vmovdqa	%[FLIP], %" #mask1 "\n\t"      \
     "vmovdqa	%[SHUF00BA], %" #mask2 "\n\t"  \
     "vmovdqa	%[SHUFDC00], %" #mask3 "\n\t"
 
-#define Init_Masks(BYTE_FLIP_MASK, SHUF_00BA, SHUF_DC00)\
-    _Init_Masks(BYTE_FLIP_MASK, SHUF_00BA, SHUF_DC00)
+#define Init_Masks(BYTE_FLIP_MASK, SHUF_00BA, SHUF_DC00) \
+       _Init_Masks(BYTE_FLIP_MASK, SHUF_00BA, SHUF_DC00)
 
 #define X0 %xmm0
 #define X1 %xmm1
@@ -2259,8 +2259,8 @@ SHA256_NOINLINE static int Transform_Sha256_AVX2_Len(wc_Sha256* sha256,
         sha256->data += WC_SHA256_BLOCK_SIZE;
         len -= WC_SHA256_BLOCK_SIZE;
         if (len == 0)
-    return 0;
-}
+            return 0;
+    }
 
     __asm__ __volatile__ (
 
@@ -2351,7 +2351,7 @@ SHA256_NOINLINE static int Transform_Sha256_AVX2_Len(wc_Sha256* sha256,
     );
 
     return 0;
-        }
+}
 
 #if defined(HAVE_INTEL_RORX)
 SHA256_NOINLINE static int Transform_Sha256_AVX2_RORX(wc_Sha256* sha256)
@@ -2411,12 +2411,12 @@ SHA256_NOINLINE static int Transform_Sha256_AVX2_RORX(wc_Sha256* sha256)
         : WORK_REGS, STATE_REGS, YMM_REGS, "memory"
     );
 
-        return 0;
-    }
+    return 0;
+}
 
 SHA256_NOINLINE static int Transform_Sha256_AVX2_RORX_Len(wc_Sha256* sha256,
                                                           word32 len)
-    {
+{
     if ((len & WC_SHA256_BLOCK_SIZE) != 0) {
         XMEMCPY(sha256->buffer, sha256->data, WC_SHA256_BLOCK_SIZE);
         Transform_Sha256_AVX2_RORX(sha256);
@@ -2522,7 +2522,7 @@ SHA256_NOINLINE static int Transform_Sha256_AVX2_RORX_Len(wc_Sha256* sha256,
     );
 
     return 0;
-                }
+}
 #endif  /* HAVE_INTEL_RORX */
 #endif  /* HAVE_INTEL_AVX2 */
 
@@ -2551,7 +2551,7 @@ SHA256_NOINLINE static int Transform_Sha256_AVX2_RORX_Len(wc_Sha256* sha256,
 
         if (sha224 == NULL || (data == NULL && len > 0)) {
             return BAD_FUNC_ARG;
-            }
+        }
 
         ret = wolfSSL_CryptHwMutexLock();
         if (ret == 0) {

@@ -66,7 +66,7 @@
 #endif
 
 /* make sure Hash DRBG is enabled, unless WC_NO_HASHDRBG is defined
-    or CUSTOM_RAND_GENERATE_BLOCK is defined*/
+    or CUSTOM_RAND_GENERATE_BLOCK is defined */
 #if !defined(WC_NO_HASHDRBG) && !defined(CUSTOM_RAND_GENERATE_BLOCK)
     #undef  HAVE_HASHDRBG
     #define HAVE_HASHDRBG

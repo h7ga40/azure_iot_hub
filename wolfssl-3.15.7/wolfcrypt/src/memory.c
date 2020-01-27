@@ -90,9 +90,9 @@ int wolfSSL_SetAllocators(wolfSSL_Malloc_cb  mf,
                           wolfSSL_Free_cb    ff,
                           wolfSSL_Realloc_cb rf)
 {
-        malloc_function = mf;
-        free_function = ff;
-        realloc_function = rf;
+    malloc_function = mf;
+    free_function = ff;
+    realloc_function = rf;
     return 0;
 }
 
@@ -139,8 +139,8 @@ void* wolfSSL_Malloc(size_t size)
 #endif
 #endif
 
-    #ifdef WOLFSSL_MALLOC_CHECK
-        if (res == NULL)
+#ifdef WOLFSSL_MALLOC_CHECK
+    if (res == NULL)
         WOLFSSL_MSG("wolfSSL_malloc failed");
 #endif
 
@@ -160,7 +160,7 @@ void* wolfSSL_Malloc(size_t size)
         gMemFailCount = gMemFailCountSeed; /* reset */
         return NULL;
     }
-    #endif
+#endif
 
     return res;
 }
@@ -606,7 +606,7 @@ void* wolfSSL_Malloc(size_t size, void* heap, int type)
             #ifdef FREERTOS
                 res = pvPortMalloc(size);
             #else
-            res = malloc(size);
+                res = malloc(size);
             #endif
         #else
             WOLFSSL_MSG("No heap hint found to use and no malloc");
@@ -744,7 +744,7 @@ void wolfSSL_Free(void *ptr, void* heap, int type)
             #ifdef FREERTOS
                 vPortFree(ptr);
             #else
-            free(ptr);
+                free(ptr);
             #endif
         #else
             WOLFSSL_MSG("Error trying to call free when turned off");

@@ -288,7 +288,7 @@ static int initiate_socket_connection(SOCKET_IO_INSTANCE* socket_io_instance)
     struct sockaddr_un addrInfoUn;
     socklen_t connect_addr_len;
 
-    if(socket_io_instance->address_type == ADDRESS_TYPE_IP)
+    if (socket_io_instance->address_type == ADDRESS_TYPE_IP)
     {
         if(!dns_resolver_is_lookup_complete(socket_io_instance->dns_resolver))
         {
@@ -333,7 +333,7 @@ static int initiate_socket_connection(SOCKET_IO_INSTANCE* socket_io_instance)
         }
     }
 
-    if(result == 0)
+    if (result == 0)
     {
         if ((-1 == (flags = fcntl(socket_io_instance->socket, F_GETFL, 0))) ||
             (fcntl(socket_io_instance->socket, F_SETFL, flags | O_NONBLOCK) == -1))
@@ -944,7 +944,7 @@ int socketio_send(CONCRETE_IO_HANDLE socket_io, const void* buffer, size_t size,
                         /* queue data */
                         size_t bytes_sent = (send_result < 0 ? 0 : send_result);
 
-                        if (add_pending_io(socket_io_instance, buffer + bytes_sent, size - bytes_sent, on_send_complete, callback_context) != 0)
+                        if (add_pending_io(socket_io_instance, (char *)buffer + bytes_sent, size - bytes_sent, on_send_complete, callback_context) != 0)
                         {
                             LogError("Failure: add_pending_io failed.");
                             result = MU_FAILURE;
@@ -1038,7 +1038,7 @@ void socketio_dowork(CONCRETE_IO_HANDLE socket_io)
                 first_pending_io = singlylinkedlist_get_head_item(socket_io_instance->pending_io_list);
             }
 
-             if (socket_io_instance->io_state == IO_STATE_OPEN)
+            if (socket_io_instance->io_state == IO_STATE_OPEN)
             {
                 ssize_t received = 0;
                 do

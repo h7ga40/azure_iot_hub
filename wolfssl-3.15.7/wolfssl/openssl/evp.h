@@ -64,7 +64,7 @@
 
 typedef char WOLFSSL_EVP_CIPHER;
 #ifndef WOLFSSL_EVP_TYPE_DEFINED /* guard on redeclaration */
-typedef char WOLFSSL_EVP_MD;
+typedef char   WOLFSSL_EVP_MD;
 typedef struct WOLFSSL_EVP_PKEY WOLFSSL_EVP_PKEY;
 #define WOLFSSL_EVP_TYPE_DEFINED
 #endif
@@ -238,7 +238,7 @@ typedef WOLFSSL_EVP_PKEY_CTX EVP_PKEY_CTX;
 
 WOLFSSL_API void wolfSSL_EVP_init(void);
 WOLFSSL_API int  wolfSSL_EVP_MD_size(const WOLFSSL_EVP_MD* md);
-WOLFSSL_API int wolfSSL_EVP_MD_type(const WOLFSSL_EVP_MD *md);
+WOLFSSL_API int  wolfSSL_EVP_MD_type(const WOLFSSL_EVP_MD *md);
 
 WOLFSSL_API WOLFSSL_EVP_MD_CTX *wolfSSL_EVP_MD_CTX_new (void);
 WOLFSSL_API void                wolfSSL_EVP_MD_CTX_free(WOLFSSL_EVP_MD_CTX* ctx);
@@ -498,18 +498,18 @@ typedef WOLFSSL_EVP_CIPHER_CTX EVP_CIPHER_CTX;
 #define EVP_MD_CTX_type    wolfSSL_EVP_MD_CTX_type
 #define EVP_MD_type        wolfSSL_EVP_MD_type
 
-#define EVP_DigestInit     wolfSSL_EVP_DigestInit
-#define EVP_DigestInit_ex  wolfSSL_EVP_DigestInit_ex
-#define EVP_DigestUpdate   wolfSSL_EVP_DigestUpdate
-#define EVP_DigestFinal    wolfSSL_EVP_DigestFinal
-#define EVP_DigestFinal_ex wolfSSL_EVP_DigestFinal_ex
-#define EVP_DigestSignInit   wolfSSL_EVP_DigestSignInit
-#define EVP_DigestSignUpdate wolfSSL_EVP_DigestSignUpdate
-#define EVP_DigestSignFinal  wolfSSL_EVP_DigestSignFinal
+#define EVP_DigestInit         wolfSSL_EVP_DigestInit
+#define EVP_DigestInit_ex      wolfSSL_EVP_DigestInit_ex
+#define EVP_DigestUpdate       wolfSSL_EVP_DigestUpdate
+#define EVP_DigestFinal        wolfSSL_EVP_DigestFinal
+#define EVP_DigestFinal_ex     wolfSSL_EVP_DigestFinal_ex
+#define EVP_DigestSignInit     wolfSSL_EVP_DigestSignInit
+#define EVP_DigestSignUpdate   wolfSSL_EVP_DigestSignUpdate
+#define EVP_DigestSignFinal    wolfSSL_EVP_DigestSignFinal
 #define EVP_DigestVerifyInit   wolfSSL_EVP_DigestVerifyInit
 #define EVP_DigestVerifyUpdate wolfSSL_EVP_DigestVerifyUpdate
 #define EVP_DigestVerifyFinal  wolfSSL_EVP_DigestVerifyFinal
-#define EVP_BytesToKey     wolfSSL_EVP_BytesToKey
+#define EVP_BytesToKey         wolfSSL_EVP_BytesToKey
 
 #define EVP_get_cipherbyname wolfSSL_EVP_get_cipherbyname
 #define EVP_get_digestbyname wolfSSL_EVP_get_digestbyname
@@ -553,12 +553,12 @@ typedef WOLFSSL_EVP_CIPHER_CTX EVP_CIPHER_CTX;
 #define EVP_PKEY_asign_RSA             wolfSSL_EVP_PKEY_assign_RSA
 #define EVP_PKEY_asign_EC_KEY          wolfSSL_EVP_PKEY_assign_EC_KEY
 #define EVP_PKEY_get1_DSA              wolfSSL_EVP_PKEY_get1_DSA
-#define EVP_PKEY_get1_RSA   wolfSSL_EVP_PKEY_get1_RSA
-#define EVP_PKEY_get1_DSA   wolfSSL_EVP_PKEY_get1_DSA
+#define EVP_PKEY_get1_RSA              wolfSSL_EVP_PKEY_get1_RSA
+#define EVP_PKEY_get1_DSA              wolfSSL_EVP_PKEY_get1_DSA
 #define EVP_PKEY_set1_RSA              wolfSSL_EVP_PKEY_set1_RSA
-#define EVP_PKEY_get1_EC_KEY wolfSSL_EVP_PKEY_get1_EC_KEY
-#define EVP_PKEY_get0_hmac  wolfSSL_EVP_PKEY_get0_hmac
-#define EVP_PKEY_new_mac_key       wolfSSL_EVP_PKEY_new_mac_key
+#define EVP_PKEY_get1_EC_KEY           wolfSSL_EVP_PKEY_get1_EC_KEY
+#define EVP_PKEY_get0_hmac             wolfSSL_EVP_PKEY_get0_hmac
+#define EVP_PKEY_new_mac_key           wolfSSL_EVP_PKEY_new_mac_key
 #define EVP_MD_CTX_copy                wolfSSL_EVP_MD_CTX_copy
 #define EVP_MD_CTX_copy_ex             wolfSSL_EVP_MD_CTX_copy_ex
 #define EVP_PKEY_bits                  wolfSSL_EVP_PKEY_bits

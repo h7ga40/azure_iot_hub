@@ -209,7 +209,7 @@ int wc_MakeDsaKey(WC_RNG *rng, DsaKey *dsa)
 
     /* public key : y = g^x mod p */
     if (err == MP_OKAY)
-    err = mp_exptmod(&dsa->g, &dsa->x, &dsa->p, &dsa->y);
+        err = mp_exptmod(&dsa->g, &dsa->x, &dsa->p, &dsa->y);
 
     if (err == MP_OKAY)
         dsa->type = DSA_PRIVATE;

@@ -260,7 +260,7 @@ int SetCipherSpecs(WOLFSSL* ssl)
         ssl->specs.iv_size               = AES_IV_SIZE;
         ssl->specs.block_size            = AES_BLOCK_SIZE;
 
-    break;
+        break;
 #endif
 
 #ifdef BUILD_TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384
@@ -277,7 +277,7 @@ int SetCipherSpecs(WOLFSSL* ssl)
         ssl->specs.iv_size               = AES_IV_SIZE;
         ssl->specs.block_size            = AES_BLOCK_SIZE;
 
-    break;
+        break;
 #endif
 
 #ifdef BUILD_TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA
@@ -294,7 +294,7 @@ int SetCipherSpecs(WOLFSSL* ssl)
         ssl->specs.block_size            = AES_BLOCK_SIZE;
         ssl->specs.iv_size               = AES_IV_SIZE;
 
-    break;
+        break;
 #endif
 
 #ifdef BUILD_TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA
@@ -311,7 +311,7 @@ int SetCipherSpecs(WOLFSSL* ssl)
         ssl->specs.block_size            = DES_BLOCK_SIZE;
         ssl->specs.iv_size               = DES_IV_SIZE;
 
-    break;
+        break;
 #endif
 
 #ifdef BUILD_TLS_ECDHE_RSA_WITH_RC4_128_SHA
@@ -328,7 +328,7 @@ int SetCipherSpecs(WOLFSSL* ssl)
         ssl->specs.iv_size               = 0;
         ssl->specs.block_size            = 0;
 
-    break;
+        break;
 #endif
 
 #ifdef BUILD_TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA
@@ -345,7 +345,7 @@ int SetCipherSpecs(WOLFSSL* ssl)
         ssl->specs.block_size            = AES_BLOCK_SIZE;
         ssl->specs.iv_size               = AES_IV_SIZE;
 
-    break;
+        break;
 #endif
 
 #ifdef BUILD_TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
@@ -363,7 +363,7 @@ int SetCipherSpecs(WOLFSSL* ssl)
         ssl->specs.iv_size               = AESGCM_IMP_IV_SZ;
         ssl->specs.aead_mac_size         = AES_GCM_AUTH_SZ;
 
-    break;
+        break;
 #endif
 
 #ifdef BUILD_TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
@@ -381,7 +381,7 @@ int SetCipherSpecs(WOLFSSL* ssl)
         ssl->specs.iv_size               = AESGCM_IMP_IV_SZ;
         ssl->specs.aead_mac_size         = AES_GCM_AUTH_SZ;
 
-    break;
+        break;
 #endif
 
 #ifdef BUILD_TLS_ECDHE_PSK_WITH_NULL_SHA256
@@ -630,7 +630,7 @@ int SetCipherSpecs(WOLFSSL* ssl)
         ssl->specs.block_size            = 0;
         ssl->specs.iv_size               = 0;
 
-        break;
+    break;
 #endif
 
 #endif /* HAVE_ECC || (HAVE_CURVE25519 && HAVE_ED25519) */
@@ -1433,7 +1433,7 @@ int SetCipherSpecs(WOLFSSL* ssl)
         ssl->options.usingPSK_cipher     = 1;
         break;
 #endif
-
+        
 #ifdef BUILD_TLS_DH_anon_WITH_AES_256_GCM_SHA384
     case TLS_DH_anon_WITH_AES_256_GCM_SHA384:
         ssl->specs.bulk_cipher_algorithm = wolfssl_aes_gcm;

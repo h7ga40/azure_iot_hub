@@ -4503,8 +4503,8 @@ int mp_prime_is_prime (mp_int * a, int t, int *result)
 
   /* valid value of t? */
   if (t <= 0 || t > PRIME_SIZE) {
-        return MP_VAL;
-    }
+    return MP_VAL;
+  }
 
   /* is the input equal to one of the primes in the table? */
   for (ix = 0; ix < PRIME_SIZE; ix++) {
@@ -4512,12 +4512,12 @@ int mp_prime_is_prime (mp_int * a, int t, int *result)
          *result = 1;
          return MP_OKAY;
       }
-    }
+  }
 
   /* first perform trial division */
   if ((err = mp_prime_is_divisible (a, &res)) != MP_OKAY) {
-            return err;
-        }
+    return err;
+  }
 
   /* return if it was trivially divisible */
   if (res == MP_YES) {
@@ -4526,14 +4526,14 @@ int mp_prime_is_prime (mp_int * a, int t, int *result)
 
   /* now perform the miller-rabin rounds */
   if ((err = mp_init (&b)) != MP_OKAY) {
-            return err;
-        }
+    return err;
+  }
 
   for (ix = 0; ix < t; ix++) {
     /* set the prime */
     if ((err = mp_set (&b, ltm_prime_tab[ix])) != MP_OKAY) {
         goto LBL_B;
-        }
+    }
 
     if ((err = mp_prime_miller_rabin (a, &b, &res)) != MP_OKAY) {
       goto LBL_B;

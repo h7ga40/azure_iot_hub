@@ -90,7 +90,7 @@ enum wc_FuncNum {
 #endif
 
 typedef void (*wolfSSL_Logging_cb)(const int logLevel,
-                                  const char *const logMessage);
+                                   const char *const logMessage);
 
 WOLFSSL_API int wolfSSL_SetLoggingCb(wolfSSL_Logging_cb log_function);
 

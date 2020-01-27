@@ -111,7 +111,7 @@ enum {
 
     AES_BLOCK_SIZE      = 16,
 
-    KEYWRAP_BLOCK_SIZE = 8,
+    KEYWRAP_BLOCK_SIZE  = 8,
 
     GCM_NONCE_MAX_SZ = 16, /* wolfCrypt's maximum nonce size allowed. */
     GCM_NONCE_MID_SZ = 12, /* The usual default nonce size for AES-GCM. */

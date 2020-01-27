@@ -299,7 +299,7 @@ int wc_HmacSetKey(Hmac* hmac, int type, const byte* key, word32 length)
     /* if set key has already been run then make sure and free existing */
     if (hmac->macType != 0) {
         wc_HmacFree(hmac);
-        }
+    }
 
     hmac->innerHashKeyed = 0;
     hmac->macType = (byte)type;
@@ -550,12 +550,12 @@ int wc_HmacSetKey(Hmac* hmac, int type, const byte* key, word32 length)
         if (IntelQaHmacGetType(hmac->macType, NULL) == 0)
         #endif
         {
-        if (length > hmac_block_size)
-            length = hmac_block_size;
-        /* update key length */
-        hmac->keyLen = (word16)length;
+            if (length > hmac_block_size)
+                length = hmac_block_size;
+            /* update key length */
+            hmac->keyLen = (word16)length;
 
-        return ret;
+            return ret;
         }
         /* no need to pad below */
     #endif
@@ -673,8 +673,8 @@ int wc_HmacUpdate(Hmac* hmac, const byte* msg, word32 length)
         return NitroxHmacUpdate(hmac, msg, length);
     #elif defined(HAVE_INTEL_QA)
         if (IntelQaHmacGetType(hmac->macType, NULL) == 0) {
-        return IntelQaHmac(&hmac->asyncDev, hmac->macType,
-            (byte*)hmac->ipad, hmac->keyLen, NULL, msg, length);
+            return IntelQaHmac(&hmac->asyncDev, hmac->macType,
+                (byte*)hmac->ipad, hmac->keyLen, NULL, msg, length);
         }
     #endif
     }
@@ -769,8 +769,8 @@ int wc_HmacFinal(Hmac* hmac, byte* hash)
         return NitroxHmacFinal(hmac, hash, hashLen);
     #elif defined(HAVE_INTEL_QA)
         if (IntelQaHmacGetType(hmac->macType, NULL) == 0) {
-        return IntelQaHmac(&hmac->asyncDev, hmac->macType,
-            (byte*)hmac->ipad, hmac->keyLen, hash, NULL, hashLen);
+            return IntelQaHmac(&hmac->asyncDev, hmac->macType,
+                (byte*)hmac->ipad, hmac->keyLen, hash, NULL, hashLen);
         }
     #endif
     }

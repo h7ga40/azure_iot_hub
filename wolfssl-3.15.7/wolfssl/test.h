@@ -506,9 +506,9 @@ static WC_INLINE int PasswordCallBack(char* passwd, int sz, int rw, void* userda
         return (int)XSTRLEN((char*)userdata);
     }
     else {
-    strncpy(passwd, "yassl123", sz);
-    return 8;
-}
+        strncpy(passwd, "yassl123", sz);
+        return 8;
+    }
 }
 
 #endif
@@ -916,7 +916,7 @@ static WC_INLINE int tcp_select(SOCKET_T socketfd, int to_sec)
     fd_set recvfds, errfds;
     SOCKET_T nfds = socketfd + 1;
 #if !defined(__INTEGRITY)
-    struct timeval timeout = { (to_sec > 0) ? to_sec : 0, 0};
+    struct timeval timeout = {(to_sec > 0) ? to_sec : 0, 0};
 #else
     struct timeval timeout;
 #endif
@@ -981,7 +981,7 @@ static WC_INLINE void tcp_listen(SOCKET_T* sockfd, word16* port, int useAnyAddr,
             #define SOCK_LISTEN_MAX_QUEUE 5
         #endif
         if (listen(*sockfd, SOCK_LISTEN_MAX_QUEUE) != 0)
-            err_sys("tcp listen failed");
+                err_sys("tcp listen failed");
     }
     #if !defined(USE_WINDOWS_API) && !defined(WOLFSSL_TIRTOS)
         if (*port == 0) {
@@ -1185,16 +1185,16 @@ static WC_INLINE unsigned int my_psk_client_cb(WOLFSSL* ssl, const char* hint,
     strncpy(identity, kIdentityStr, id_max_len);
 
     if (wolfSSL_GetVersion(ssl) < WOLFSSL_TLSV1_3) {
-    /* test key in hex is 0x1a2b3c4d , in decimal 439,041,101 , we're using
-       unsigned binary */
+        /* test key in hex is 0x1a2b3c4d , in decimal 439,041,101 , we're using
+           unsigned binary */
         key[0] = 0x1a;
         key[1] = 0x2b;
         key[2] = 0x3c;
         key[3] = 0x4d;
 
 
-    return 4;   /* length of key in octets or 0 for error */
-}
+        return 4;   /* length of key in octets or 0 for error */
+    }
     else {
         int i;
         int b = 0x01;
@@ -1221,16 +1221,16 @@ static WC_INLINE unsigned int my_psk_server_cb(WOLFSSL* ssl, const char* identit
         return 0;
 
     if (wolfSSL_GetVersion(ssl) < WOLFSSL_TLSV1_3) {
-    /* test key in hex is 0x1a2b3c4d , in decimal 439,041,101 , we're using
-       unsigned binary */
+        /* test key in hex is 0x1a2b3c4d , in decimal 439,041,101 , we're using
+           unsigned binary */
         key[0] = 0x1a;
         key[1] = 0x2b;
         key[2] = 0x3c;
         key[3] = 0x4d;
 
 
-    return 4;   /* length of key in octets or 0 for error */
-}
+        return 4;   /* length of key in octets or 0 for error */
+    }
     else {
         int i;
         int b = 0x01;
@@ -2136,7 +2136,7 @@ typedef struct PkCbInfo {
     const char* ourKey;
 #ifdef TEST_PK_PRIVKEY
     union {
-#ifdef HAVE_ECC
+    #ifdef HAVE_ECC
         ecc_key ecc;
     #endif
     #ifdef HAVE_CURVE25519
@@ -2158,7 +2158,7 @@ static WC_INLINE int myEccKeyGen(WOLFSSL* ssl, ecc_key* key, word32 keySz,
     int ecc_curve, void* ctx)
 {
     int       ret;
-    WC_RNG  rng;
+    WC_RNG    rng;
     PkCbInfo* cbInfo = (PkCbInfo*)ctx;
     ecc_key*  new_key = key;
 #ifdef TEST_PK_PRIVKEY
@@ -2205,10 +2205,10 @@ static WC_INLINE int myEccKeyGen(WOLFSSL* ssl, ecc_key* key, word32 keySz,
 static WC_INLINE int myEccSign(WOLFSSL* ssl, const byte* in, word32 inSz,
         byte* out, word32* outSz, const byte* key, word32 keySz, void* ctx)
 {
-    int     ret;
+    int       ret;
     WC_RNG    rng;
-    word32  idx = 0;
-    ecc_key myKey;
+    word32    idx = 0;
+    ecc_key   myKey;
     byte*     keyBuf = (byte*)key;
     PkCbInfo* cbInfo = (PkCbInfo*)ctx;
 
@@ -2252,9 +2252,9 @@ static WC_INLINE int myEccVerify(WOLFSSL* ssl, const byte* sig, word32 sigSz,
         const byte* hash, word32 hashSz, const byte* key, word32 keySz,
         int* result, void* ctx)
 {
-    int     ret;
+    int       ret;
     word32    idx = 0;
-    ecc_key myKey;
+    ecc_key   myKey;
     PkCbInfo* cbInfo = (PkCbInfo*)ctx;
 
     (void)ssl;
@@ -2280,10 +2280,10 @@ static WC_INLINE int myEccSharedSecret(WOLFSSL* ssl, ecc_key* otherKey,
         unsigned char* out, unsigned int* outlen,
         int side, void* ctx)
 {
-    int      ret;
-    ecc_key* privKey = NULL;
-    ecc_key* pubKey = NULL;
-    ecc_key  tmpKey;
+    int       ret;
+    ecc_key*  privKey = NULL;
+    ecc_key*  pubKey = NULL;
+    ecc_key   tmpKey;
     PkCbInfo* cbInfo = (PkCbInfo*)ctx;
 
     (void)ssl;
@@ -2731,9 +2731,9 @@ static WC_INLINE int myRsaPssSign(WOLFSSL* ssl, const byte* in, word32 inSz,
 static WC_INLINE int myRsaPssVerify(WOLFSSL* ssl, byte* sig, word32 sigSz,
         byte** out, int hash, int mgf, const byte* key, word32 keySz, void* ctx)
 {
-    int              ret;
-    word32           idx = 0;
-    RsaKey           myKey;
+    int       ret;
+    word32    idx = 0;
+    RsaKey    myKey;
     PkCbInfo* cbInfo = (PkCbInfo*)ctx;
     enum wc_HashType hashType = WC_HASH_TYPE_NONE;
 
@@ -2841,10 +2841,10 @@ static WC_INLINE int myRsaEnc(WOLFSSL* ssl, const byte* in, word32 inSz,
                            byte* out, word32* outSz, const byte* key,
                            word32 keySz, void* ctx)
 {
-    int     ret;
-    word32  idx = 0;
-    RsaKey  myKey;
-    WC_RNG  rng;
+    int       ret;
+    word32    idx = 0;
+    RsaKey    myKey;
+    WC_RNG    rng;
     PkCbInfo* cbInfo = (PkCbInfo*)ctx;
 
     (void)ssl;
@@ -2879,9 +2879,9 @@ static WC_INLINE int myRsaDec(WOLFSSL* ssl, byte* in, word32 inSz,
                            byte** out,
                            const byte* key, word32 keySz, void* ctx)
 {
-    int     ret;
-    word32  idx = 0;
-    RsaKey  myKey;
+    int       ret;
+    word32    idx = 0;
+    RsaKey    myKey;
     byte*     keyBuf = (byte*)key;
     PkCbInfo* cbInfo = (PkCbInfo*)ctx;
 
@@ -3165,7 +3165,7 @@ static WC_INLINE word16 GetRandomPort(void)
     WC_RNG rng;
     if (wc_InitRng(&rng) == 0) {
         if (wc_RNG_GenerateBlock(&rng, (byte*)&port, sizeof(port)) == 0) {
-        port |= 0xC000; /* Make sure its in the 49152 - 65535 range */
+            port |= 0xC000; /* Make sure its in the 49152 - 65535 range */
         }
         wc_FreeRng(&rng);
     }

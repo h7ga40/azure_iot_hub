@@ -29,7 +29,7 @@
 /* in case user set USE_FAST_MATH there */
 #include <wolfssl/wolfcrypt/settings.h>
 
-    #include <wolfssl/wolfcrypt/integer.h>
+#include <wolfssl/wolfcrypt/integer.h>
 
 #include <wolfssl/wolfcrypt/error-crypt.h>
 #include <wolfssl/wolfcrypt/logging.h>

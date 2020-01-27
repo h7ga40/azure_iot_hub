@@ -581,7 +581,7 @@ int wc_ecc_export_public_raw(ecc_key* key, byte* qx, word32* qxLen,
                              byte* qy, word32* qyLen);
 WOLFSSL_API
 int wc_ecc_export_private_raw(ecc_key* key, byte* qx, word32* qxLen,
-                            byte* qy, word32* qyLen, byte* d, word32* dLen);
+                              byte* qy, word32* qyLen, byte* d, word32* dLen);
 #endif /* HAVE_ECC_KEY_EXPORT */
 
 #ifdef HAVE_ECC_KEY_EXPORT

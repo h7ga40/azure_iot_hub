@@ -89,7 +89,7 @@ int wc_PBKDF1_ex(byte* key, int keyLen, byte* iv, int ivLen,
         XFREE(hash, heap, DYNAMIC_TYPE_HASHCTX);
     #endif
         return err;
-            }
+    }
 
     keyLeft = keyLen;
     ivLeft  = ivLen;
@@ -99,7 +99,7 @@ int wc_PBKDF1_ex(byte* key, int keyLen, byte* iv, int ivLen,
         if (keyOutput) { /* first time D_0 is empty */
             err = wc_HashUpdate(hash, hashT, digest, diestLen);
             if (err != 0) break;
-            }
+        }
 
         /* data */
         err = wc_HashUpdate(hash, hashT, passwd, passwdLen);
@@ -109,19 +109,19 @@ int wc_PBKDF1_ex(byte* key, int keyLen, byte* iv, int ivLen,
         if (salt) {
             err = wc_HashUpdate(hash, hashT, salt, saltLen);
             if (err != 0) break;
-    }
+        }
 
         err = wc_HashFinal(hash, hashT, digest);
         if (err != 0) break;
 
         /* count */
-    for (i = 1; i < iterations; i++) {
+        for (i = 1; i < iterations; i++) {
             err = wc_HashUpdate(hash, hashT, digest, diestLen);
             if (err != 0) break;
 
             err = wc_HashFinal(hash, hashT, digest);
             if (err != 0) break;
-            }
+        }
 
         if (keyLeft) {
             store = min(keyLeft, diestLen);
@@ -130,7 +130,7 @@ int wc_PBKDF1_ex(byte* key, int keyLen, byte* iv, int ivLen,
             keyOutput  += store;
             keyLeft    -= store;
             digestLeft -= store;
-            }
+        }
 
         if (ivLeft && digestLeft) {
             store = min(ivLeft, digestLeft);
@@ -155,7 +155,7 @@ int wc_PBKDF1_ex(byte* key, int keyLen, byte* iv, int ivLen,
         return BUFFER_E;
 
     return err;
-    }
+}
 
 /* PKCS#5 v1.5 */
 int wc_PBKDF1(byte* output, const byte* passwd, int pLen, const byte* salt,
@@ -278,7 +278,7 @@ static int DoPKCS12Hash(int hashType, byte* buffer, word32 totalLen,
 
     if (buffer == NULL || Ai == NULL) {
         return BAD_FUNC_ARG;
-                }
+    }
 
     hashT = wc_HashTypeConvert(hashType);
 
@@ -291,24 +291,24 @@ static int DoPKCS12Hash(int hashType, byte* buffer, word32 totalLen,
 #endif
 
     ret = wc_HashInit(hash, hashT);
-                    if (ret != 0) {
+    if (ret != 0) {
     #ifdef WOLFSSL_SMALL_STACK
         XFREE(hash, NULL, DYNAMIC_TYPE_HASHCTX);
     #endif
         return ret;
-            }
+    }
 
     ret = wc_HashUpdate(hash, hashT, buffer, totalLen);
 
     if (ret == 0)
         ret = wc_HashFinal(hash, hashT, Ai);
 
-                for (i = 1; i < iterations; i++) {
+    for (i = 1; i < iterations; i++) {
         if (ret == 0)
             ret = wc_HashUpdate(hash, hashT, Ai, u);
         if (ret == 0)
             ret = wc_HashFinal(hash, hashT, Ai);
-                }
+    }
 
     wc_HashFree(hash, hashT);
 
@@ -392,7 +392,7 @@ int wc_PKCS12_PBKDF_ex(byte* output, const byte* passwd, int passLen,
     XMEMSET(B,  0, WC_MAX_BLOCK_SIZE);
 
     dLen = v;
-    sLen =  v * ((saltLen + v - 1) / v);
+    sLen = v * ((saltLen + v - 1) / v);
     if (passLen)
         pLen = v * ((passLen + v - 1) / v);
     else

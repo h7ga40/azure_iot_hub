@@ -1054,8 +1054,8 @@ WOLFSSL_API WOLFSSL_RSA *wolfSSL_d2i_RSAPrivateKey(WOLFSSL_RSA**,
                                             const unsigned char**, long);
 WOLFSSL_API int wolfSSL_i2d_RSAPublicKey(WOLFSSL_RSA *r, const unsigned char **pp);
 WOLFSSL_API int wolfSSL_i2d_RSAPrivateKey(WOLFSSL_RSA *r, unsigned char **pp);
-WOLFSSL_API void wolfSSL_CTX_set_tmp_rsa_callback(WOLFSSL_CTX*,
-                                             WOLFSSL_RSA*(*)(WOLFSSL*, int, int));
+WOLFSSL_API void wolfSSL_CTX_set_tmp_rsa_callback(WOLFSSL_CTX *,
+                                           WOLFSSL_RSA *(*)(WOLFSSL *, int, int));
 
 WOLFSSL_API int wolfSSL_PEM_def_callback(char*, int num, int w, void* key);
 
@@ -2694,12 +2694,12 @@ struct WOLFSSL_ASN1_BIT_STRING {
     || defined(OPENSSL_ALL) \
     || defined(HAVE_LIGHTY) \
     || defined(WOLFSSL_MYSQL_COMPATIBLE) \
-                         || defined(HAVE_STUNNEL) \
-                         || defined(WOLFSSL_NGINX) \
+    || defined(HAVE_STUNNEL) \
+    || defined(WOLFSSL_NGINX) \
     || defined(WOLFSSL_HAPROXY)
 WOLFSSL_API void wolfSSL_X509_NAME_ENTRY_free(WOLFSSL_X509_NAME_ENTRY* ne);
 WOLFSSL_API WOLFSSL_X509_NAME_ENTRY* wolfSSL_X509_NAME_ENTRY_new(void);
-WOLFSSL_API void wolfSSL_X509_NAME_free(WOLFSSL_X509_NAME *name);
+WOLFSSL_API void wolfSSL_X509_NAME_free(WOLFSSL_X509_NAME* name);
 WOLFSSL_API char wolfSSL_CTX_use_certificate(WOLFSSL_CTX *ctx, WOLFSSL_X509 *x);
 WOLFSSL_API int wolfSSL_BIO_read_filename(WOLFSSL_BIO *b, const char *name);
 /* These are to be merged shortly */
@@ -2730,9 +2730,9 @@ WOLFSSL_API long wolfSSL_BIO_get_fp(WOLFSSL_BIO *bio, XFILE* fp);
 #if defined(OPENSSL_ALL) \
     || defined(HAVE_STUNNEL) \
     || defined(HAVE_LIGHTY) \
-                          || defined(WOLFSSL_MYSQL_COMPATIBLE) \
-                          || defined(WOLFSSL_HAPROXY) \
-                          || defined(OPENSSL_EXTRA)
+    || defined(WOLFSSL_MYSQL_COMPATIBLE) \
+    || defined(WOLFSSL_HAPROXY) \
+    || defined(OPENSSL_EXTRA)
 
 WOLFSSL_API WOLFSSL_BIO* wolfSSL_BIO_new_file(const char *filename, const char *mode);
 WOLFSSL_API long wolfSSL_CTX_set_tmp_dh(WOLFSSL_CTX*, WOLFSSL_DH*);

@@ -99,11 +99,11 @@ enum {
 #else
 /* Sha digest */
 typedef struct wc_Sha {
-    #ifdef FREESCALE_LTC_SHA
+#ifdef FREESCALE_LTC_SHA
         ltc_hash_ctx_t ctx;
 #elif defined(STM32_HASH)
         STM32_HASH_Context stmCtx;
-    #else
+#else
         word32  buffLen;   /* in bytes          */
         word32  loLen;     /* length in bytes   */
         word32  hiLen;     /* length in bytes   */

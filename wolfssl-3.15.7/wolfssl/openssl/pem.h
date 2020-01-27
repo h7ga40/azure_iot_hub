@@ -148,7 +148,7 @@ int wolfSSL_PEM_write(XFILE fp, const char *name, const char *header,
 #if !defined(NO_FILESYSTEM)
 WOLFSSL_API
 WOLFSSL_EVP_PKEY *wolfSSL_PEM_read_PUBKEY(XFILE fp, EVP_PKEY **x,
-										  pem_password_cb *cb, void *u);
+                                          pem_password_cb *cb, void *u);
 WOLFSSL_API
 WOLFSSL_X509 *wolfSSL_PEM_read_X509(XFILE fp, WOLFSSL_X509 **x,
                                           pem_password_cb *cb, void *u);
@@ -165,29 +165,29 @@ int wolfSSL_PEM_write_X509(XFILE fp, WOLFSSL_X509 *x);
 #define PEM_write                       wolfSSL_PEM_write
 #define PEM_write_bio                   wolfSSL_PEM_write_bio
 
-#define PEM_read_X509               wolfSSL_PEM_read_X509
-#define PEM_read_PrivateKey         wolfSSL_PEM_read_PrivateKey
+#define PEM_read_X509                   wolfSSL_PEM_read_X509
+#define PEM_read_PrivateKey             wolfSSL_PEM_read_PrivateKey
 #define PEM_write_X509                  wolfSSL_PEM_write_X509
-#define PEM_write_bio_PrivateKey    wolfSSL_PEM_write_bio_PrivateKey
+#define PEM_write_bio_PrivateKey        wolfSSL_PEM_write_bio_PrivateKey
 #define PEM_write_bio_PKCS8PrivateKey   wolfSSL_PEM_write_bio_PKCS8PrivateKey
 /* RSA */
-#define PEM_write_bio_RSAPrivateKey wolfSSL_PEM_write_bio_RSAPrivateKey
+#define PEM_write_bio_RSAPrivateKey     wolfSSL_PEM_write_bio_RSAPrivateKey
 #define PEM_read_bio_RSAPrivateKey      wolfSSL_PEM_read_bio_RSAPrivateKey
-#define PEM_write_RSAPrivateKey     wolfSSL_PEM_write_RSAPrivateKey
-#define PEM_write_RSA_PUBKEY        wolfSSL_PEM_write_RSA_PUBKEY
-#define PEM_write_RSAPublicKey      wolfSSL_PEM_write_RSAPublicKey
-#define PEM_read_RSAPublicKey       wolfSSL_PEM_read_RSAPublicKey
+#define PEM_write_RSAPrivateKey         wolfSSL_PEM_write_RSAPrivateKey
+#define PEM_write_RSA_PUBKEY            wolfSSL_PEM_write_RSA_PUBKEY
+#define PEM_write_RSAPublicKey          wolfSSL_PEM_write_RSAPublicKey
+#define PEM_read_RSAPublicKey           wolfSSL_PEM_read_RSAPublicKey
 /* DSA */
-#define PEM_write_bio_DSAPrivateKey wolfSSL_PEM_write_bio_DSAPrivateKey
-#define PEM_write_DSAPrivateKey     wolfSSL_PEM_write_DSAPrivateKey
-#define PEM_write_DSA_PUBKEY        wolfSSL_PEM_write_DSA_PUBKEY
+#define PEM_write_bio_DSAPrivateKey     wolfSSL_PEM_write_bio_DSAPrivateKey
+#define PEM_write_DSAPrivateKey         wolfSSL_PEM_write_DSAPrivateKey
+#define PEM_write_DSA_PUBKEY            wolfSSL_PEM_write_DSA_PUBKEY
 /* ECC */
-#define PEM_write_bio_ECPrivateKey wolfSSL_PEM_write_bio_ECPrivateKey
-#define PEM_write_EC_PUBKEY        wolfSSL_PEM_write_EC_PUBKEY
-#define PEM_write_ECPrivateKey     wolfSSL_PEM_write_ECPrivateKey
+#define PEM_write_bio_ECPrivateKey      wolfSSL_PEM_write_bio_ECPrivateKey
+#define PEM_write_EC_PUBKEY             wolfSSL_PEM_write_EC_PUBKEY
+#define PEM_write_ECPrivateKey          wolfSSL_PEM_write_ECPrivateKey
 /* EVP_KEY */
-#define PEM_read_bio_PrivateKey wolfSSL_PEM_read_bio_PrivateKey
-#define PEM_read_PUBKEY         wolfSSL_PEM_read_PUBKEY
+#define PEM_read_bio_PrivateKey         wolfSSL_PEM_read_bio_PrivateKey
+#define PEM_read_PUBKEY                 wolfSSL_PEM_read_PUBKEY
 #define PEM_read_bio_PUBKEY             wolfSSL_PEM_read_bio_PUBKEY
 
 #ifdef __cplusplus

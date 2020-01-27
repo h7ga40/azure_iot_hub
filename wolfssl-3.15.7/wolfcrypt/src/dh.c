@@ -1176,38 +1176,38 @@ static int GeneratePrivateDh(DhKey* key, WC_RNG* rng, byte* priv,
 
         sz = mp_unsigned_bin_size(&key->p);
 
-    /* Table of predetermined values from the operation
+        /* Table of predetermined values from the operation
            2 * DiscreteLogWorkFactor(sz * WOLFSSL_BIT_SIZE) /
            WOLFSSL_BIT_SIZE + 1
-       Sizes in table checked against RFC 3526
-     */
-    WOLFSSL_DH_ROUND(sz); /* if using fixed points only, then round up */
-    switch (sz) {
-        case 128:  sz = 21; break;
-        case 256:  sz = 29; break;
-        case 384:  sz = 34; break;
-        case 512:  sz = 39; break;
-        case 640:  sz = 42; break;
-        case 768:  sz = 46; break;
-        case 896:  sz = 49; break;
-        case 1024: sz = 52; break;
-        default:
-        #ifndef WOLFSSL_DH_CONST
-            /* if using floating points and size of p is not in table */
-            sz = min(sz, 2 * DiscreteLogWorkFactor(sz * WOLFSSL_BIT_SIZE) /
-                                       WOLFSSL_BIT_SIZE + 1);
-            break;
-        #else
-            return BAD_FUNC_ARG;
-        #endif
-    }
+           Sizes in table checked against RFC 3526
+         */
+        WOLFSSL_DH_ROUND(sz); /* if using fixed points only, then round up */
+        switch (sz) {
+            case 128:  sz = 21; break;
+            case 256:  sz = 29; break;
+            case 384:  sz = 34; break;
+            case 512:  sz = 39; break;
+            case 640:  sz = 42; break;
+            case 768:  sz = 46; break;
+            case 896:  sz = 49; break;
+            case 1024: sz = 52; break;
+            default:
+            #ifndef WOLFSSL_DH_CONST
+                /* if using floating points and size of p is not in table */
+                sz = min(sz, 2 * DiscreteLogWorkFactor(sz * WOLFSSL_BIT_SIZE) /
+                                           WOLFSSL_BIT_SIZE + 1);
+                break;
+            #else
+                return BAD_FUNC_ARG;
+            #endif
+        }
 
-    ret = wc_RNG_GenerateBlock(rng, priv, sz);
+        ret = wc_RNG_GenerateBlock(rng, priv, sz);
 
-    if (ret == 0) {
-        priv[0] |= 0x0C;
-        *privSz = sz;
-    }
+        if (ret == 0) {
+            priv[0] |= 0x0C;
+            *privSz = sz;
+        }
     }
 
     return ret;
@@ -1588,7 +1588,7 @@ int wc_DhCheckPrivKey_ex(DhKey* key, const byte* priv, word32 privSz,
     /* priv (x) should not be 0 */
     if (ret == 0) {
         if (mp_cmp_d(x, 0) == MP_EQ)
-        ret = MP_CMP_E;
+            ret = MP_CMP_E;
     }
 
     if (ret == 0) {
@@ -1596,12 +1596,12 @@ int wc_DhCheckPrivKey_ex(DhKey* key, const byte* priv, word32 privSz,
             /* priv (x) shouldn't be greater than q - 1 */
             if (ret == 0) {
                 if (mp_copy(&key->q, q) != MP_OKAY)
-        ret = MP_INIT_E;
-    }
+                    ret = MP_INIT_E;
+            }
             if (ret == 0) {
                 if (mp_sub_d(q, 1, q) != MP_OKAY)
-        ret = MP_SUB_E;
-    }
+                    ret = MP_SUB_E;
+            }
             if (ret == 0) {
                 if (mp_cmp(x, q) == MP_GT)
                     ret = DH_CHECK_PRIV_E;
@@ -1730,7 +1730,7 @@ int wc_DhCheckKeyPair(DhKey* key, const byte* pub, word32 pubSz,
     /* Compare the calculated public key to the supplied check value. */
     if (ret == 0) {
         if (mp_cmp(checkKey, publicKey) != MP_EQ)
-        ret = MP_CMP_E;
+            ret = MP_CMP_E;
     }
 
     mp_forcezero(privateKey);
@@ -1984,14 +1984,14 @@ static int _DhSetKey(DhKey* key, const byte* p, word32 pSz, const byte* g,
     }
 
     if (ret == 0) {
-    /* may have leading 0 */
-    if (p[0] == 0) {
-        pSz--; p++;
-    }
+        /* may have leading 0 */
+        if (p[0] == 0) {
+            pSz--; p++;
+        }
 
-    if (g[0] == 0) {
-        gSz--; g++;
-    }
+        if (g[0] == 0) {
+            gSz--; g++;
+        }
 
         if (q != NULL) {
             if (q[0] == 0) {
@@ -1999,7 +1999,7 @@ static int _DhSetKey(DhKey* key, const byte* p, word32 pSz, const byte* g,
             }
         }
 
-    if (mp_init(&key->p) != MP_OKAY)
+        if (mp_init(&key->p) != MP_OKAY)
             ret = MP_INIT_E;
     }
 
@@ -2044,7 +2044,7 @@ static int _DhSetKey(DhKey* key, const byte* p, word32 pSz, const byte* g,
             ret = MP_INIT_E;
         else
             keyQ = &key->q;
-}
+    }
 
     if (ret != 0 && key != NULL) {
         if (keyQ)

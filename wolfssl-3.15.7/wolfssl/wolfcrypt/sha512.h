@@ -39,11 +39,11 @@
 #if defined(HAVE_FIPS) && \
 	(!defined(HAVE_FIPS_VERSION) || (HAVE_FIPS_VERSION < 2))
     #ifdef WOLFSSL_SHA512
-    #define wc_Sha512             Sha512
-    #define WC_SHA512             SHA512
-    #define WC_SHA512_BLOCK_SIZE  SHA512_BLOCK_SIZE
-    #define WC_SHA512_DIGEST_SIZE SHA512_DIGEST_SIZE
-    #define WC_SHA512_PAD_SIZE    SHA512_PAD_SIZE
+        #define wc_Sha512             Sha512
+        #define WC_SHA512             SHA512
+        #define WC_SHA512_BLOCK_SIZE  SHA512_BLOCK_SIZE
+        #define WC_SHA512_DIGEST_SIZE SHA512_DIGEST_SIZE
+        #define WC_SHA512_PAD_SIZE    SHA512_PAD_SIZE
     #endif /* WOLFSSL_SHA512 */
     #ifdef WOLFSSL_SHA384
         #define wc_Sha384             Sha384

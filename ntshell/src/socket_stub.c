@@ -154,18 +154,18 @@ typedef struct socket_t {
 
 #ifndef SUPPORT_INET6
 
-ER	tcp6_cre_rep (ID repid, T_TCP6_CREP *pk_crep) { return E_SYS; }
-ER	tcp6_acp_cep (ID cepid, ID repid, T_IPV6EP *p_dstaddr, TMO tmout) { return E_SYS; }
-ER	tcp6_con_cep (ID cepid, T_IPV6EP *p_myaddr, T_IPV6EP *p_dstaddr, TMO tmout) { return E_SYS; }
+ER	tcp6_cre_rep(ID repid, T_TCP6_CREP *pk_crep) { return E_SYS; }
+ER	tcp6_acp_cep(ID cepid, ID repid, T_IPV6EP *p_dstaddr, TMO tmout) { return E_SYS; }
+ER	tcp6_con_cep(ID cepid, T_IPV6EP *p_myaddr, T_IPV6EP *p_dstaddr, TMO tmout) { return E_SYS; }
 
-ER	udp6_cre_cep (ID cepid, T_UDP6_CCEP *pk_ccep) { return E_SYS; }
-ER	udp6_del_cep (ID cepid) { return E_SYS; }
-ER_UINT	udp6_snd_dat (ID cepid, T_IPV6EP *p_dstaddr, void *data, int_t len, TMO tmout) { return E_SYS; }
-ER_UINT	udp6_rcv_dat (ID cepid, T_IPV6EP *p_dstaddr, void *data, int_t len, TMO tmout) { return E_SYS; }
-ER	udp6_set_opt (ID cepid, int_t optname, void *optval, int_t optlen) { return E_SYS; }
-ER	udp6_get_opt (ID cepid, int_t optname, void *optval, int_t optlen) { return E_SYS; }
+ER	udp6_cre_cep(ID cepid, T_UDP6_CCEP *pk_ccep) { return E_SYS; }
+ER	udp6_del_cep(ID cepid) { return E_SYS; }
+ER_UINT	udp6_snd_dat(ID cepid, T_IPV6EP *p_dstaddr, void *data, int_t len, TMO tmout) { return E_SYS; }
+ER_UINT	udp6_rcv_dat(ID cepid, T_IPV6EP *p_dstaddr, void *data, int_t len, TMO tmout) { return E_SYS; }
+ER	udp6_set_opt(ID cepid, int_t optname, void *optval, int_t optlen) { return E_SYS; }
+ER	udp6_get_opt(ID cepid, int_t optname, void *optval, int_t optlen) { return E_SYS; }
 
-const T_IN6_ADDR *in6_get_ifaddr (int_t index) { return NULL; }
+const T_IN6_ADDR *in6_get_ifaddr(int_t index) { return NULL; }
 
 #endif
 
@@ -277,7 +277,7 @@ ID new_id(id_table_t *table, int count)
 
 		item->used = 1;
 		return item->id;
-}
+	}
 
 	return -ENOMEM;
 }
@@ -310,7 +310,7 @@ int shell_socket(int family, int type, int protocol)
 		return -EAFNOSUPPORT;
 	}
 
-	flags = type & (SOCK_CLOEXEC|SOCK_NONBLOCK);
+	flags = type & (SOCK_CLOEXEC | SOCK_NONBLOCK);
 	type &= ~flags;
 
 	switch (type) {
@@ -796,7 +796,7 @@ ssize_t shell_sendto(int fd, const void *buf, size_t len, int flags, const struc
 					if (len <= 0)
 						break;
 					buf = (const void *)&((uint8_t *)buf)[ret];
-				} 
+				}
 				ret = temp;
 			}
 			break;
@@ -1365,7 +1365,7 @@ int shell_setsockopt(int fd, int level, int optname, const void *optval, socklen
 	case AF_INET: {
 		switch (socket->type) {
 		case SOCK_STREAM: {
-			switch (level){
+			switch (level) {
 			case SOL_SOCKET:
 				switch (optname) {
 				case SO_REUSEADDR:
@@ -1400,7 +1400,7 @@ int shell_setsockopt(int fd, int level, int optname, const void *optval, socklen
 			break;
 		}
 		case SOCK_DGRAM: {
-			switch (level){
+			switch (level) {
 			case IPPROTO_UDP:
 				ret = udp_set_opt(socket->cepid, optname, (void *)optval, optlen);
 				if (ret < 0) {
@@ -1418,7 +1418,7 @@ int shell_setsockopt(int fd, int level, int optname, const void *optval, socklen
 	case AF_INET6: {
 		switch (socket->type) {
 		case SOCK_STREAM: {
-			switch (level){
+			switch (level) {
 			case SOL_SOCKET:
 				switch (optname) {
 				case SO_REUSEADDR:
@@ -1453,7 +1453,7 @@ int shell_setsockopt(int fd, int level, int optname, const void *optval, socklen
 			break;
 		}
 		case SOCK_DGRAM: {
-			switch (level){
+			switch (level) {
 			case IPPROTO_UDP:
 				ret = udp6_set_opt(socket->cepid, optname, (void *)optval, optlen);
 				if (ret < 0) {

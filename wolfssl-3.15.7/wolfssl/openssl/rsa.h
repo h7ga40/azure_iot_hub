@@ -71,9 +71,9 @@ WOLFSSL_API int wolfSSL_RSA_generate_key_ex(WOLFSSL_RSA*, int bits, WOLFSSL_BIGN
 
 WOLFSSL_API int wolfSSL_RSA_blinding_on(WOLFSSL_RSA*, WOLFSSL_BN_CTX*);
 WOLFSSL_API int wolfSSL_RSA_public_encrypt(int len, const unsigned char* fr,
-                                 unsigned char* to, WOLFSSL_RSA*, int padding);
+	                               unsigned char* to, WOLFSSL_RSA*, int padding);
 WOLFSSL_API int wolfSSL_RSA_private_decrypt(int len, const unsigned char* fr,
-                                 unsigned char* to, WOLFSSL_RSA*, int padding);
+	                               unsigned char* to, WOLFSSL_RSA*, int padding);
 WOLFSSL_API int wolfSSL_RSA_private_encrypt(int len, unsigned char* in,
                             unsigned char* out, WOLFSSL_RSA* rsa, int padding);
 
@@ -115,7 +115,7 @@ WOLFSSL_API int wolfSSL_RSA_LoadDer_ex(WOLFSSL_RSA*, const unsigned char*, int s
 #define RSA_F4             WOLFSSL_RSA_F4
 
 #ifdef __cplusplus
-    }  /* extern "C" */ 
+    }  /* extern "C" */
 #endif
 
 #endif /* header */

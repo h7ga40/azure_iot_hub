@@ -192,33 +192,33 @@ char* wolfSSL_EC_POINT_point2hex(const WOLFSSL_EC_GROUP* group,
 #endif
 
 #define EC_KEY_new                      wolfSSL_EC_KEY_new
-#define EC_KEY_free wolfSSL_EC_KEY_free
-#define EC_KEY_get0_public_key wolfSSL_EC_KEY_get0_public_key
-#define EC_KEY_get0_group wolfSSL_EC_KEY_get0_group
-#define EC_KEY_set_private_key wolfSSL_EC_KEY_set_private_key
-#define EC_KEY_get0_private_key wolfSSL_EC_KEY_get0_private_key
-#define EC_KEY_new_by_curve_name wolfSSL_EC_KEY_new_by_curve_name
-#define EC_KEY_set_group wolfSSL_EC_KEY_set_group
-#define EC_KEY_generate_key wolfSSL_EC_KEY_generate_key
-#define EC_KEY_set_asn1_flag wolfSSL_EC_KEY_set_asn1_flag
-#define EC_KEY_set_public_key wolfSSL_EC_KEY_set_public_key
+#define EC_KEY_free                     wolfSSL_EC_KEY_free
+#define EC_KEY_get0_public_key          wolfSSL_EC_KEY_get0_public_key
+#define EC_KEY_get0_group               wolfSSL_EC_KEY_get0_group
+#define EC_KEY_set_private_key          wolfSSL_EC_KEY_set_private_key
+#define EC_KEY_get0_private_key         wolfSSL_EC_KEY_get0_private_key
+#define EC_KEY_new_by_curve_name        wolfSSL_EC_KEY_new_by_curve_name
+#define EC_KEY_set_group                wolfSSL_EC_KEY_set_group
+#define EC_KEY_generate_key             wolfSSL_EC_KEY_generate_key
+#define EC_KEY_set_asn1_flag            wolfSSL_EC_KEY_set_asn1_flag
+#define EC_KEY_set_public_key           wolfSSL_EC_KEY_set_public_key
 
 #define EC_GROUP_free                   wolfSSL_EC_GROUP_free
-#define EC_GROUP_set_asn1_flag wolfSSL_EC_GROUP_set_asn1_flag
-#define EC_GROUP_new_by_curve_name wolfSSL_EC_GROUP_new_by_curve_name
-#define EC_GROUP_cmp wolfSSL_EC_GROUP_cmp
-#define EC_GROUP_get_curve_name wolfSSL_EC_GROUP_get_curve_name
-#define EC_GROUP_get_degree wolfSSL_EC_GROUP_get_degree
-#define EC_GROUP_get_order wolfSSL_EC_GROUP_get_order
+#define EC_GROUP_set_asn1_flag          wolfSSL_EC_GROUP_set_asn1_flag
+#define EC_GROUP_new_by_curve_name      wolfSSL_EC_GROUP_new_by_curve_name
+#define EC_GROUP_cmp                    wolfSSL_EC_GROUP_cmp
+#define EC_GROUP_get_curve_name         wolfSSL_EC_GROUP_get_curve_name
+#define EC_GROUP_get_degree             wolfSSL_EC_GROUP_get_degree
+#define EC_GROUP_get_order              wolfSSL_EC_GROUP_get_order
 
-#define EC_POINT_new wolfSSL_EC_POINT_new
+#define EC_POINT_new                    wolfSSL_EC_POINT_new
 #define EC_POINT_free                   wolfSSL_EC_POINT_free
 #define EC_POINT_get_affine_coordinates_GFp \
-            wolfSSL_EC_POINT_get_affine_coordinates_GFp
-#define EC_POINT_mul wolfSSL_EC_POINT_mul
-#define EC_POINT_clear_free wolfSSL_EC_POINT_clear_free
-#define EC_POINT_cmp wolfSSL_EC_POINT_cmp
-#define EC_POINT_is_at_infinity wolfSSL_EC_POINT_is_at_infinity
+                                     wolfSSL_EC_POINT_get_affine_coordinates_GFp
+#define EC_POINT_mul                    wolfSSL_EC_POINT_mul
+#define EC_POINT_clear_free             wolfSSL_EC_POINT_clear_free
+#define EC_POINT_cmp                    wolfSSL_EC_POINT_cmp
+#define EC_POINT_is_at_infinity         wolfSSL_EC_POINT_is_at_infinity
 
 #ifndef HAVE_SELFTEST
     #define EC_POINT_point2hex          wolfSSL_EC_POINT_point2hex

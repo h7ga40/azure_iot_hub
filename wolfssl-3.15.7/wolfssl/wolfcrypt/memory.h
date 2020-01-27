@@ -95,7 +95,7 @@ WOLFSSL_API int wolfSSL_GetAllocators(wolfSSL_Malloc_cb*,
     #endif
     #define WOLFMEM_DEF_BUCKETS  9     /* number of default memory blocks */
     #ifndef WOLFMEM_IO_SZ
-    #define WOLFMEM_IO_SZ        16992 /* 16 byte aligned */
+        #define WOLFMEM_IO_SZ        16992 /* 16 byte aligned */
     #endif
     #ifndef WOLFMEM_BUCKETS
         #ifndef SESSION_CERTS

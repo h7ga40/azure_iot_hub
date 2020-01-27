@@ -32,12 +32,12 @@
 
 /* Micrium uses NetSock I/O callbacks in wolfio.c */
 #if !defined(WOLFSSL_USER_IO)
-/* OCSP and CRL_IO require HTTP client */
-#if defined(HAVE_OCSP) || defined(HAVE_CRL_IO)
-    #ifndef HAVE_HTTP_CLIENT
-        #define HAVE_HTTP_CLIENT
+    /* OCSP and CRL_IO require HTTP client */
+    #if defined(HAVE_OCSP) || defined(HAVE_CRL_IO)
+        #ifndef HAVE_HTTP_CLIENT
+            #define HAVE_HTTP_CLIENT
+        #endif
     #endif
-#endif
 #endif
 
 #if !defined(WOLFSSL_USER_IO)
@@ -69,8 +69,8 @@
     #elif defined(FREESCALE_KSDK_MQX)
         #include <rtcs.h>
     #elif (defined(WOLFSSL_MDK_ARM) || defined(WOLFSSL_KEIL_TCP_NET))
-            #include "cmsis_os.h"
-            #include "rl_net.h"
+        #include "cmsis_os.h"
+        #include "rl_net.h"
         #include "errno.h"
     #elif defined(WOLFSSL_CMSIS_RTOS)
         #include "cmsis_os.h"

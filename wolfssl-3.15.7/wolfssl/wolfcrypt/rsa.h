@@ -128,7 +128,7 @@ enum {
 
 #ifdef HAVE_PKCS11
     RSA_MAX_ID_LEN      = 32,
-  #endif
+#endif
 };
 
 #ifdef WC_RSA_NONBLOCK
@@ -267,7 +267,7 @@ WOLFSSL_API int  wc_RsaPublicKeyDecodeRaw(const byte* n, word32 nSz,
 #endif
 
 #ifdef WC_RSA_BLINDING
-WOLFSSL_API int wc_RsaSetRNG(RsaKey* key, WC_RNG* rng);
+    WOLFSSL_API int wc_RsaSetRNG(RsaKey* key, WC_RNG* rng);
 #endif
 #ifdef WC_RSA_NONBLOCK
     WOLFSSL_API int wc_RsaSetNonBlock(RsaKey* key, RsaNb* nb);
@@ -320,7 +320,7 @@ WOLFSSL_API int wc_RsaExportKey(RsaKey* key,
                                 byte* p, word32* pSz,
                                 byte* q, word32* qSz);
 
-    WOLFSSL_API int wc_RsaKeyToPublicDer(RsaKey*, byte* output, word32 inLen);
+WOLFSSL_API int wc_RsaKeyToPublicDer(RsaKey*, byte* output, word32 inLen);
 
 #ifdef WOLFSSL_KEY_GEN
     WOLFSSL_API int wc_MakeRsaKey(RsaKey* key, int size, long e, WC_RNG* rng);

@@ -78,11 +78,11 @@ typedef struct WOLFSSL_HMAC_CTX HMAC_CTX;
 
 #define HMAC_CTX_init wolfSSL_HMAC_CTX_Init
 #define HMAC_CTX_copy wolfSSL_HMAC_CTX_copy
-#define HMAC_Init_ex wolfSSL_HMAC_Init_ex
+#define HMAC_Init_ex  wolfSSL_HMAC_Init_ex
 #define HMAC_Init     wolfSSL_HMAC_Init
-#define HMAC_Update  wolfSSL_HMAC_Update
-#define HMAC_Final   wolfSSL_HMAC_Final
-#define HMAC_cleanup wolfSSL_HMAC_cleanup
+#define HMAC_Update   wolfSSL_HMAC_Update
+#define HMAC_Final    wolfSSL_HMAC_Final
+#define HMAC_cleanup  wolfSSL_HMAC_cleanup
 
 
 #ifdef __cplusplus

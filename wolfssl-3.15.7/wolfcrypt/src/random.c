@@ -91,11 +91,11 @@ int wc_RNG_GenerateByte(WC_RNG* rng, byte* b)
 
     int wc_RNG_HealthTest(int reseed, const byte* seedA, word32 seedASz,
                                       const byte* seedB, word32 seedBSz,
-                                        byte* output, word32 outputSz)
+                                      byte* output, word32 outputSz)
     {
         return RNG_HealthTest_fips(reseed, seedA, seedASz,
                               seedB, seedBSz, output, outputSz);
-    }
+   }
 #endif /* HAVE_HASHDRBG */
 
 #else /* else build without fips, or for new fips */
@@ -761,7 +761,7 @@ static int _InitRng(WC_RNG* rng, byte* nonce, word32 nonceSz,
                             nonce, nonceSz, rng->heap, devId);
 
             if (ret == DRBG_SUCCESS)
-            ret = Hash_DRBG_Generate(rng->drbg, NULL, 0);
+                ret = Hash_DRBG_Generate(rng->drbg, NULL, 0);
         }
 
         ForceZero(seed, seedSz);
@@ -874,8 +874,8 @@ int wc_RNG_GenerateBlock(WC_RNG* rng, byte* output, word32 sz)
                                        SEED_SZ);
             if (ret == DRBG_SUCCESS)
                 ret = Hash_DRBG_Generate(rng->drbg, NULL, 0);
-                if (ret == DRBG_SUCCESS)
-                    ret = Hash_DRBG_Generate(rng->drbg, output, sz);
+            if (ret == DRBG_SUCCESS)
+                ret = Hash_DRBG_Generate(rng->drbg, output, sz);
 
             ForceZero(newSeed, sizeof(newSeed));
         }
@@ -1246,20 +1246,20 @@ int wc_FreeNetRandom(void)
 
 #ifndef USE_WINDOWS_API
 
-/* return 0 on success */
+    /* return 0 on success */
     static WC_INLINE int IntelRDseed64(word64* seed)
-{
-    unsigned char ok;
+    {
+        unsigned char ok;
 
-    __asm__ volatile("rdseed %0; setc %1":"=r"(*seed), "=qm"(ok));
-    return (ok) ? 0 : -1;
-}
+        __asm__ volatile("rdseed %0; setc %1":"=r"(*seed), "=qm"(ok));
+        return (ok) ? 0 : -1;
+    }
 
 #else /* USE_WINDOWS_API */
     /* The compiler Visual Studio uses does not allow inline assembly.
      * It does allow for Intel intrinsic functions. */
 
-/* return 0 on success */
+    /* return 0 on success */
     static WC_INLINE int IntelRDseed64(word64* seed)
     {
         int ok;
@@ -1717,7 +1717,7 @@ int wc_GenerateSeed(OS_Seed* os, byte* output, word32 sz)
 
 #elif defined(STM32_RNG)
      /* Generate a RNG seed using the hardware random number generator
-     * on the STM32F2/F4/F7. */
+      * on the STM32F2/F4/F7. */
 
     #ifdef WOLFSSL_STM32_CUBEMX
     int wc_GenerateSeed(OS_Seed* os, byte* output, word32 sz)
@@ -2121,23 +2121,23 @@ int wc_GenerateSeed(OS_Seed* os, byte* output, word32 sz)
                  /* success, we're done */
                  return ret;
              }
-    #ifdef FORCE_FAILURE_RDSEED
+        #ifdef FORCE_FAILURE_RDSEED
              /* don't fallback to /dev/urandom */
              return ret;
-    #else
+        #else
              /* reset error and fallback to using /dev/urandom */
              ret = 0;
-    #endif
+        #endif
         }
     #endif /* HAVE_INTEL_RDSEED */
 
     #ifndef NO_DEV_URANDOM /* way to disable use of /dev/urandom */
-        os->fd = open("/dev/urandom",O_RDONLY);
+        os->fd = open("/dev/urandom", O_RDONLY);
         if (os->fd == -1)
     #endif
         {
             /* may still have /dev/random */
-            os->fd = open("/dev/random",O_RDONLY);
+            os->fd = open("/dev/random", O_RDONLY);
             if (os->fd == -1)
                 return OPEN_RAN_E;
         }

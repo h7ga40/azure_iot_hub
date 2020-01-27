@@ -388,10 +388,10 @@ enum Key_Sum {
 #if !defined(NO_AES) || defined(HAVE_PKCS7)
 enum KeyWrap_Sum {
 #ifdef WOLFSSL_AES_128
-    AES128_WRAP = 417,
+    AES128_WRAP  = 417,
 #endif
 #ifdef WOLFSSL_AES_192
-    AES192_WRAP = 437,
+    AES192_WRAP  = 437,
 #endif
 #ifdef WOLFSSL_AES_256
     AES256_WRAP  = 457,

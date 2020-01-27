@@ -1,6 +1,8 @@
 //#define DEBUG_WOLFSSL
 
-//#define HAVE_LIBZ	スタックが多く必要
+#ifndef HAVE_LIBZ
+#define HAVE_LIBZ
+#endif
 #define HAVE_ECC
 #define HAVE_AESGCM
 //#define HAVE_FIPS

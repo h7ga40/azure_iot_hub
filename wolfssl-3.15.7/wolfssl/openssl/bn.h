@@ -150,9 +150,9 @@ typedef WOLFSSL_BN_GENCB BN_GENCB;
 #define BN_mask_bits wolfSSL_mask_bits
 
 #define BN_pseudo_rand wolfSSL_BN_pseudo_rand
-#define BN_rand       wolfSSL_BN_rand
-#define BN_is_bit_set wolfSSL_BN_is_bit_set
-#define BN_hex2bn     wolfSSL_BN_hex2bn
+#define BN_rand        wolfSSL_BN_rand
+#define BN_is_bit_set  wolfSSL_BN_is_bit_set
+#define BN_hex2bn      wolfSSL_BN_hex2bn
 
 #define BN_dup  wolfSSL_BN_dup
 #define BN_copy wolfSSL_BN_copy

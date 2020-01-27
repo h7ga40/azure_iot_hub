@@ -303,7 +303,7 @@ typedef struct SnifferServer {
     int            port;                         /* server port */
 #ifdef HAVE_SNI
     NamedKey*      namedKeys;                    /* mapping of names and keys */
-    wolfSSL_Mutex   namedKeysMutex;               /* mutex for namedKey list */
+    wolfSSL_Mutex  namedKeysMutex;               /* mutex for namedKey list */
 #endif
     struct SnifferServer* next;                  /* for list */
 } SnifferServer;
@@ -1268,7 +1268,7 @@ static int SetNamedPrivateKey(const char* name, const char* address, int port,
 
         namedKey->nameSz = (word32)XSTRLEN(name);
         if (namedKey->nameSz > sizeof(namedKey->name)-1)
-            namedKey->nameSz = sizeof(namedKey->name) - 1;
+            namedKey->nameSz = sizeof(namedKey->name)-1;
         XSTRNCPY(namedKey->name, name, namedKey->nameSz);
         namedKey->name[MAX_SERVER_NAME-1] = '\0';
 
