@@ -67,7 +67,6 @@
  *  サポートする機能の定義
  */
 #define	TOPPERS_TARGET_SUPPORT_GET_UTM		/* get_utmをサポートする */
-//#define TOPPERS_TARGET_SUPPORT_OVRHDR		/* オーバランハンドラ */
 
 /*
  *  タイムティックの定義

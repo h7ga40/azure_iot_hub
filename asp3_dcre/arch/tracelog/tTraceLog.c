@@ -4,7 +4,7 @@
  * 
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
- *  Copyright (C) 2005-2016 by Embedded and Real-Time Systems Laboratory
+ *  Copyright (C) 2005-2019 by Embedded and Real-Time Systems Laboratory
  *              Graduate School of Information Science, Nagoya Univ., JAPAN
  * 
  *  上記著作権者は，以下の(1)～(4)の条件を満たす場合に限り，本ソフトウェ
@@ -36,7 +36,7 @@
  *  アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
  *  の責任を負わない．
  * 
- *  $Id$
+ *  $Id: tTraceLog.c 1248 2019-07-21 18:08:49Z ertl-hiro $
  */
 
 /*
@@ -47,6 +47,9 @@
 #include "kernel/kernel_impl.h"
 #include "kernel/task.h"
 #include "kernel/time_event.h"
+#ifdef TOPPERS_SUPPORT_PROTECT
+#include "kernel/domain.h"
+#endif /* TOPPERS_SUPPORT_PROTECT */
 #include <sil.h>
 #include <log_output.h>
 #include "target_syssvc.h"
@@ -55,16 +58,16 @@
  *  トレース時刻の取り出し
  *
  *  デフォルトでは，ログ時刻として，高分解能タイマのカウント値を用いて
- *  いる．ターゲット依存で変更する場合には，SYSLOG_GET_LOGTIMに，ログ時
+ *  いる．ターゲット依存で変更する場合には，TRACE_GET_LOGTIMに，ログ時
  *  刻を取り出すマクロを定義する．
  */
-#ifndef SYSLOG_GET_LOGTIM
-#define SYSLOG_GET_LOGTIM(p_logtim) \
+#ifndef TRACE_GET_LOGTIM
+#define TRACE_GET_LOGTIM(p_logtim) \
 				(*(p_logtim) = target_hrt_get_current())
-#endif /* SYSLOG_GET_TIM */
+#endif /* TRACE_GET_TIM */
 
 /*
- *  トレースログの開始
+ *  トレースログの開始（受け口関数）
  */
 ER
 eTraceLog_start(MODE mode)
@@ -80,7 +83,7 @@ eTraceLog_start(MODE mode)
 }     
 
 /* 
- *  トレースログの書込み
+ *  トレースログの書込み（受け口関数）
  */
 ER
 eTraceLog_write(const TRACE *p_trace)
@@ -93,7 +96,7 @@ eTraceLog_write(const TRACE *p_trace)
 		/*
 		 *  トレース時刻の設定
 		 */
-		SYSLOG_GET_LOGTIM(&(((SYSLOG *) p_trace)->logtim));
+		TRACE_GET_LOGTIM(&(((SYSLOG *) p_trace)->logtim));
 
 		/*
 		 *  トレースバッファに記録
@@ -120,7 +123,7 @@ eTraceLog_write(const TRACE *p_trace)
 }
 
 /*
- *  トレースログの読出し
+ *  トレースログの読出し（受け口関数）
  */
 ER
 eTraceLog_read(TRACE* p_trace)
@@ -202,7 +205,7 @@ get_tskid(intptr_t info)
 
 	p_tcb = (TCB *) info;
 	if (p_tcb == NULL) {
-		tskid = 0;
+		tskid = TSK_NONE;
 	}
 	else {
 		tskid = TSKID(p_tcb);
@@ -239,6 +242,37 @@ get_tskstat(intptr_t info)
 	return((intptr_t) tstatstr);
 }
 
+#ifdef TOPPERS_SUPPORT_PROTECT
+
+static intptr_t
+get_somid(intptr_t info)
+{
+	SOMINIB	*p_sominib;
+	ID		somid;
+
+	p_sominib = (SOMINIB *) info;
+	if (p_sominib == NULL) {
+		somid = TSOM_STP;
+	}
+	else {
+		somid = SOMID(p_sominib);
+	}
+	return((intptr_t) somid);
+}
+
+static intptr_t
+get_twd_domid(intptr_t info)
+{
+	TWDINIB	*p_twdinib;
+	ID		domid;
+
+	p_twdinib = (TWDINIB *) info;
+	domid = (ID)(p_twdinib->p_dominib - dominib_table) + TMIN_DOMID;
+	return((intptr_t) domid);
+}
+
+#endif /* TOPPERS_SUPPORT_PROTECT */
+
 /* 
  *  トレースログの表示
  */
@@ -258,14 +292,27 @@ trace_print(TRACE *p_trace, void (*putc)(char))
 		traceinfo[1] = get_tskstat(p_trace->logpar[1]);
 		tracemsg = "task %d becomes %s.";
 		break;
-	case LOG_TYPE_DSP|LOG_ENTER:
-		traceinfo[0] = get_tskid(p_trace->logpar[0]);
-		tracemsg = "dispatch from task %d.";
-		break;
 	case LOG_TYPE_DSP|LOG_LEAVE:
 		traceinfo[0] = get_tskid(p_trace->logpar[0]);
 		tracemsg = "dispatch to task %d.";
 		break;
+
+#ifdef TOPPERS_SUPPORT_PROTECT
+	case LOG_TYPE_SCYC|LOG_START:
+		traceinfo[0] = get_somid(p_trace->logpar[0]);
+		tracemsg = "system cycle starts with system operating mode %d.";
+		break;
+	case LOG_TYPE_TWD|LOG_START:
+		if (p_trace->logpar[0] == 0) {
+			tracemsg = "idle window starts.";
+		}
+		else {
+			traceinfo[0] = get_twd_domid(p_trace->logpar[0]);
+			tracemsg = "time window for domain %d starts.";
+		}
+		break;
+#endif /* TOPPERS_SUPPORT_PROTECT */
+
 	case LOG_TYPE_COMMENT:
 		for (i = 1; i < TNUM_LOGPAR; i++) {
 			traceinfo[i-1] = p_trace->logpar[i];
@@ -277,22 +324,6 @@ trace_print(TRACE *p_trace, void (*putc)(char))
 		traceinfo[1] = p_trace->logpar[1];
 		traceinfo[2] = p_trace->logpar[2];
 		tracemsg = "%s:%u: Assertion `%s' failed.";
-		break;
-	case LOG_TYPE_INH|LOG_ENTER:
-		traceinfo[0] = p_trace->logpar[0];
-		tracemsg = "interrupt IN: %d";
-		break;
-	case LOG_TYPE_INH|LOG_LEAVE:
-		traceinfo[0] = p_trace->logpar[0];
-		tracemsg = "interrupt OUT: %d";
-		break;
-	case LOG_TYPE_EXC|LOG_ENTER:
-		traceinfo[0] = p_trace->logpar[0];
-		tracemsg = "exception IN: %d";
-		break;
-	case LOG_TYPE_EXC|LOG_LEAVE:
-		traceinfo[0] = p_trace->logpar[0];
-		tracemsg = "exception OUT: %d";
 		break;
 	default:
 		traceinfo[0] = p_trace->logtype;
@@ -312,24 +343,15 @@ low_putchar(char c)
 	cPutLog_putChar(c);
 }
 
-/* 
- *  トレースログのダンプ
+/*
+ *  トレースログのダンプ（受け口関数）
  */
 void
-eTraceLog_dump(void)
+eDump_main(uintptr_t exinf)
 {
 	TRACE	trace;
 
 	while (trace_rea_log(&trace) >= 0) {
 		trace_print(&trace, low_putchar);
 	}
-}
-
-/*
- *  トレースログのダンプ（受け口関数）
- */
-void
-tTraceLog_eDump_main(uintptr_t exinf)
-{
-	eTraceLog_dump();
 }

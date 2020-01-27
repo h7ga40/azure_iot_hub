@@ -234,6 +234,11 @@ target_hrt_get_current(void)
 	return (target_hrt_get_current_convert());
 }
 
+/*
+ * 高分解能タイマの計算のためsignal_timeを呼び出す
+ */
+#define TOPPERS_CALL_SIGNAL_TIME_FOR_CALC
+
 #ifdef TOPPERS_SUPPORT_OVRHDR
 
 /*

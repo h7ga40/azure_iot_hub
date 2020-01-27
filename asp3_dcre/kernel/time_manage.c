@@ -37,7 +37,7 @@
  *  アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
  *  の責任を負わない．
  * 
- *  $Id$
+ *  $Id: time_manage.c 1100 2018-11-29 15:49:09Z ertl-hiro $
  */
 
 /*
@@ -52,6 +52,7 @@
 #include "dataqueue.h"
 #include "time_event.h"
 #include "target_timer.h"
+#include <sil.h>
 
 /*
  *  トレースログマクロのデフォルト定義
@@ -175,7 +176,9 @@ adj_tim(int32_t adjtim)
 			monotonic_evttim = current_evttim;	/*［ASPD1054］*/
 		}
 
-		set_hrt_event();						/*［ASPD1056］*/
+		if (!in_signal_time) {
+			set_hrt_event();					/*［ASPD1056］*/
+		}
 		ercd = E_OK;
 	}
 	unlock_cpu();

@@ -289,6 +289,11 @@ sil_wrw_bem(volatile uint32_t *mem, uint32_t data)
 #endif /* TOPPERS_OMIT_SIL_WRW_BEM */
 #endif /* SIL_ENDIAN_BIG */
 
+/*
+ *  メモリ同期バリア
+ */
+#define TOPPERS_SIL_WRITE_SYNC()
+
 #endif /* TOPPERS_MACRO_ONLY */
 
 #endif /* TOPPERS_PRC_SIL_H */

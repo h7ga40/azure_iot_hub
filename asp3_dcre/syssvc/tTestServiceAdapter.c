@@ -1,11 +1,8 @@
 /*
- *  TOPPERS/ASP Kernel
- *      Toyohashi Open Platform for Embedded Real-Time Systems/
- *      Advanced Standard Profile Kernel
+ *  TOPPERS Software
+ *      Toyohashi Open Platform for Embedded Real-Time Systems
  * 
- *  Copyright (C) 2015 by Ushio Laboratory
- *              Graduate School of Engineering Science, Osaka Univ., JAPAN
- *  Copyright (C) 2015 by Embedded and Real-Time Systems Laboratory
+ *  Copyright (C) 2017-2018 by Embedded and Real-Time Systems Laboratory
  *              Graduate School of Information Science, Nagoya Univ., JAPAN
  * 
  *  上記著作権者は，以下の(1)～(4)の条件を満たす場合に限り，本ソフトウェ
@@ -40,15 +37,63 @@
  *  $Id$
  */
 
-#include "tCpuExceptionHandler_tecsgen.h"
+/*
+ *		テストプログラム用サービスのアダプタ
+ */
+
+#include "tTestServiceAdapter_tecsgen.h"
+#include "test_svc.h"
 
 /*
- *  割込みハンドラ本体の呼出し
+ *  テストプログラムの開始
  */
 void
-tCpuExceptionHandler_start(intptr_t exinf)
+test_start(const char *progname)
 {
-	CELLCB	*p_cellcb = (CELLCB *) exinf;
+	(void) cTestService_start(progname);
+}
 
-	ciCpuExceptionHandlerBody_main();
+/*
+ *	チェックポイント
+ */
+void
+check_point(uint_t count)
+{
+	(void) cTestService_checkPoint(count);
+}
+
+/*
+ *	完了チェックポイント
+ */
+void
+check_finish(uint_t count)
+{
+	(void) cTestService_finishPoint(count);
+}
+
+/*
+ *	条件チェック
+ */
+void
+check_assert_error(const char *expr, const char *file, int_t line)
+{
+	(void) cTestService_assertError(expr, file, line);
+}
+
+/*
+ *	エラーコードチェック
+ */
+void
+check_ercd_error(ER ercd, const char *file, int_t line)
+{
+	(void) cTestService_serviceError(ercd, file, line);
+}
+
+/*
+ *	割込み優先度マスクの取得
+ */
+ER
+get_interrupt_priority_mask(PRI *p_ipm)
+{
+	return(cTestService_getInterruptPriorityMask(p_ipm));
 }

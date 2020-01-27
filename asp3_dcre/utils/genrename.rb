@@ -6,7 +6,7 @@
 # 
 #  Copyright (C) 2003 by Embedded and Real-Time Systems Laboratory
 #                              Toyohashi Univ. of Technology, JAPAN
-#  Copyright (C) 2005-2016 by Embedded and Real-Time Systems Laboratory
+#  Copyright (C) 2005-2017 by Embedded and Real-Time Systems Laboratory
 #              Graduate School of Information Science, Nagoya Univ., JAPAN
 # 
 #  上記著作権者は，以下の(1)～(4)の条件を満たす場合に限り，本ソフトウェ
@@ -40,6 +40,8 @@
 # 
 #  $Id$
 # 
+
+Encoding.default_external = 'utf-8'
 
 #
 #  先頭につける文字列
@@ -131,6 +133,8 @@ syms.each do |sym|
   elsif /^INCLUDE\s+(.*)$/ =~ sym
     fileName = $1.sub(/([>"])$/, "_rename.h\\1")
     includes += "#include #{fileName}\n"
+  elsif /^(_+)(.*)$/ =~ sym
+    generateDefine(outFile, $2, $1)
   elsif sym != ""
     generateDefine(outFile, sym, "")
   else

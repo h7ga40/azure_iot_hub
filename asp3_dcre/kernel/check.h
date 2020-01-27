@@ -5,7 +5,7 @@
  * 
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
- *  Copyright (C) 2005-2017 by Embedded and Real-Time Systems Laboratory
+ *  Copyright (C) 2005-2019 by Embedded and Real-Time Systems Laboratory
  *              Graduate School of Information Science, Nagoya Univ., JAPAN
  * 
  *  上記著作権者は，以下の(1)～(4)の条件を満たす場合に限り，本ソフトウェ
@@ -37,7 +37,7 @@
  *  アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
  *  の責任を負わない．
  * 
- *  $Id$
+ *  $Id: check.h 1249 2019-07-25 15:57:12Z ertl-hiro $
  */
 
 /*
@@ -64,17 +64,6 @@
 #define VALID_ISRID(isrid)	(TMIN_ISRID <= (isrid) && (isrid) <= tmax_isrid)
 
 /*
- *  オブジェクト番号の範囲の判定
- */
-#ifndef VALID_INTNO_DISINT
-#define VALID_INTNO_DISINT(intno)    VALID_INTNO(intno)
-#endif /* VALID_INTNO_DISINT */
-
-#ifndef VALID_INTNO_CREISR
-#define VALID_INTNO_CREISR(intno)    VALID_INTNO(intno)
-#endif /* VALID_INTNO_CREISR */
-
-/*
  *  優先度の範囲の判定
  */
 #define VALID_TPRI(tpri)	(TMIN_TPRI <= (tpri) && (tpri) <= TMAX_TPRI)
@@ -84,11 +73,6 @@
 #define VALID_ISRPRI(isrpri) \
 				(TMIN_ISRPRI <= (isrpri) && (isrpri) <= TMAX_ISRPRI)
 
-#ifndef VALID_INTPRI_CHGIPM
-#define VALID_INTPRI_CHGIPM(intpri) \
-				(TMIN_INTPRI <= (intpri) && (intpri) <= TIPM_ENAALL)
-#endif /* VALID_INTPRI_CHGIPM */
-
 /*
  *  相対時間の範囲の判定
  */
@@ -97,8 +81,7 @@
 /*
  *  タイムアウト指定値の範囲の判定
  */
-#define VALID_TMOUT(tmout)	((tmout) <= TMAX_RELTIM || (tmout) == TMO_FEVR \
-													|| (tmout) == TMO_POL)
+#define VALID_TMOUT(tmout)	((tmout) <= TMAX_RELTIM || (tmout) == TMO_FEVR)
 
 /*
  *  アラインしているかの判定
@@ -207,7 +190,7 @@
 } while (false)
 
 /*
- *  オブジェクトIDのチェック（E_ID）
+ *  不正ID番号のチェック（E_ID）
  */
 #define CHECK_ID(exp) do {									\
 	if (!(exp)) {											\
@@ -217,9 +200,9 @@
 } while (false)
 
 /*
- *  予約属性エラーのチェック（E_RSATR）
+ *  属性が無効なビットが立っていないかのチェック（E_RSATR）
  */
-#define CHECK_RSATR(atr, valid_atr) do {					\
+#define CHECK_VALIDATR(atr, valid_atr) do {					\
 	if (((atr) & ~(valid_atr)) != 0U) {						\
 		ercd = E_RSATR;										\
 		goto error_exit;									\
@@ -237,7 +220,7 @@
 } while (false)
 
 /*
- *  不正使用エラーのチェック（E_ILUSE）
+ *  サービスコール不正使用のチェック（E_ILUSE）
  */
 #define CHECK_ILUSE(exp) do {								\
 	if (!(exp)) {											\
@@ -247,7 +230,7 @@
 } while (false)
 
 /*
- *  静的なオブジェクト状態エラーのチェック（E_OBJ）
+ *  オブジェクト状態エラーのチェック（E_OBJ）
  */
 #define CHECK_OBJ(exp) do {									\
 	if (!(exp)) {											\

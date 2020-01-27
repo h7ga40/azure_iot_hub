@@ -513,3 +513,8 @@ long SYS_getrandom(long a, long b, long c)
 {
 	return shell_getrandom((void *)a, (size_t)b, (unsigned int)c);;
 }
+
+long SYS_setitimer()
+{
+	return no_implement("setitimer\n");
+}

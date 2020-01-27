@@ -34,7 +34,7 @@
  *  アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
  *  の責任を負わない．
  * 
- *  @(#) $Id$
+ *  @(#) $Id: nic_rename.h 2049 2020-01-22 10:38:36Z coas-nagasima $
  */
 
 #ifndef _NIF_RENAME_H_
@@ -48,12 +48,12 @@
 
 #define rx62n_get_softc		_tinet_rx62n_get_softc
 #define rx62n_watchdog		_tinet_rx62n_watchdog
-#define rx62n_probe		_tinet_rx62n_probe
+#define rx62n_probe			_tinet_rx62n_probe
 #define rx62n_init			_tinet_rx62n_init
 #define rx62n_read			_tinet_rx62n_read
-#define rx62n_reset		_tinet_rx62n_reset
-#define rx62n_start		_tinet_rx62n_start
-#define if_softc		_tinet_if_softc
+#define rx62n_reset			_tinet_rx62n_reset
+#define rx62n_start			_tinet_rx62n_start
+#define if_softc			_tinet_if_softc
 
 /* config/<cpu>/tinet_cpu_config.c */
 

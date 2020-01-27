@@ -1,7 +1,6 @@
 /*
- *  TOPPERS/ASP Kernel
- *      Toyohashi Open Platform for Embedded Real-Time Systems/
- *      Advanced Standard Profile Kernel
+ *  TOPPERS Software
+ *      Toyohashi Open Platform for Embedded Real-Time Systems
  * 
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
@@ -47,11 +46,11 @@
 #ifndef TOPPERS_SERIAL_H
 #define TOPPERS_SERIAL_H
 
-#include <kernel.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#include <kernel.h>
 
 /*
  *  シリアルインタフェースドライバの用いるパケット
@@ -60,18 +59,6 @@ typedef struct {
 	uint_t		reacnt;			/* 受信バッファ中の文字数 */
 	uint_t		wricnt;			/* 送信バッファ中の文字数 */
 } T_SERIAL_RPOR;
-
-#ifdef TOPPERS_OMIT_TECS
-/*
- *  シリアルインタフェースドライバの初期化ルーチン
- */
-extern void		serial_initialize(intptr_t exinf) throw();
-
-/*
- *  シリアルインタフェースドライバからの未送信文字の取出し
- */
-extern bool_t	serial_get_chr(ID portid, char *p_c) throw();
-#endif
 
 /*
  *  シリアルインタフェースドライバのサービスコール

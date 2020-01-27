@@ -151,7 +151,7 @@ T_RX62N_BUF __attribute__((section("ETH_MEMORY"),aligned(16))) rx62n_buf;
 /* ネットワークインタフェースに依存しないソフトウェア情報 */
 
 T_IF_SOFTC if_softc = {
-	{0,},						/* ネットワークインタフェースのアドレス	*/
+	{ {0,} },					/* ネットワークインタフェースのアドレス	*/
 	0,							/* 送信タイムアウト			*/
 	&rx62n_softc,				/* ディバイス依存のソフトウェア情報	*/
 	SEM_IF_RX62N_SBUF_READY,	/* 送信セマフォ			*/
@@ -444,7 +444,7 @@ rx62n_probe (T_IF_SOFTC *ic)
 
 #endif	/* of #if defined(TARGET_KERNEL_JSP) && TKERNEL_PRVER >= 0x1042u */
 
-	mbed_mac_address(ic->ifaddr.lladdr);
+	mbed_mac_address((char *)ic->ifaddr.lladdr);
 }
 
 /*
