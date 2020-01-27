@@ -41,8 +41,12 @@ init_wait_queue
 # time_event.c
 boundary_evttim
 current_evttim
+current_evttim_frac
 current_hrtcnt
 monotonic_evttim
+drift_rate
+evttim_step
+evttim_step_frac
 systim_offset
 in_signal_time
 initialize_tmevt
@@ -112,6 +116,11 @@ call_cyclic
 free_almcb
 initialize_alarm
 call_alarm
+
+# overrun.c
+ovrtimer_start
+ovrtimer_stop
+call_ovrhdr
 
 # interrupt.c
 free_isrcb

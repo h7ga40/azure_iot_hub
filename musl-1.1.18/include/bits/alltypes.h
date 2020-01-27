@@ -1,3 +1,58 @@
+#if defined(_MSC_VER) || defined(__c2__)
+#define asctime musl_asctime
+#define calloc musl_calloc
+#define clock musl_clock
+#define close musl_close
+#define execvp musl_execvp
+#define exit musl_exit
+#define fclose musl_fclose
+#define fdopen musl_fdopen
+#define fflush musl_fflush
+#define fma _musl_fma
+#define fgetc musl_fgetc
+#define fopen musl_fopen
+#define fprintf musl_fprintf
+#define fputc musl_fputc
+#define free musl_free
+#define fwrite musl_fwrite
+#define getcwd musl_getcwd
+#define localtime musl_localtime
+#define lseek musl_lseek
+#define malloc musl_malloc
+#define memmove musl_memmove
+#define open musl_open
+#define perror musl_perror
+#define printf musl_printf
+#define read musl_read
+#define write musl_write
+#define realloc musl_realloc
+#define strftime musl_strftime
+#define strnlen musl_strnlen
+#define strtoul musl_strtoul
+#define time musl_time
+#define tzset musl_tzset
+#define unlink musl_unlink
+#define strncmp musl_strncmp
+#define strtol musl_strtol
+#define strchr musl_strchr
+#define strdup musl_strdup
+#define puts musl_puts
+#define fputs musl_fputs
+#define putchar musl_putchar
+#define fileno musl_fileno
+#define fseek musl_fseek
+#define ftell musl_ftell
+#define rewind musl_rewind
+#define fread musl_fread
+#define fgets musl_fgets
+#define vsnprintf musl_vsnprintf
+#endif
+#ifdef _MSC_VER
+#define __builtin_va_list char *
+#define __NEED_va_list
+#define restrict __restrict
+#endif
+
 #define _Addr int
 #define _Int64 long long
 #define _Reg int
@@ -39,7 +94,11 @@ typedef struct { long long __ll; long double __ld; } max_align_t;
 
 
 #if defined(__NEED_time_t) && !defined(__DEFINED_time_t)
+#if defined(_MSC_VER) || defined(__c2__)
+typedef long long time_t;
+#else
 typedef long time_t;
+#endif
 #define __DEFINED_time_t
 #endif
 

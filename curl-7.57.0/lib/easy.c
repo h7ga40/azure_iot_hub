@@ -165,6 +165,15 @@ static long          init_flags;
 #  pragma warning(disable:4232) /* MSVC extension, dllimport identity */
 #endif
 
+#ifdef __c2__
+#define malloc musl_malloc
+#define free musl_free
+#define realloc musl_realloc
+#define calloc musl_calloc
+#undef system_strdup
+#define system_strdup musl_strdup
+#endif
+
 #ifndef __SYMBIAN32__
 /*
  * If a memory-using function (like curl_getenv) is used before

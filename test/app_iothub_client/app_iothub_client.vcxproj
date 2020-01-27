@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{FA018EEB-B5A8-4B0E-866F-858E5FC9E60D}</ProjectGuid>
+    <RootNamespace>app_iothub_client</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.51106.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)_Dbg\</OutDir>
+    <IntDir>$(ProjectDir)obj\$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)_Exe\</OutDir>
+    <IntDir>$(ProjectDir)obj\$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\..\asp3_dcre;..\..\asp3_dcre\include;..\..\asp3_dcre\kernel;..\..\asp3_dcre\mbed;..\..\asp3_dcre\mbed\hal;..\..\asp3_dcre\mbed\target;..\..\asp3_dcre\arch\msvc;..\..\asp3_dcre\arch\rx630_msvc;..\..\asp3_dcre\target\gr_sakura_gcc;..\..\asp3_dcre\tinet;..\..\asp3_dcre\tinet\netdev\if_rx62n;..\..\asp3_dcre\gdic\adafruit_ssd1306;..\..\mruby-1.4.1\include;..\..\ntshell\fatfs;..\..\asp3_dcre\syssvc\tlsf;..\..\ntshell\echonet;..\..\ntshell\ntshell;..\..\ntshell\lcd;..\..\ntshell\src;..\..\ntshell\webserver;..\..\btstack\include;..\..\btstack\src;..\..\usbhost\src;..\..\wolfssl-3.15.7;..\..\curl-7.57.0;..\..\curl-7.57.0\include;..\..\app_iothub_client\src;..\sim\rx63n;..\sim;..\softgun\stdinc;..\softgun\sdcard;..\softgun;.</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_USRDLL;TOPPERS_OMIT_TECS;TARGET_KERNEL_ASP;SUPPORT_INET4;SUPPORT_INET6;SUPPORT_ETHER;SUPPORT_TCP;SUPPORT_UDP;SUPPORT_IGMP;USE_NETAPP_SUBR;DHCP4_CLI_CFG;USE_PING;USE_RESOLVER;ADAFRUIT_SSD1306;WOLFSSL_USER_SETTINGS;HAVE_CONFIG_H;__POCC__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <TreatSpecificWarningsAsErrors>4002;4003;4005;4007;4010;4013;4015;4020;4022;4024;4028;4029;4031;4033;4034;4042;4047;4048;4049;4056;4067;4074;4079;4083;4088;4089;4090;4091;4094;4096;4098;4099;4113;4715;4716</TreatSpecificWarningsAsErrors>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+      <IgnoreSpecificDefaultLibraries>OLDNAMES.lib</IgnoreSpecificDefaultLibraries>
+      <GenerateMapFile>true</GenerateMapFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\asp3_dcre;..\..\asp3_dcre\include;..\..\asp3_dcre\kernel;..\..\asp3_dcre\mbed;..\..\asp3_dcre\mbed\hal;..\..\asp3_dcre\mbed\target;..\..\asp3_dcre\arch\msvc;..\..\asp3_dcre\arch\rx630_msvc;..\..\asp3_dcre\target\gr_sakura_gcc;..\..\asp3_dcre\tinet;..\..\asp3_dcre\tinet\netdev\if_rx62n;..\..\asp3_dcre\gdic\adafruit_ssd1306;..\..\mruby-1.4.1\include;..\..\ntshell\fatfs;..\..\asp3_dcre\syssvc\tlsf;..\..\ntshell\echonet;..\..\ntshell\ntshell;..\..\ntshell\lcd;..\..\ntshell\src;..\..\ntshell\webserver;..\..\btstack\include;..\..\btstack\src;..\..\usbhost\src;..\..\wolfssl-3.15.7;..\..\curl-7.57.0;..\..\curl-7.57.0\include;..\..\app_iothub_client\src;..\sim\rx63n;..\sim;..\softgun\stdinc;..\softgun\sdcard;..\softgun;.</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_USRDLL;TOPPERS_OMIT_TECS;TARGET_KERNEL_ASP;SUPPORT_INET4;SUPPORT_INET6;SUPPORT_ETHER;SUPPORT_TCP;SUPPORT_UDP;SUPPORT_IGMP;USE_NETAPP_SUBR;DHCP4_CLI_CFG;USE_PING;USE_RESOLVER;ADAFRUIT_SSD1306;WOLFSSL_USER_SETTINGS;HAVE_CONFIG_H;__POCC__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <TreatSpecificWarningsAsErrors>4002;4003;4005;4007;4010;4013;4015;4020;4022;4024;4028;4029;4031;4033;4034;4042;4047;4048;4049;4056;4067;4074;4079;4083;4088;4089;4090;4091;4094;4096;4098;4099;4113;4715;4716</TreatSpecificWarningsAsErrors>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+      <IgnoreSpecificDefaultLibraries>OLDNAMES.lib</IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\asp3_dcre\arch\rx630_msvc\rx630.h" />
+    <ClInclude Include="dllmain.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="app_iothub_client.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="kernel.res">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\libasp3\libasp3.vcxproj">
+      <Project>{2e896742-65e5-4cf6-a9c9-c79980833741}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\libazure_iothub\libazure_iothub.vcxproj">
+      <Project>{e6aa3488-7f25-4654-bc8f-20620820b0bb}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\libbb\libbb.vcxproj">
+      <Project>{cf9a9ebd-6480-4f11-8d82-dbcb8839cfb2}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\libbtstack\libbtstack.vcxproj">
+      <Project>{07eab121-1857-4e9b-866c-3ad1e84d3845}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\libcurl\libcurl.vcxproj">
+      <Project>{ccd8d631-b4ca-4c13-8e41-e1771b7a3bb7}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\libexpat\libexpat.vcxproj">
+      <Project>{15f5128f-6eb4-4e2f-92d5-1fe6446cd4eb}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\libmbedtls\libmbedtls.vcxproj">
+      <Project>{d81d89dd-6f1b-4f1d-b4ba-11f02de516b2}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\libmruby\libmruby.vcxproj">
+      <Project>{d4378089-a3b4-4f64-980b-bf69015e30b8}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\libmusl\libmusl.vcxproj">
+      <Project>{d4a696ec-4a34-458e-bf97-d2ca486577ad}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\libonigmo\libonigmo.vcxproj">
+      <Project>{5a4fe472-d98d-4492-a048-9cdc5f7ceeaf}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\librx63nsim\librx63nsim.vcxproj">
+      <Project>{54495cfb-722c-4594-88db-2b4e8331a014}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\libusbhost\libusbhost.vcxproj">
+      <Project>{f43f20d3-1e54-4173-bf2d-c6d0a8574073}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\libwolfssl\libwolfssl.vcxproj">
+      <Project>{c7d76c13-6b12-4fed-b0ee-8afb9625f520}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\libz\libz.vcxproj">
+      <Project>{c975ed1e-be29-4f80-9829-f8e5d8a1b2ff}</Project>
+    </ProjectReference>
+    <ProjectReference Include="libapp\libapp.vcxproj">
+      <Project>{CBBA2B25-9EF7-4CE7-BAEC-714C832F9158}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,369 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{CBBA2B25-9EF7-4CE7-BAEC-714C832F9158}</ProjectGuid>
+    <RootNamespace>libapp</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.51106.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\..\libmusl\include;..\..\..\asp3_dcre;..\..\..\asp3_dcre\include;..\..\..\asp3_dcre\kernel;..\..\..\asp3_dcre\mbed;..\..\..\asp3_dcre\mbed\hal;..\..\..\asp3_dcre\mbed\target;..\..\..\asp3_dcre\arch\msvc;..\..\..\asp3_dcre\arch\rx630_msvc;..\..\..\asp3_dcre\target\gr_sakura_gcc;..\..\..\asp3_dcre\tinet;..\..\..\asp3_dcre\tinet\netdev\if_rx62n;..\..\..\asp3_dcre\gdic\adafruit_ssd1306;..\..\..\mruby-1.4.1\include;..\..\..\ntshell\fatfs;..\..\..\ntshell\lcd;..\..\..\asp3_dcre\syssvc\tlsf;..\..\..\ntshell\ntshell;..\..\..\ntshell\src;..\..\..\btstack\include;..\..\..\btstack\src;..\..\..\usbhost\src;..\..\..\wolfssl-3.15.7;..\..\..\curl-7.57.0;..\..\..\curl-7.57.0\include;..\..\..\expat-2.2.5\src;..\..\..\onigmo-6.1.3\src;..\..\..\azure_iothub\c-utility\inc;..\..\..\azure_iothub\c-utility\pal\toppers;..\..\..\azure_iothub\certs;..\..\..\azure_iothub\iothub_client\inc;..\..\..\azure_iothub\provisioning_client\inc;..\..\..\azure_iothub\deps\parson;..\..\..\azure_iothub\deps\azure-macro-utils-c\inc;..\..\..\azure_iothub\deps\umock-c\inc;..\..\..\azure_iothub\serializer\inc;..\..\..\app_iothub_client\src;..\..\..\app_iothub_client\pinkit;..\sim;..\sim\rx63n;.</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;_USRDLL;TOPPERS_OMIT_TECS;TARGET_KERNEL_ASP;SUPPORT_INET4;SUPPORT_INET6;SUPPORT_ETHER;SUPPORT_TCP;SUPPORT_UDP;SUPPORT_IGMP;USE_NETAPP_SUBR;DHCP4_CLI_CFG;USE_PING;USE_RESOLVER;ADAFRUIT_SSD1306;WOLFSSL_USER_SETTINGS;HAVE_CONFIG_H;__POCC__;HAVE_EXPAT_CONFIG_H;XML_STATIC;ADAFRUIT_SSD1306;MRB_ENABLE_DEBUG_HOOK;MRB_USE_PRESET_SYMBOLS;MRB_USE_ETEXT_EDATA;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <TreatSpecificWarningsAsErrors>4002;4003;4005;4007;4010;4013;4015;4020;4022;4024;4028;4029;4031;4033;4034;4042;4047;4048;4049;4056;4067;4074;4079;4083;4088;4089;4090;4091;4094;4096;4098;4099;4113;4715;4716</TreatSpecificWarningsAsErrors>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <UndefinePreprocessorDefinitions>_WIN32</UndefinePreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\libmusl\include;..\..\..\asp3_dcre;..\..\..\asp3_dcre\include;..\..\..\asp3_dcre\kernel;..\..\..\asp3_dcre\mbed;..\..\..\asp3_dcre\mbed\hal;..\..\..\asp3_dcre\mbed\target;..\..\..\asp3_dcre\arch\msvc;..\..\..\asp3_dcre\arch\rx630_msvc;..\..\..\asp3_dcre\target\gr_sakura_gcc;..\..\..\asp3_dcre\tinet;..\..\..\asp3_dcre\tinet\netdev\if_rx62n;..\..\..\asp3_dcre\gdic\adafruit_ssd1306;..\..\..\mruby-1.4.1\include;..\..\..\ntshell\fatfs;..\..\..\ntshell\lcd;..\..\..\asp3_dcre\syssvc\tlsf;..\..\..\ntshell\ntshell;..\..\..\ntshell\src;..\..\..\btstack\include;..\..\..\btstack\src;..\..\..\usbhost\src;..\..\..\wolfssl-3.15.7;..\..\..\curl-7.57.0;..\..\..\curl-7.57.0\include;..\..\..\expat-2.2.5\src;..\..\..\onigmo-6.1.3\src;..\..\..\azure_iothub\c-utility\inc;..\..\..\azure_iothub\c-utility\pal\toppers;..\..\..\azure_iothub\certs;..\..\..\azure_iothub\iothub_client\inc;..\..\..\azure_iothub\provisioning_client\inc;..\..\..\azure_iothub\deps\parson;..\..\..\azure_iothub\deps\azure-macro-utils-c\inc;..\..\..\azure_iothub\deps\umock-c\inc;..\..\..\azure_iothub\serializer\inc;..\..\..\app_iothub_client\src;..\..\..\app_iothub_client\pinkit;..\sim;..\sim\rx63n;.</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;_USRDLL;TOPPERS_OMIT_TECS;TARGET_KERNEL_ASP;SUPPORT_INET4;SUPPORT_INET6;SUPPORT_ETHER;SUPPORT_TCP;SUPPORT_UDP;SUPPORT_IGMP;USE_NETAPP_SUBR;DHCP4_CLI_CFG;USE_PING;USE_RESOLVER;ADAFRUIT_SSD1306;WOLFSSL_USER_SETTINGS;HAVE_CONFIG_H;__POCC__;HAVE_EXPAT_CONFIG_H;XML_STATIC;ADAFRUIT_SSD1306;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <TreatSpecificWarningsAsErrors>4002;4003;4005;4007;4010;4013;4015;4020;4022;4024;4028;4029;4031;4033;4034;4042;4047;4048;4049;4056;4067;4074;4079;4083;4088;4089;4090;4091;4094;4096;4098;4099;4113;4715;4716</TreatSpecificWarningsAsErrors>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <UndefinePreprocessorDefinitions>_WIN32</UndefinePreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\app_iothub_client\pinkit\accelerometer.c" />
+    <ClCompile Include="..\..\..\app_iothub_client\pinkit\boardfullcolorled.c" />
+    <ClCompile Include="..\..\..\app_iothub_client\pinkit\lightsensor.c" />
+    <ClCompile Include="..\..\..\app_iothub_client\pinkit\pinkit.c" />
+    <ClCompile Include="..\..\..\app_iothub_client\pinkit\temperature.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\gdic\adafruit_ssd1306\adafruit_ssd1306.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\syssvc\musl_adapter.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netdev\if_rx62n\ether_phy.c" />
+    <ClCompile Include="..\..\..\ntshell\lcd\adafruit_gfx.c" />
+    <ClCompile Include="..\..\..\ntshell\lcd\draw_font.c" />
+    <ClCompile Include="..\..\..\ntshell\lcd\misaki_font.c" />
+    <ClCompile Include="..\..\..\ntshell\src\stdio_stub.c" />
+    <ClCompile Include="..\..\..\app_iothub_client\src\client.c" />
+    <ClCompile Include="..\..\..\app_iothub_client\src\code.c" />
+    <ClCompile Include="..\..\..\app_iothub_client\src\envcmd.c" />
+    <ClCompile Include="..\..\..\app_iothub_client\src\main.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\library\log_output.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\library\strerror.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\library\t_perror.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\library\vasyslog.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\syssvc\banner.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\syssvc\serial.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\target\gr_sakura_gcc\tinet_target_config.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netapp\dhcp4_cli.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netapp\netapp_subr.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netapp\ping.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netapp\ping6.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netapp\resolver.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netdev\if_rx62n\if_rx62n.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet6\ah_input.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet6\dest6.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet6\esp_input.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet6\frag6.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet6\icmp6.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet6\if6_ether.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet6\in6.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet6\in6_ifattach.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet6\in6_subr.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet6\ip6_input.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet6\ip6_output.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet6\nd6.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet6\nd6_nbr.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet6\nd6_rtr.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet6\route6.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet6\scope6.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet6\udp6_input.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet6\udp6_subr.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet\if_ether.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet\in4_subr.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet\in_subr.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet\ip_icmp.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet\ip_igmp.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet\ip_input.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet\ip_output.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet\tcpn_usrreq.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet\tcp_input.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet\tcp_output.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet\tcp_subr.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet\tcp_subr_cs.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet\tcp_subr_ncs.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet\tcp_timer.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet\tcp_usrreq.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet\udp4_input.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet\udp4_subr.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet\udpn_input.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet\udpn_output.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet\udpn_subr.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet\udpn_usrreq.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet\udpn_usrreq_nblk.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet\udp_input.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet\udp_output.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet\udp_subr.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet\udp_usrreq.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\netinet\udp_usrreq_nblk.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\net\ethernet.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\net\if.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\net\net_buf.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\net\net_count.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\net\net_subr.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\tinet\net\net_timer.c" />
+    <ClCompile Include="..\..\..\ntshell\fatfs\ccsbcs.c" />
+    <ClCompile Include="..\..\..\ntshell\fatfs\diskio.c" />
+    <ClCompile Include="..\..\..\ntshell\fatfs\ff.c" />
+    <ClCompile Include="..\..\..\ntshell\fatfs\ffarch.c" />
+    <ClCompile Include="..\..\..\ntshell\fatfs\mmc_rspi.c" />
+    <ClCompile Include="..\..\..\ntshell\ntshell\core\ntlibc.c" />
+    <ClCompile Include="..\..\..\ntshell\ntshell\core\ntshell.c" />
+    <ClCompile Include="..\..\..\ntshell\ntshell\core\text_editor.c" />
+    <ClCompile Include="..\..\..\ntshell\ntshell\core\text_history.c" />
+    <ClCompile Include="..\..\..\ntshell\ntshell\core\vtrecv.c" />
+    <ClCompile Include="..\..\..\ntshell\ntshell\core\vtsend.c" />
+    <ClCompile Include="..\..\..\ntshell\ntshell\usrcmd.c" />
+    <ClCompile Include="..\..\..\ntshell\ntshell\util\ntopt.c" />
+    <ClCompile Include="..\..\..\ntshell\ntshell\util\ntstdio.c" />
+    <ClCompile Include="..\..\..\ntshell\src\fdtable.c" />
+    <ClCompile Include="..\..\..\ntshell\src\io_stub.c" />
+    <ClCompile Include="..\..\..\ntshell\src\netcmd.c" />
+    <ClCompile Include="..\..\..\ntshell\src\net_misc.c" />
+    <ClCompile Include="..\..\..\ntshell\src\ntp_cli.c" />
+    <ClCompile Include="..\..\..\ntshell\src\ntshell_main.c" />
+    <ClCompile Include="..\..\..\ntshell\src\route_cfg.c" />
+    <ClCompile Include="..\..\..\ntshell\src\socket_stub.c" />
+    <ClCompile Include="..\..\..\ntshell\src\syscall.c" />
+    <ClCompile Include="..\..\..\asp3_dcre\syssvc\tlsf\tlsf.c" />
+    <ClCompile Include="kernel_cfg.c" />
+    <ClCompile Include="tinet_cfg.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\app_iothub_client\pinkit\accelerometer.h" />
+    <ClInclude Include="..\..\..\app_iothub_client\pinkit\boardfullcolorled.h" />
+    <ClInclude Include="..\..\..\app_iothub_client\pinkit\lightsensor.h" />
+    <ClInclude Include="..\..\..\app_iothub_client\pinkit\pinkit.h" />
+    <ClInclude Include="..\..\..\app_iothub_client\pinkit\temperature.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\gdic\adafruit_ssd1306\adafruit_ssd1306.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\syssvc\musl_adapter.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netdev\if_rx62n\ether_phy.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netdev\if_rx62n\if_rx62nreg.h" />
+    <ClInclude Include="..\..\..\ntshell\lcd\adafruit_gfx.h" />
+    <ClInclude Include="..\..\..\ntshell\lcd\draw_font.h" />
+    <ClInclude Include="..\..\..\ntshell\lcd\misaki_font.h" />
+    <ClInclude Include="..\..\..\app_iothub_client\src\client.h" />
+    <ClInclude Include="..\..\..\app_iothub_client\src\main.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\syssvc\banner.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\syssvc\histogram.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\syssvc\serial.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\target\gr_sakura_gcc\tinet_target_config.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\target\gr_sakura_gcc\tinet_target_defs.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netapp\dhcp4_cli.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netapp\resolver.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netdev\if_rx62n\if_rx62n.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netdev\if_rx62n\nic_rename.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netdev\if_rx62n\tinet_nic_config.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netdev\if_rx62n\tinet_nic_defs.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet6\ah.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet6\ah6.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet6\esp.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet6\esp6.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet6\if6_ether.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet6\in6.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet6\in6_ifattach.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet6\in6_rename.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet6\in6_var.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet6\ip6_var.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet6\nd6.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet\icmp6.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet\icmp_var.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet\if_ether.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet\in.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet\in4.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet\in4_var.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet\in_itron.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet\in_rename.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet\in_var.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet\ip.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet\ip4_var.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet\ip6.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet\ip_icmp.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet\ip_igmp.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet\ip_var.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet\tcp.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet\tcp_fsm.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet\tcp_seq.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet\tcp_timer.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet\tcp_var.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet\udp.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\netinet\udp_var.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\net\ethernet.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\net\ether_var.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\net\if.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\net\if6_var.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\net\if_arp.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\net\if_llc.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\net\if_types.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\net\if_var.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\net\net.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\net\net_buf.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\net\net_count.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\net\net_endian.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\net\net_rename.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\net\net_timer.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\net\net_var.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\net\route.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\net\tinet.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\tinet_config.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\tinet_defs.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\tinet\tinet_kernel_defs.h" />
+    <ClInclude Include="..\..\..\ntshell\fatfs\diskio.h" />
+    <ClInclude Include="..\..\..\ntshell\fatfs\ff.h" />
+    <ClInclude Include="..\..\..\ntshell\fatfs\ffarch.h" />
+    <ClInclude Include="..\..\..\ntshell\fatfs\ffconf.h" />
+    <ClInclude Include="..\..\..\ntshell\fatfs\integer.h" />
+    <ClInclude Include="..\..\..\ntshell\fatfs\mmc_rspi.h" />
+    <ClInclude Include="..\..\..\ntshell\ntshell\core\ntconf.h" />
+    <ClInclude Include="..\..\..\ntshell\ntshell\core\ntint.h" />
+    <ClInclude Include="..\..\..\ntshell\ntshell\core\ntlibc.h" />
+    <ClInclude Include="..\..\..\ntshell\ntshell\core\ntshell.h" />
+    <ClInclude Include="..\..\..\ntshell\ntshell\core\text_editor.h" />
+    <ClInclude Include="..\..\..\ntshell\ntshell\core\text_history.h" />
+    <ClInclude Include="..\..\..\ntshell\ntshell\core\vtrecv.h" />
+    <ClInclude Include="..\..\..\ntshell\ntshell\core\vtsend.h" />
+    <ClInclude Include="..\..\..\ntshell\ntshell\usrcmd.h" />
+    <ClInclude Include="..\..\..\ntshell\ntshell\util\ntopt.h" />
+    <ClInclude Include="..\..\..\ntshell\ntshell\util\ntstdio.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\mbed\target\device.h" />
+    <ClInclude Include="..\..\..\ntshell\src\net_misc.h" />
+    <ClInclude Include="..\..\..\ntshell\src\ntp_cli.h" />
+    <ClInclude Include="..\..\..\ntshell\src\ntshell_main.h" />
+    <ClInclude Include="..\..\..\ntshell\src\shellif.h" />
+    <ClInclude Include="..\..\..\ntshell\src\socket_stub.h" />
+    <ClInclude Include="..\..\..\ntshell\src\tinet_app_config.h" />
+    <ClInclude Include="..\..\..\asp3_dcre\syssvc\tlsf\tlsf.h" />
+    <ClInclude Include="..\..\..\app_iothub_client\src\mrb_lcd.h" />
+    <ClInclude Include="..\..\..\app_iothub_client\src\mrb_remocon.h" />
+    <ClInclude Include="..\..\..\app_iothub_client\src\tinet_app_config.h" />
+    <ClInclude Include="kernel_cfg.h" />
+    <ClInclude Include="tinet_cfg.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\app_iothub_client\pinkit\pinkit.cfg" />
+    <None Include="..\..\..\asp3_dcre\syssvc\banner.cfg" />
+    <None Include="..\..\..\asp3_dcre\syssvc\logtask.cfg" />
+    <None Include="..\..\..\asp3_dcre\syssvc\serial.cfg" />
+    <None Include="..\..\..\asp3_dcre\syssvc\syslog.cfg" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="kernel.res">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\cfg\cfg.vcxproj">
+      <Project>{FE22754D-44F1-421E-A10E-E37B8356DFA7}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

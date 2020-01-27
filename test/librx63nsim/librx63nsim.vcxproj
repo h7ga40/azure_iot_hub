@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{54495CFB-722C-4594-88DB-2B4E8331A014}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>librx63nsim</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>false</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;TOPPERS_OMIT_TECS;TARGET_KERNEL_ASP;SUPPORT_INET4;SUPPORT_INET6;SUPPORT_ETHER;SUPPORT_TCP;SUPPORT_UDP;SUPPORT_IGMP;USE_NETAPP_SUBR;DHCP4_CLI_CFG;USE_PING;USE_RESOLVER;MRB_ENABLE_DEBUG_HOOK;MRB_USE_PRESET_SYMBOLS;MRB_USE_ETEXT_EDATA;ADAFRUIT_SSD1306;WOLFSSL_USER_SETTINGS;HAVE_CONFIG_H;__POCC__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>false</ConformanceMode>
+      <AdditionalIncludeDirectories>..\..\asp3_dcre;..\..\asp3_dcre\include;..\..\asp3_dcre\kernel;..\..\asp3_dcre\mbed;..\..\asp3_dcre\mbed\hal;..\..\asp3_dcre\mbed\target;..\..\asp3_dcre\arch\msvc;..\..\asp3_dcre\arch\rx630_msvc;..\..\asp3_dcre\target\gr_sakura_gcc;..\sim;..\sim\rx63n;..\softgun;..\softgun\stdinc;..\softgun\sdcard;.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <TreatSpecificWarningsAsErrors>4002;4003;4005;4007;4010;4013;4015;4020;4022;4024;4028;4029;4031;4033;4034;4042;4047;4048;4049;4056;4067;4074;4079;4083;4088;4089;4090;4091;4094;4096;4098;4099;4113;4715;4716</TreatSpecificWarningsAsErrors>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="..\sim\DebugHeap.h" />
+    <ClInclude Include="..\sim\SIFLayer.h" />
+    <ClInclude Include="..\sim\WinKernel.h" />
+    <ClInclude Include="..\sim\rx63n\RX63NReg.h" />
+    <ClInclude Include="..\sim\rx63n\SDCard.h" />
+    <ClInclude Include="..\sim\rx63n\SifCMT.h" />
+    <ClInclude Include="..\sim\rx63n\SifEtherCtrl.h" />
+    <ClInclude Include="..\sim\rx63n\SifFLASH.h" />
+    <ClInclude Include="..\sim\rx63n\SifRIIC.h" />
+    <ClInclude Include="..\sim\rx63n\SifRSPI.h" />
+    <ClInclude Include="..\sim\rx63n\SifRX63N.h" />
+    <ClInclude Include="..\sim\rx63n\SifS12AD.h" />
+    <ClInclude Include="..\sim\rx63n\SifSCI.h" />
+    <ClInclude Include="..\sim\rx63n\SifUSB.h" />
+    <ClInclude Include="..\sim\rx63n\UsbBluetooth.h" />
+    <ClInclude Include="..\softgun\clock.h" />
+    <ClInclude Include="..\softgun\compiler_extensions.h" />
+    <ClInclude Include="..\softgun\configfile.h" />
+    <ClInclude Include="..\softgun\cycletimer.h" />
+    <ClInclude Include="..\softgun\diskimage.h" />
+    <ClInclude Include="..\softgun\mmcdev.h" />
+    <ClInclude Include="..\softgun\mmcproto.h" />
+    <ClInclude Include="..\softgun\sdcard\mmc_crc.h" />
+    <ClInclude Include="..\softgun\sdcard\mmcard.h" />
+    <ClInclude Include="..\softgun\sdcard\sd_spi.h" />
+    <ClInclude Include="..\softgun\sdcard\sdhci.h" />
+    <ClInclude Include="..\softgun\sglib.h" />
+    <ClInclude Include="..\softgun\sgstring.h" />
+    <ClInclude Include="..\softgun\sgtypes.h" />
+    <ClInclude Include="..\softgun\signode.h" />
+    <ClInclude Include="..\softgun\strhash.h" />
+    <ClInclude Include="..\softgun\xy_hash.h" />
+    <ClInclude Include="..\softgun\xy_tree.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\asp3_dcre\arch\rx630_msvc\prc_support.cpp" />
+    <ClCompile Include="..\sim\DebugHeap.cpp" />
+    <ClCompile Include="..\sim\SIFLayer.cpp" />
+    <ClCompile Include="..\sim\WinKernel.cpp" />
+    <ClCompile Include="..\sim\rx63n\SDCard.cpp" />
+    <ClCompile Include="..\sim\rx63n\SifCMT.cpp" />
+    <ClCompile Include="..\sim\rx63n\SifEtherCtrl.cpp" />
+    <ClCompile Include="..\sim\rx63n\SifFLASH.cpp" />
+    <ClCompile Include="..\sim\rx63n\SifRIIC.cpp" />
+    <ClCompile Include="..\sim\rx63n\SifRSPI.cpp" />
+    <ClCompile Include="..\sim\rx63n\SifRX63N.cpp" />
+    <ClCompile Include="..\sim\rx63n\SifS12AD.cpp" />
+    <ClCompile Include="..\sim\rx63n\SifSCI.cpp" />
+    <ClCompile Include="..\sim\rx63n\SifUSB.cpp" />
+    <ClCompile Include="..\sim\rx63n\UsbBluetooth.cpp" />
+    <ClCompile Include="..\softgun\clock.cpp" />
+    <ClCompile Include="..\softgun\configfile.cpp" />
+    <ClCompile Include="..\softgun\cycletimer.cpp" />
+    <ClCompile Include="..\softgun\diskimage.cpp" />
+    <ClCompile Include="..\softgun\mmcdev.cpp" />
+    <ClCompile Include="..\softgun\sdcard\mmc_crc.cpp" />
+    <ClCompile Include="..\softgun\sdcard\mmcard.cpp" />
+    <ClCompile Include="..\softgun\sdcard\sd_spi.cpp" />
+    <ClCompile Include="..\softgun\sglib.cpp" />
+    <ClCompile Include="..\softgun\sgstring.cpp" />
+    <ClCompile Include="..\softgun\signode.cpp" />
+    <ClCompile Include="..\softgun\strhash.cpp" />
+    <ClCompile Include="..\softgun\xy_hash.cpp" />
+    <ClCompile Include="..\softgun\xy_tree.cpp" />
+    <ClCompile Include="sil.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

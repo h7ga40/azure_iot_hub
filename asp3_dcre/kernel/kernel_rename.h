@@ -56,8 +56,12 @@
  */
 #define boundary_evttim				_kernel_boundary_evttim
 #define current_evttim				_kernel_current_evttim
+#define current_evttim_frac			_kernel_current_evttim_frac
 #define current_hrtcnt				_kernel_current_hrtcnt
 #define monotonic_evttim			_kernel_monotonic_evttim
+#define drift_rate					_kernel_drift_rate
+#define evttim_step					_kernel_evttim_step
+#define evttim_step_frac			_kernel_evttim_step_frac
 #define systim_offset				_kernel_systim_offset
 #define in_signal_time				_kernel_in_signal_time
 #define initialize_tmevt			_kernel_initialize_tmevt
@@ -147,6 +151,13 @@
 #define call_alarm					_kernel_call_alarm
 
 /*
+ *  overrun.c
+ */
+#define ovrtimer_start				_kernel_ovrtimer_start
+#define ovrtimer_stop				_kernel_ovrtimer_stop
+#define call_ovrhdr					_kernel_call_ovrhdr
+
+/*
  *  interrupt.c
  */
 #define free_isrcb					_kernel_free_isrcb
@@ -215,6 +226,7 @@
 #define aalminib_table				_kernel_aalminib_table
 #define aalm_nfyinfo_table			_kernel_aalm_nfyinfo_table
 #define almcb_table					_kernel_almcb_table
+#define ovrinib						_kernel_ovrinib
 #define tnum_isr_queue				_kernel_tnum_isr_queue
 #define isr_queue_list				_kernel_isr_queue_list
 #define isr_queue_table				_kernel_isr_queue_table

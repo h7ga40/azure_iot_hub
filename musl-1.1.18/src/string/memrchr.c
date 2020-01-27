@@ -9,4 +9,11 @@ void *__memrchr(const void *m, int c, size_t n)
 	return 0;
 }
 
+#ifndef __c2__
 weak_alias(__memrchr, memrchr);
+#else
+void *memrchr(const void *m, int c, size_t n)
+{
+	return __memrchr(m, c, n);
+}
+#endif

@@ -50,6 +50,10 @@ ASN Options:
     DecodedCert. Doubles up on some code but allows smaller dynamic memory
     usage.
 */
+#ifdef _MSC_VER
+#define ASN_DUMP_OID
+extern void __stdcall OutputDebugStringA(const char *text);
+#endif
 
 #ifndef NO_ASN
 
@@ -2133,6 +2137,10 @@ int GetObjectId(const byte* input, word32* inOutIdx, word32* oid,
         word32 checkOidSz;
     #ifdef ASN_DUMP_OID
         word32 i;
+        #ifdef _MSC_VER
+        char text[64];
+        int pos = 0;
+        #endif
     #endif
 
         if (oidType != oidIgnoreType) {
@@ -2140,11 +2148,20 @@ int GetObjectId(const byte* input, word32* inOutIdx, word32* oid,
 
         #ifdef ASN_DUMP_OID
             /* support for dumping OID information */
+#ifndef _MSC_VER
             printf("OID (Type %d, Sz %d, Sum %d): ", oidType, actualOidSz, *oid);
             for (i=0; i<actualOidSz; i++) {
                 printf("%d, ", actualOid[i]);
             }
             printf("\n");
+#else
+            pos += sprintf(text, "OID (Type %d, Sz %d, Sum %d): ", oidType, actualOidSz, *oid);
+            for (i=0; i<actualOidSz; i++) {
+                pos += sprintf(&text[pos], "%d, ", actualOid[i]);
+            }
+            pos += sprintf(&text[pos], "\n");
+            OutputDebugStringA(text);
+#endif
             #ifdef HAVE_OID_DECODING
             {
                 word16 decOid[16];
@@ -2217,6 +2234,8 @@ WOLFSSL_LOCAL int GetAlgoId(const byte* input, word32* inOutIdx, word32* oid,
     }
 
     *inOutIdx = idx;
+
+    WOLFSSL_LEAVE("GetAlgoId", idx);
 
     return 0;
 }

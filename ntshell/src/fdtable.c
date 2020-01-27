@@ -419,6 +419,8 @@ ER shell_get_evts(struct fd_events *evts, TMO tmout)
 	return (flgptn == 0) ? E_TMOUT : E_OK;
 }
 
+struct SHELL_FILE io_type;
+
 void clean_fd()
 {
 	struct SHELL_FILE *fp = NULL;
@@ -427,6 +429,7 @@ void clean_fd()
 		if ((fp->type == 0) || (fp->fd == 0))
 			continue;
 
+		memcpy(&io_type, fp, sizeof(struct SHELL_FILE));
 		fp->type->close(fp);
 
 		delete_fp(fp);

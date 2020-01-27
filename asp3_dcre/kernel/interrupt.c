@@ -48,6 +48,7 @@
 #include "check.h"
 #include "task.h"
 #include "interrupt.h"
+#include "overrun.h"
 
 /*
  *  トレースログマクロのデフォルト定義
@@ -627,6 +628,11 @@ chg_ipm(PRI intpri)
 	if (intpri == TIPM_ENAALL && enadsp) {
 		set_dspflg();
 		if (p_runtsk->raster && p_runtsk->enater) {
+#ifdef TOPPERS_SUPPORT_OVRHDR
+			if (p_runtsk->staovr) {
+				(void) target_ovrtimer_stop(INTNO_DUMMY_TIMER);
+			}
+#endif /* TOPPERS_SUPPORT_OVRHDR */
 			task_terminate(p_runtsk);
 			exit_and_dispatch();
 			ercd = E_SYS;

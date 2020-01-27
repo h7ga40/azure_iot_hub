@@ -51,7 +51,7 @@
  *  行実行されるタスク（TASK1～TASK3），例外処理タスク（EXC_TASK）の5
  *  つのタスクを用いる．これらの他に，システムログタスクが動作する．ま
  *  た，周期ハンドラ，アラームハンドラ，割込みサービスルーチン，CPU例
- *  外ハンドラをそれぞれ1つ用いる．
+ *  外ハンドラ，オーバランハンドラをそれぞれ1つ用いる．
  *
  *  並行実行されるタスクは，task_loop回のループを実行する度に，タスク
  *  が実行中であることをあらわすメッセージを表示する．ループを実行する
@@ -108,6 +108,8 @@
  *  '$' : アラームハンドラをacre_almにより生成する．
  *  '#' : アラームハンドラをdel_almにより削除する．
  *  'V' : 短いループを挟んで，fch_hrtで高分解能タイマを2回読む．
+ *  'o' : 対象タスクに対してオーバランハンドラを動作開始させる．
+ *  'O' : 対象タスクに対してオーバランハンドラを動作停止させる．
  *  'v' : 発行したシステムコールを表示する（デフォルト）．
  *  'q' : 発行したシステムコールを表示しない．
  */
@@ -171,10 +173,25 @@ task(intptr_t exinf)
 	int_t		tskno = (int_t) exinf;
 	const char	*graph[] = { "|", "  +", "    *" };
 	char		c;
+#ifdef TOPPERS_SUPPORT_OVRHDR
+	T_ROVR		pk_rovr;
+#endif /* TOPPERS_SUPPORT_OVRHDR */
 
 	while (true) {
+#ifdef TOPPERS_SUPPORT_OVRHDR
+		SVC_PERROR(ref_ovr(TSK_SELF, &pk_rovr));
+		if ((pk_rovr.ovrstat & TOVR_STA) != 0) {
+			syslog(LOG_NOTICE, "task%d is running (%03d).   %s  [%ld]",
+								tskno, ++n, graph[tskno-1], pk_rovr.leftotm);
+		}
+		else {
+			syslog(LOG_NOTICE, "task%d is running (%03d).   %s",
+										tskno, ++n, graph[tskno-1]);
+		}
+#else /* TOPPERS_SUPPORT_OVRHDR */
 		syslog(LOG_NOTICE, "task%d is running (%03d).   %s",
 										tskno, ++n, graph[tskno-1]);
+#endif /* TOPPERS_SUPPORT_OVRHDR */
 		consume_time(task_loop);
 		c = message[tskno-1];
 		message[tskno-1] = 0;
@@ -310,6 +327,21 @@ exc_task(intptr_t exinf)
 {
 	SVC_PERROR(ras_ter(cpuexc_tskid));
 }
+
+/*
+ *  オーバランハンドラ
+ */
+#ifdef TOPPERS_SUPPORT_OVRHDR
+
+void
+overrun_handler(ID tskid, intptr_t exinf)
+{
+	int_t	tskno = (int_t) exinf;
+
+	syslog(LOG_NOTICE, "Overrun handler for task%d.", tskno);
+}
+
+#endif /* TOPPERS_SUPPORT_OVRHDR */
 
 /*
  *  メインタスク
@@ -550,6 +582,23 @@ main_task(intptr_t exinf)
 			hrtcnt2 = fch_hrt();
 			syslog(LOG_NOTICE, "hrtcnt1 = %tu, hrtcnt2 = %tu",
 								(uint32_t) hrtcnt1, (uint32_t) hrtcnt2);
+			break;
+
+		case 'o':
+#ifdef TOPPERS_SUPPORT_OVRHDR
+			syslog(LOG_INFO, "#sta_ovr(%d, 2000000)", tskno);
+			SVC_PERROR(sta_ovr(tskid, 2000000));
+#else /* TOPPERS_SUPPORT_OVRHDR */
+			syslog(LOG_NOTICE, "sta_ovr is not supported.");
+#endif /* TOPPERS_SUPPORT_OVRHDR */
+			break;
+		case 'O':
+#ifdef TOPPERS_SUPPORT_OVRHDR
+			syslog(LOG_INFO, "#stp_ovr(%d)", tskno);
+			SVC_PERROR(stp_ovr(tskid));
+#else /* TOPPERS_SUPPORT_OVRHDR */
+			syslog(LOG_NOTICE, "stp_ovr is not supported.");
+#endif /* TOPPERS_SUPPORT_OVRHDR */
 			break;
 
 		case 'v':

@@ -1,0 +1,13 @@
+TA_EDGE
+TA_LOWLEVEL
+TA_BOTHEDGE
+TA_NEGEDGE
+TIPM_LOCK,,signed
+IPL_LOCK
+PSW_I_MASK
+PSW_IPL_MASK
+EXC_GET_PSW_OFFSET
+sizeof_TCB,sizeof(TCB)
+offsetof_TCB_p_tinib,"offsetof(TCB,p_tinib)"
+offsetof_TCB_start,"offsetof(TCB,tskctxb.start)"
+offsetof_TCB_cpu_context,"offsetof(TCB,tskctxb.cpu_context)"

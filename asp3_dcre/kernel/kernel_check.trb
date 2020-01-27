@@ -304,6 +304,23 @@ $cfgData[:CRE_ALM].sort.each do |key, params|
 end
 
 #
+#  オーバランハンドラに関するチェック
+#
+if $cfgData[:DEF_OVR].size > 0
+  params0 = $cfgData[:DEF_OVR][1]
+  ovrinib = SYMBOL("_kernel_ovrinib")
+  ovrhdr = PEEK(ovrinib + $offsetof_OVRINIB_ovrhdr, $sizeof_OVRHDR)
+
+  # ovrhdrがプログラムの先頭番地として正しくない場合（E_PAR）［NGKI2613］
+  if (ovrhdr & ($CHECK_FUNC_ALIGN - 1)) != 0
+    error_wrong("E_PAR", params0, :ovrhdr, "not aligned")
+  end
+  if $CHECK_FUNC_NONNULL && ovrhdr == 0
+    error_wrong("E_PAR", params0, :ovrhdr, "null")
+  end
+end
+
+#
 #  割込みサービスルーチンに関するチェック
 #
 isrinib = SYMBOL("_kernel_isrinib_table")

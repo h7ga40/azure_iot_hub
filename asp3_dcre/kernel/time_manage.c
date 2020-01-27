@@ -81,6 +81,14 @@
 #define LOG_ADJ_TIM_LEAVE(ercd)
 #endif /* LOG_ADJ_TIM_LEAVE */
 
+#ifndef LOG_SET_DFT_ENTER
+#define LOG_SET_DFT_ENTER(drift)
+#endif /* LOG_SET_DFT_ENTER */
+
+#ifndef LOG_SET_DFT_LEAVE
+#define LOG_SET_DFT_LEAVE(ercd)
+#endif /* LOG_SET_DFT_LEAVE */
+
 #ifndef LOG_FCH_HRT_ENTER
 #define LOG_FCH_HRT_ENTER()
 #endif /* LOG_FCH_HRT_ENTER */
@@ -189,6 +197,39 @@ adj_tim(int32_t adjtim)
 }
 
 #endif /* TOPPERS_adj_tim */
+
+/*
+ *  ドリフト量の設定［NGKI3596］
+ */
+#ifdef TOPPERS_set_dft
+
+ER
+set_dft(int32_t drift)
+{
+	ER		ercd;
+
+	LOG_SET_DFT_ENTER(drift);
+	CHECK_UNL();								/*［NGKI3598］*/
+	CHECK_PAR(TMIN_DRIFT <= drift && drift <= TMAX_DRIFT);
+												/*［NGKI3599］*/
+	lock_cpu();
+	update_current_evttim();
+
+	drift_rate = (uint32_t)(1000000U + drift);	/*［NGKI3601］*/
+
+	evttim_step = (TSTEP_HRTCNT * drift_rate + 999999U) / 1000000U;
+	evttim_step_frac = (TSTEP_HRTCNT * drift_rate + 999999U) % 1000000U;
+
+	set_hrt_event();
+	ercd = E_OK;
+	unlock_cpu();
+
+  error_exit:
+	LOG_SET_DFT_LEAVE(ercd);
+	return(ercd);
+}
+
+#endif /* TOPPERS_set_dft */
 
 /*
  *  高分解能タイマの参照［NGKI3569］

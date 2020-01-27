@@ -10,4 +10,11 @@ int __mprotect(void *addr, size_t len, int prot)
 	return syscall(SYS_mprotect, start, end-start, prot);
 }
 
+#ifndef __c2__
 weak_alias(__mprotect, mprotect);
+#else
+int mprotect(void *addr, size_t len, int prot)
+{
+	return __mprotect(addr, len, prot);
+}
+#endif

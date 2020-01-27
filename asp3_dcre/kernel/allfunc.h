@@ -211,6 +211,7 @@
 #define TOPPERS_set_tim
 #define TOPPERS_get_tim
 #define TOPPERS_adj_tim
+#define TOPPERS_set_dft
 #define TOPPERS_fch_hrt
 #define TOPPERS_chknfy
 #define TOPPERS_nfyhdr
@@ -232,6 +233,14 @@
 #define TOPPERS_stp_alm
 #define TOPPERS_ref_alm
 #define TOPPERS_almcal
+
+/* overrun.c */
+#define TOPPERS_ovrsta
+#define TOPPERS_ovrstp
+#define TOPPERS_sta_ovr
+#define TOPPERS_stp_ovr
+#define TOPPERS_ref_ovr
+#define TOPPERS_ovrcal
 
 /* sys_manage.c */
 #define TOPPERS_rot_rdq

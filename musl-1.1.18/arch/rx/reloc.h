@@ -49,6 +49,11 @@
 	"1:	.long " #sym "@GOTOFFFUNCDESC \n2:" \
 	: "=&r"(*fp) : "r"(got) : "memory" )
 #else
+#ifndef __c2__
 #define CRTJMP(pc,sp) __asm__ __volatile__( \
 	"jsr %0 ; mov %1,r15" : : "r"(pc), "r"(sp) : "memory" )
+#else
+#define CRTJMP(pc,sp) __asm__ __volatile__( \
+	"mov %1,%%esp ; jmp *%0" : : "r"(pc), "r"(sp) : "memory" )
+#endif
 #endif

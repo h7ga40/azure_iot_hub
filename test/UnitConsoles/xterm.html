@@ -1,0 +1,43 @@
+﻿<!doctype html>
+<html lang="ja-jp">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Terminal</title>
+	<style type="text/css" media="screen">
+		#terminal {
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			font-size: small;
+		}
+	</style>
+</head>
+<body>
+	<div id="terminal"> </div>
+	<script>
+		function start_xterm() {
+			var term = new Terminal({
+				cols: 80,
+				rows: 24,
+				useStyle: true,
+				screenKeys: true,
+				cursorBlink: true
+			});
+			term.open(document.getElementById('terminal'));
+			external.term = term;
+			term.on("data", function (data) {
+				external.on_data(data);
+			});
+			var onresize = function (e) {
+				term.fit();
+			}
+			window.addEventListener('resize', onresize, false);
+			term.fit();
+		}
+	</script>
+</body>
+</html>

@@ -91,6 +91,11 @@ extern "C" {
 #define TOPPERS_SUPPORT_PRB_INT			/* prb_intがサポートされている */
 #endif /* TOPPERS_TARGET_SUPPORT_PRB_INT */
 
+#ifdef TOPPERS_TARGET_SUPPORT_OVRHDR
+#define TOPPERS_SUPPORT_OVRHDR			/* オーバランハンドラ機能拡張 */
+#endif /* TOPPERS_TARGET_SUPPORT_OVRHDR */
+
+#define TOPPERS_SUPPORT_DRIFT			/* ドリフト調整機能拡張 */
 #define TOPPERS_SUPPORT_DYNAMIC_CRE		/* 動的生成機能拡張 */
 
 #ifndef TOPPERS_MACRO_ONLY
@@ -112,6 +117,7 @@ typedef	uint_t		EXCNO;		/* CPU例外ハンドラ番号 */
  */
 typedef void	(*TASK)(intptr_t exinf);
 typedef void	(*TMEHDR)(intptr_t exinf);
+typedef void	(*OVRHDR)(ID tskid, intptr_t exinf);
 typedef void	(*ISR)(intptr_t exinf);
 typedef void	(*INTHDR)(void);
 typedef void	(*EXCHDR)(void *p_excinf);
@@ -319,6 +325,11 @@ typedef struct t_ralm {
 	RELTIM	lefttim;	/* 通知時刻までの相対時間 */
 } T_RALM;
 
+typedef struct t_rovr {
+	STAT	ovrstat;	/* オーバランハンドラの動作状態 */
+	PRCTIM	leftotm;	/* 残りプロセッサ時間 */
+} T_ROVR;
+
 typedef struct t_cisr {
 	ATR			isratr;		/* 割込みサービスルーチン属性 */
 	intptr_t	exinf;		/* 割込みサービスルーチンの拡張情報 */
@@ -443,6 +454,7 @@ extern ER		ref_mpf(ID mpfid, T_RMPF *pk_rmpf) throw();
 extern ER		set_tim(SYSTIM systim) throw();
 extern ER		get_tim(SYSTIM *p_systim) throw();
 extern ER		adj_tim(int32_t adjtim) throw();
+extern ER		set_dft(int32_t drift) throw();
 extern HRTCNT	fch_hrt(void) throw();
 
 extern ER_ID	acre_cyc(const T_CCYC *pk_ccyc) throw();
@@ -456,6 +468,10 @@ extern ER		del_alm(ID almid) throw();
 extern ER		sta_alm(ID almid, RELTIM almtim) throw();
 extern ER		stp_alm(ID almid) throw();
 extern ER		ref_alm(ID almid, T_RALM *pk_ralm) throw();
+
+extern ER		sta_ovr(ID tskid, PRCTIM ovrtim) throw();
+extern ER		stp_ovr(ID tskid) throw();
+extern ER		ref_ovr(ID tskid, T_ROVR *pk_rovr) throw();
 
 /*
  *  システム状態管理機能
@@ -510,6 +526,8 @@ extern bool_t	xsns_dpn(void *p_excinf) throw();
 #define ifch_hrt()							fch_hrt()
 #define ista_alm(almid, almtim)				sta_alm(almid, almtim)
 #define istp_alm(almid)						stp_alm(almid)
+#define ista_ovr(tskid, ovrtim)				sta_ovr(tskid, ovrtim)
+#define istp_ovr(tskid)						stp_ovr(tskid)
 #define irot_rdq(tskpri)					rot_rdq(tskpri)
 #define iget_tid(p_tskid)					get_tid(p_tskid)
 #define iloc_cpu()							loc_cpu()
@@ -600,6 +618,9 @@ extern bool_t	xsns_dpn(void *p_excinf) throw();
 #define TALM_STP		UINT_C(0x01)	/* アラーム通知が動作していない */
 #define TALM_STA		UINT_C(0x02)	/* アラーム通知が動作している */
 
+#define TOVR_STP		UINT_C(0x01)	/* オーバランハンドラが動作していない*/
+#define TOVR_STA		UINT_C(0x02)	/* オーバランハンドラが動作している */
+
 /*
  *  その他の定数の定義
  */
@@ -651,6 +672,19 @@ extern bool_t	xsns_dpn(void *p_excinf) throw();
  */
 #define TMIN_ADJTIM		(-1000000)		/* システム時刻の最小調整時間 */
 #define TMAX_ADJTIM		1000000			/* システム時刻の最大調整時間 */
+
+/*
+ *  設定できるドリフト量の範囲（単位：ppm）
+ */
+#define TMIN_DRIFT		(-100000)		/* ドリフト量の最小値 */
+#define TMAX_DRIFT		100000			/* ドリフト量の最大値 */
+
+/*
+ *  オーバランハンドラの残りプロセッサ時間の最大値（単位：μ秒）
+ */
+#ifndef TMAX_OVRTIM
+#define TMAX_OVRTIM		UINT32_MAX
+#endif /* TMAX_OVRTIM */
 
 /*
  *  メモリ領域確保のためのマクロ

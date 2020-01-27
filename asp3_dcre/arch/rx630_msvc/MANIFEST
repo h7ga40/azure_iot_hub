@@ -1,0 +1,35 @@
+PACKAGE asp_arch_rx630_msvc
+VERSION 1.6.1
+
+MANIFEST
+genoffset.bat
+makeoffset.c
+offset.exe
+prc.tf
+prc_asm_kernel_impl.tf
+prc_cfg1_out.h
+prc_check.tf
+prc_kernel_impl.c
+prc_kernel_impl.h
+prc_def.csv
+prc_insn.h
+prc_kernel.h
+prc_rename.def
+prc_rename.h
+prc_sil.h
+prc_stddef.h
+prc_support.src
+prc_syssvc.h
+prc_test.h
+prc_test.src
+prc_unrename.h
+prc_user.txt
+rx610.h
+rx610.tf
+rx610_kernel_impl.c
+rx610_kernel_impl.h
+start.src
+
+INCLUDE ../../target/rsk_rx_hew/MANIFEST
+INCLUDE ../rxc/MANIFEST
+INCLUDE ../../pdic/rx600/MANIFEST

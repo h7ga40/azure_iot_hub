@@ -350,6 +350,7 @@ IncludeTrb("kernel/mutex.trb")
 IncludeTrb("kernel/mempfix.trb")
 IncludeTrb("kernel/cyclic.trb")
 IncludeTrb("kernel/alarm.trb")
+IncludeTrb("kernel/overrun.trb")
 IncludeTrb("kernel/interrupt.trb")
 IncludeTrb("kernel/exception.trb")
 

@@ -43,4 +43,11 @@ char *fgets(char *restrict s, int n, FILE *restrict f)
 	return s;
 }
 
+#ifndef __c2__
 weak_alias(fgets, fgets_unlocked);
+#else
+char *fgets_unlocked(char *restrict s, int n, FILE *restrict f)
+{
+	return fgets(s, n, f);
+}
+#endif

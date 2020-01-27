@@ -23,4 +23,11 @@ char *__strchrnul(const char *s, int c)
 	return (char *)s;
 }
 
+#ifndef __c2__
 weak_alias(__strchrnul, strchrnul);
+#else
+char *strchrnul(const char *s, int c)
+{
+	return __strchrnul(s, c);
+}
+#endif

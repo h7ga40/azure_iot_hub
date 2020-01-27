@@ -790,7 +790,7 @@ ssize_t shell_sendto(int fd, const void *buf, size_t len, int flags, const struc
 				for (;;) {
 					ret = tcp_snd_dat(socket->cepid, (void *)buf, len, SOCKET_TIMEOUT);
 					if (ret < 0) {
-						return (ret == E_TMOUT) ? -EAGAIN : -ECOMM;
+						return ((ret == E_TMOUT) || (ret == E_CLS)) ? -EAGAIN : -ECOMM;
 					}
 					len -= ret;
 					if (len <= 0)
@@ -811,7 +811,7 @@ ssize_t shell_sendto(int fd, const void *buf, size_t len, int flags, const struc
 			ret = udp_snd_dat(socket->cepid, &rep, (void *)buf, len,
 				(socket->flags & O_NONBLOCK) ? TMO_POL : SOCKET_TIMEOUT);
 			if (ret < 0) {
-				return (ret == E_TMOUT) ? -EAGAIN : -ECOMM;
+				return ((ret == E_TMOUT) || (ret == E_CLS)) ? -EAGAIN : -ECOMM;
 			}
 			break;
 		}
@@ -836,7 +836,7 @@ ssize_t shell_sendto(int fd, const void *buf, size_t len, int flags, const struc
 				for (;;) {
 					ret = tcp6_snd_dat(socket->cepid, (void *)buf, len, SOCKET_TIMEOUT);
 					if (ret < 0) {
-						return (ret == E_TMOUT) ? -EAGAIN : -ECOMM;
+						return ((ret == E_TMOUT) || (ret == E_CLS)) ? -EAGAIN : -ECOMM;
 					}
 					len -= ret;
 					if (len <= 0)
@@ -859,7 +859,7 @@ ssize_t shell_sendto(int fd, const void *buf, size_t len, int flags, const struc
 			ret = udp6_snd_dat(socket->cepid, &rep, (void *)buf, len,
 				(socket->flags & O_NONBLOCK) ? TMO_POL : SOCKET_TIMEOUT);
 			if (ret < 0) {
-				return (ret == E_TMOUT) ? -EAGAIN : -ECOMM;
+				return ((ret == E_TMOUT) || (ret == E_CLS)) ? -EAGAIN : -ECOMM;
 			}
 			break;
 		}
@@ -918,7 +918,7 @@ ssize_t shell_recvfrom(int fd, void *__restrict buf, size_t len, int flags, stru
 					if (ret < 0) {
 						if ((socket->flags & O_NONBLOCK) == 0)
 							syslog(LOG_ERROR, "tcp_rcv_buf => %d", ret);
-						return (ret == E_TMOUT) ? -EAGAIN : -ECOMM;
+						return ((ret == E_TMOUT) || (ret == E_CLS)) ? -EAGAIN : -ECOMM;
 					}
 					rsz = ret;
 				}
@@ -927,7 +927,7 @@ ssize_t shell_recvfrom(int fd, void *__restrict buf, size_t len, int flags, stru
 				tmp = rsz;
 				if (rsz > len)
 					rsz = len;
-				if (rsz >= 0) {
+				if (rsz > 0) {
 					memcpy(buf, socket->input, rsz);
 					ret = wai_sem(SEM_FILEDESC);
 					if (ret < 0) {
@@ -948,6 +948,9 @@ ssize_t shell_recvfrom(int fd, void *__restrict buf, size_t len, int flags, stru
 						syslog(LOG_ERROR, "tcp_rel_buf => %d", ret);
 						//return -ECOMM;
 					}
+				}
+				else {
+					syslog(LOG_ERROR, "shell_recvfrom => %d", rsz);
 				}
 				ret = rsz;
 			}
@@ -973,7 +976,7 @@ ssize_t shell_recvfrom(int fd, void *__restrict buf, size_t len, int flags, stru
 				if (ret < 0) {
 					if ((socket->flags & O_NONBLOCK) == 0)
 						syslog(LOG_ERROR, "udp_rcv_buf => %d", ret);
-					return (ret == E_TMOUT) ? -EAGAIN : -ECOMM;
+					return ((ret == E_TMOUT) || (ret == E_CLS)) ? -EAGAIN : -ECOMM;
 				}
 				rsz = ret;
 				if ((addr != NULL) && (alen != NULL)) {
@@ -1054,7 +1057,7 @@ ssize_t shell_recvfrom(int fd, void *__restrict buf, size_t len, int flags, stru
 					if (ret < 0) {
 						if ((socket->flags & O_NONBLOCK) == 0)
 							syslog(LOG_ERROR, "tcp6_rcv_buf => %d", ret);
-						return (ret == E_TMOUT) ? -EAGAIN : -ECOMM;
+						return ((ret == E_TMOUT) || (ret == E_CLS)) ? -EAGAIN : -ECOMM;
 					}
 					rsz = ret;
 				}
@@ -1109,7 +1112,7 @@ ssize_t shell_recvfrom(int fd, void *__restrict buf, size_t len, int flags, stru
 				if (ret < 0) {
 					if ((socket->flags & O_NONBLOCK) == 0)
 						syslog(LOG_ERROR, "udp6_rcv_buf => %d", ret);
-					return (ret == E_TMOUT) ? -EAGAIN : -ECOMM;
+					return ((ret == E_TMOUT) || (ret == E_CLS)) ? -EAGAIN : -ECOMM;
 				}
 				rsz = ret;
 				if ((addr != NULL) && (alen != NULL)) {

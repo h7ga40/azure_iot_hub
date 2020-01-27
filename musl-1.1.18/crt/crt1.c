@@ -7,7 +7,10 @@
 int main();
 void _init() __attribute__((weak));
 void _fini() __attribute__((weak));
-_Noreturn int __libc_start_main(int (*)(), int, char **,
+#ifndef __c2__
+_Noreturn
+#endif
+int __libc_start_main(int (*)(), int, char **,
 	void (*)(), void(*)(), void(*)());
 
 void _start_c(long *p)

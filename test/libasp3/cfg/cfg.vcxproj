@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{CB59D7C8-99F7-4069-BCEB-BB14FDC646FF}</ProjectGuid>
+    <RootNamespace>cfg</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.51106.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <PreBuildEvent>
+      <Message>delete srec and syms</Message>
+      <Command>if exist "$(TargetDir)$(TargetName).map" del "$(TargetDir)$(TargetName).map"
+if exist cfg1_out.srec del cfg1_out.srec
+if exist cfg1_out.syms del cfg1_out.syms</Command>
+    </PreBuildEvent>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\..\..\asp3_dcre;..\..\..\asp3_dcre\include;..\..\..\asp3_dcre\kernel;..\..\..\asp3_dcre\mbed;..\..\..\asp3_dcre\mbed\hal;..\..\..\asp3_dcre\mbed\target;..\..\..\asp3_dcre\arch\msvc;..\..\..\asp3_dcre\arch\rx630_msvc;..\..\..\asp3_dcre\target\gr_sakura_gcc;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <TreatSpecificWarningsAsErrors>4002;4003;4005;4007;4010;4013;4015;4020;4022;4024;4028;4029;4031;4033;4034;4042;4047;4048;4049;4056;4067;4074;4079;4083;4088;4089;4090;4091;4094;4096;4098;4099;4113;4715;4716</TreatSpecificWarningsAsErrors>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateMapFile>true</GenerateMapFile>
+      <SubSystem>console</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <PostBuildEvent>
+      <Message>output srec and syms</Message>
+      <Command>cscript //Nologo ..\..\tools\MapToSyms.js "$(TargetDir)$(TargetName).map" cfg1_out.syms
+..\..\tools\objcopy.exe -O srec -S "$(TargetPath)" cfg1_out.srec
+ruby -Eutf-8 ..\..\..\asp3_dcre\cfg\cfg.rb --pass 2 --kernel asp --api-table ..\..\..\asp3_dcre\kernel\kernel_api.def --symval-table ..\..\..\asp3_dcre\kernel\kernel_sym.def --symval-table ..\..\..\asp3_dcre\arch\rx630_msvc\prc_sym.def --symval-table ..\..\..\asp3_dcre\target\gr_sakura_gcc\target_sym.def -I ..\..\..\asp3_dcre -I ..\..\..\asp3_dcre\arch\rx630_msvc -I ..\..\..\asp3_dcre\include -I ..\..\..\asp3_dcre\kernel -I ..\..\..\asp3_dcre\target\gr_sakura_gcc -I ..\..\..\asp3_dcre\mbed -I ..\..\..\asp3_dcre\mbed\hal -I ..\..\..\asp3_dcre\mbed\target -T ..\..\..\asp3_dcre\target\gr_sakura_gcc\target_kernel.trb ..\dummy.cfg
+cscript //Nologo ..\..\tools\cmp_update.js kernel_cfg.c ..\kernel_cfg.c
+cscript //Nologo ..\..\tools\cmp_update.js kernel_cfg.h ..\kernel_cfg.h</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <PreBuildEvent>
+      <Message>delete srec and syms</Message>
+      <Command>if exist "$(TargetDir)$(TargetName).map" del "$(TargetDir)$(TargetName).map"
+if exist cfg1_out.srec del cfg1_out.srec
+if exist cfg1_out.syms del cfg1_out.syms</Command>
+    </PreBuildEvent>
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\..\asp3_dcre;..\..\..\asp3_dcre\include;..\..\..\asp3_dcre\kernel;..\..\..\asp3_dcre\mbed;..\..\..\asp3_dcre\mbed\hal;..\..\..\asp3_dcre\mbed\target;..\..\..\asp3_dcre\arch\msvc;..\..\..\asp3_dcre\arch\rx630_msvc;..\..\..\asp3_dcre\target\gr_sakura_gcc;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <TreatSpecificWarningsAsErrors>4002;4003;4005;4007;4010;4013;4015;4020;4022;4024;4028;4029;4031;4033;4034;4042;4047;4048;4049;4056;4067;4074;4079;4083;4088;4089;4090;4091;4094;4096;4098;4099;4113;4715;4716</TreatSpecificWarningsAsErrors>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateMapFile>true</GenerateMapFile>
+      <SubSystem>console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <PostBuildEvent>
+      <Message>output srec and syms</Message>
+      <Command>cscript //Nologo ..\..\tools\MapToSyms.js "$(TargetDir)$(TargetName).map" cfg1_out.syms
+..\..\tools\objcopy.exe -O srec -S "$(TargetPath)" cfg1_out.srec
+ruby -Eutf-8 ..\..\..\asp3_dcre\cfg\cfg.rb --pass 2 --kernel asp --api-table ..\..\..\asp3_dcre\kernel\kernel_api.def --symval-table ..\..\..\asp3_dcre\kernel\kernel_sym.def --symval-table ..\..\..\asp3_dcre\arch\rx630_msvc\prc_sym.def --symval-table ..\..\..\asp3_dcre\target\gr_sakura_gcc\target_sym.def -I ..\..\..\asp3_dcre -I ..\..\..\asp3_dcre\arch\rx630_msvc -I ..\..\..\asp3_dcre\include -I ..\..\..\asp3_dcre\kernel -I ..\..\..\asp3_dcre\target\gr_sakura_gcc -I ..\..\..\asp3_dcre\mbed -I ..\..\..\asp3_dcre\mbed\hal -I ..\..\..\asp3_dcre\mbed\target -T ..\..\..\asp3_dcre\target\gr_sakura_gcc\target_kernel.trb ..\dummy.cfg
+cscript //Nologo ..\..\tools\cmp_update.js kernel_cfg.c ..\kernel_cfg.c
+cscript //Nologo ..\..\tools\cmp_update.js kernel_cfg.h ..\kernel_cfg.h</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\dummy.c" />
+    <ClCompile Include="cfg1_out.c" />
+    <ClCompile Include="cfg.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\dummy.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\dummy.cfg">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">toppers configuration pass 1</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ruby -Eutf-8 ..\..\..\asp3_dcre\cfg\cfg.rb --pass 1 --kernel asp --api-table ..\..\..\asp3_dcre\kernel\kernel_api.def --symval-table ..\..\..\asp3_dcre\kernel\kernel_sym.def --symval-table ..\..\..\asp3_dcre\arch\rx630_msvc\prc_sym.def --symval-table ..\..\..\asp3_dcre\target\gr_sakura_gcc\target_sym.def -I ..\..\..\asp3_dcre -I ..\..\..\asp3_dcre\include -I ..\..\..\asp3_dcre\target\gr_sakura_gcc -I ..\..\..\asp3_dcre\mbed -I ..\..\..\asp3_dcre\mbed\hal -I ..\..\..\asp3_dcre\mbed\target -I ..\..\..\app1_usb_watt_meter\src "%(FullPath)"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cfg1_out.c;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">toppers configuration pass 1</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">ruby -Eutf-8 ..\..\..\asp3_dcre\cfg\cfg.rb --pass 1 --kernel asp --api-table ..\..\..\asp3_dcre\kernel\kernel_api.def --symval-table ..\..\..\asp3_dcre\kernel\kernel_sym.def --symval-table ..\..\..\asp3_dcre\arch\rx630_msvc\prc_sym.def --symval-table ..\..\..\asp3_dcre\target\gr_sakura_gcc\target_sym.def -I ..\..\..\asp3_dcre -I ..\..\..\asp3_dcre\include -I ..\..\..\asp3_dcre\target\gr_sakura_gcc -I ..\..\..\asp3_dcre\mbed -I ..\..\..\asp3_dcre\mbed\hal -I ..\..\..\asp3_dcre\mbed\target -I ..\..\..\app1_usb_watt_meter\src "%(FullPath)"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cfg1_out.c;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

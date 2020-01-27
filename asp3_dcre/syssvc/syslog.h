@@ -53,6 +53,20 @@ extern "C" {
 #include <t_stddef.h>
 #include <t_syslog.h>
 
+#ifdef TOPPERS_OMIT_TECS
+/*
+ *  ログバッファのサイズ
+ */
+#ifndef TCNT_SYSLOG_BUFFER
+#define TCNT_SYSLOG_BUFFER	32		/* ログバッファのサイズ */
+#endif /* TCNT_SYSLOG_BUFFER */
+
+/*
+ *  システムログ機能の初期化
+ */
+extern void	syslog_initialize(intptr_t exinf) throw();
+#endif
+
 /*
  *  ログ情報の重要度のビットマップを作るためのマクロ
  */

@@ -539,7 +539,10 @@ int execute_command(struct ntshell_obj_t *obj, int wait)
 {
 	T_RTSK rtsk;
 	ER ret;
-
+#ifdef _DEBUG
+	char buf[256];
+	int pos = 0;
+#endif
 	ret = ter_tsk(SHELLCMD_TASK);
 	if ((ret != E_OK) && (ret != E_OBJ)) {
 		syslog(LOG_ERROR, "ter_tsk => %d", ret);
@@ -565,6 +568,11 @@ int execute_command(struct ntshell_obj_t *obj, int wait)
 
 		char c;
 		if (obj->ntshell.func_read(&c, sizeof(c), obj->ntshell.extobj) == 1) {
+#ifdef _DEBUG
+			buf[pos++] = c;
+			if (pos >= sizeof(buf))
+				pos = 0;
+#endif
 			// Ctrl+Cが押された場合
 			if (c == 0x03) {
 				// コマンドタスクを終了

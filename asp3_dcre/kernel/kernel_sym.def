@@ -1,3 +1,4 @@
+TOPPERS_SUPPORT_OVRHDR,true,bool,defined(TOPPERS_SUPPORT_OVRHDR),false
 USE_EXTERNAL_ID,true,bool,defined(USE_EXTERNAL_ID),false
 TA_NULL
 TA_ACT
@@ -81,6 +82,7 @@ sizeof_INHNO,sizeof(INHNO)
 sizeof_EXCNO,sizeof(EXCNO)
 sizeof_TASK,sizeof(TASK)
 sizeof_TMEHDR,sizeof(TMEHDR)
+sizeof_OVRHDR,sizeof(OVRHDR)
 sizeof_ISR,sizeof(ISR)
 sizeof_INTHDR,sizeof(INTHDR)
 sizeof_EXCHDR,sizeof(EXCHDR)
@@ -130,6 +132,9 @@ sizeof_ALMINIB,sizeof(ALMINIB)
 offsetof_ALMINIB_almatr,"offsetof(ALMINIB,almatr)"
 offsetof_ALMINIB_exinf,"offsetof(ALMINIB,exinf)"
 offsetof_ALMINIB_nfyhdr,"offsetof(ALMINIB,nfyhdr)"
+sizeof_OVRINIB,sizeof(OVRINIB),,defined(TOPPERS_SUPPORT_OVRHDR)
+offsetof_OVRINIB_ovratr,"offsetof(OVRINIB,ovratr)",,defined(TOPPERS_SUPPORT_OVRHDR)
+offsetof_OVRINIB_ovrhdr,"offsetof(OVRINIB,ovrhdr)",,defined(TOPPERS_SUPPORT_OVRHDR)
 sizeof_ISRINIB,sizeof(ISRINIB)
 offsetof_ISRINIB_isratr,"offsetof(ISRINIB,isratr)"
 offsetof_ISRINIB_exinf,"offsetof(ISRINIB,exinf)"

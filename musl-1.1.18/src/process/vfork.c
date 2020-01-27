@@ -14,4 +14,11 @@ pid_t __vfork(void)
 #endif
 }
 
+#ifndef __c2__
 weak_alias(__vfork, vfork);
+#else
+pid_t vfork(void)
+{
+	return __vfork();
+}
+#endif

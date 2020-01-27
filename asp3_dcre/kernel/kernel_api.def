@@ -14,6 +14,7 @@ CRE_MPF #mpfid* { .mpfatr .blkcnt .blksz &mpf? &mpfmb? }
 AID_MPF .nompf
 CRE_CYC #cycid* { .cycatr { .nfymode &par1 &par2? &par3? &par4? } .cyctim .cycphs }
 AID_CYC .nocyc
+DEF_OVR { .ovratr &ovrhdr }
 CRE_ALM #almid* { .almatr { .nfymode &par1 &par2? &par3? &par4? } }
 AID_ALM .noalm
 CFG_INT .intno* { .intatr +intpri }

@@ -93,6 +93,10 @@ struct fdpic_dummy_loadmap {
 #define DYN_CNT 32
 
 typedef void (*stage2_func)(unsigned char *, size_t *);
+#ifndef __c2__
 typedef _Noreturn void (*stage3_func)(size_t *);
+#else
+typedef void (*stage3_func)(size_t *);
+#endif
 
 #endif

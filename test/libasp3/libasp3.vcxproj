@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{2E896742-65E5-4CF6-A9C9-C79980833741}</ProjectGuid>
+    <RootNamespace>libasp3</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.51106.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(ProjectDir)bin\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)obj\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(ProjectDir)bin\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)obj\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\libmusl\include;..\..\asp3_dcre;..\..\asp3_dcre\include;..\..\asp3_dcre\kernel;..\..\asp3_dcre\mbed;..\..\asp3_dcre\mbed\hal;..\..\asp3_dcre\mbed\target;..\..\asp3_dcre\arch\msvc;..\..\asp3_dcre\arch\rx630_msvc;..\..\asp3_dcre\target\gr_sakura_gcc;..\sim;..\sim\rx63n;.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;TASK_SWITCH_DEBUG;ALLFUNC;TOPPERS_OMIT_TECS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <TreatSpecificWarningsAsErrors>4002;4003;4005;4007;4010;4013;4015;4020;4022;4024;4028;4029;4031;4033;4034;4042;4047;4048;4049;4056;4067;4074;4079;4083;4088;4089;4090;4091;4094;4096;4098;4099;4113;4715;4716</TreatSpecificWarningsAsErrors>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\libmusl\include;..\..\asp3_dcre;..\..\asp3_dcre\include;..\..\asp3_dcre\kernel;..\..\asp3_dcre\mbed;..\..\asp3_dcre\mbed\hal;..\..\asp3_dcre\mbed\target;..\..\asp3_dcre\arch\msvc;..\..\asp3_dcre\arch\rx630_msvc;..\..\asp3_dcre\target\gr_sakura_gcc;..\sim;..\sim\rx63n;.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;ALLFUNC;TOPPERS_OMIT_TECS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <TreatSpecificWarningsAsErrors>4002;4003;4005;4007;4010;4013;4015;4020;4022;4024;4028;4029;4031;4033;4034;4042;4047;4048;4049;4056;4067;4074;4079;4083;4088;4089;4090;4091;4094;4096;4098;4099;4113;4715;4716</TreatSpecificWarningsAsErrors>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\asp3_dcre\arch\rx630_msvc\rx630_kernel_impl.c" />
+    <ClCompile Include="..\..\asp3_dcre\kernel\alarm.c" />
+    <ClCompile Include="..\..\asp3_dcre\arch\rx630_msvc\prc_kernel_impl.c" />
+    <ClCompile Include="..\..\asp3_dcre\kernel\cyclic.c" />
+    <ClCompile Include="..\..\asp3_dcre\kernel\dataqueue.c" />
+    <ClCompile Include="..\..\asp3_dcre\kernel\mutex.c" />
+    <ClCompile Include="..\..\asp3_dcre\kernel\overrun.c" />
+    <ClCompile Include="..\..\asp3_dcre\kernel\taskhook.c" />
+    <ClCompile Include="..\..\asp3_dcre\kernel\task_term.c" />
+    <ClCompile Include="..\..\asp3_dcre\mbed\hal\mbed_gpio.c" />
+    <ClCompile Include="..\..\asp3_dcre\mbed\hal\mbed_lp_ticker_api.c" />
+    <ClCompile Include="..\..\asp3_dcre\mbed\hal\mbed_pinmap_common.c" />
+    <ClCompile Include="..\..\asp3_dcre\mbed\hal\mbed_ticker_api.c" />
+    <ClCompile Include="..\..\asp3_dcre\mbed\hal\mbed_us_ticker_api.c" />
+    <ClCompile Include="..\..\asp3_dcre\mbed\target\mbed_api.c" />
+    <ClCompile Include="..\..\asp3_dcre\syssvc\banner.c" />
+    <ClCompile Include="..\..\asp3_dcre\syssvc\logtask.c" />
+    <ClCompile Include="..\..\asp3_dcre\syssvc\syslog.c" />
+    <ClCompile Include="..\..\asp3_dcre\target\gr_sakura_gcc\target_support.c" />
+    <ClCompile Include="..\..\asp3_dcre\target\gr_sakura_gcc\target_timer.c" />
+    <ClCompile Include="..\..\asp3_dcre\kernel\eventflag.c" />
+    <ClCompile Include="..\..\asp3_dcre\kernel\exception.c" />
+    <ClCompile Include="..\..\asp3_dcre\kernel\interrupt.c" />
+    <ClCompile Include="..\..\asp3_dcre\kernel\mempfix.c" />
+    <ClCompile Include="..\..\asp3_dcre\kernel\pridataq.c" />
+    <ClCompile Include="..\..\asp3_dcre\kernel\semaphore.c" />
+    <ClCompile Include="..\..\asp3_dcre\kernel\startup.c" />
+    <ClCompile Include="..\..\asp3_dcre\kernel\sys_manage.c" />
+    <ClCompile Include="..\..\asp3_dcre\target\gr_sakura_gcc\target_kernel_impl.c" />
+    <ClCompile Include="..\..\asp3_dcre\target\gr_sakura_gcc\target_serial.c" />
+    <ClCompile Include="..\..\asp3_dcre\kernel\task.c" />
+    <ClCompile Include="..\..\asp3_dcre\kernel\task_manage.c" />
+    <ClCompile Include="..\..\asp3_dcre\kernel\task_refer.c" />
+    <ClCompile Include="..\..\asp3_dcre\kernel\task_sync.c" />
+    <ClCompile Include="..\..\asp3_dcre\kernel\time_event.c" />
+    <ClCompile Include="..\..\asp3_dcre\kernel\time_manage.c" />
+    <ClCompile Include="..\..\asp3_dcre\kernel\wait.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\asp3_dcre\arch\rx630_msvc\rx630.h" />
+    <ClInclude Include="..\..\asp3_dcre\arch\rx630_msvc\rx630_kernel_impl.h" />
+    <ClInclude Include="..\..\asp3_dcre\kernel\alarm.h" />
+    <ClInclude Include="..\..\asp3_dcre\kernel\allfunc.h" />
+    <ClInclude Include="..\..\asp3_dcre\kernel\check.h" />
+    <ClInclude Include="..\..\asp3_dcre\arch\rx630_msvc\prc_cfg1_out.h" />
+    <ClInclude Include="..\..\asp3_dcre\arch\rx630_msvc\prc_kernel_impl.h" />
+    <ClInclude Include="..\..\asp3_dcre\arch\rx630_msvc\prc_insn.h" />
+    <ClInclude Include="..\..\asp3_dcre\arch\rx630_msvc\prc_kernel.h" />
+    <ClInclude Include="..\..\asp3_dcre\arch\rx630_msvc\prc_rename.h" />
+    <ClInclude Include="..\..\asp3_dcre\arch\rx630_msvc\prc_sil.h" />
+    <ClInclude Include="..\..\asp3_dcre\arch\rx630_msvc\prc_stddef.h" />
+    <ClInclude Include="..\..\asp3_dcre\arch\rx630_msvc\prc_test.h" />
+    <ClInclude Include="..\..\asp3_dcre\arch\rx630_msvc\prc_unrename.h" />
+    <ClInclude Include="..\..\asp3_dcre\kernel\cyclic.h" />
+    <ClInclude Include="..\..\asp3_dcre\kernel\dataqueue.h" />
+    <ClInclude Include="..\..\asp3_dcre\kernel\mutex.h" />
+    <ClInclude Include="..\..\asp3_dcre\kernel\overrun.h" />
+    <ClInclude Include="..\..\asp3_dcre\kernel\taskhook.h" />
+    <ClInclude Include="..\..\asp3_dcre\mbed\hal\analogin_api.h" />
+    <ClInclude Include="..\..\asp3_dcre\mbed\hal\analogout_api.h" />
+    <ClInclude Include="..\..\asp3_dcre\mbed\hal\buffer.h" />
+    <ClInclude Include="..\..\asp3_dcre\mbed\hal\can_api.h" />
+    <ClInclude Include="..\..\asp3_dcre\mbed\hal\can_helper.h" />
+    <ClInclude Include="..\..\asp3_dcre\mbed\hal\dma_api.h" />
+    <ClInclude Include="..\..\asp3_dcre\mbed\hal\ethernet_api.h" />
+    <ClInclude Include="..\..\asp3_dcre\mbed\hal\gpio_api.h" />
+    <ClInclude Include="..\..\asp3_dcre\mbed\hal\gpio_irq_api.h" />
+    <ClInclude Include="..\..\asp3_dcre\mbed\hal\i2c_api.h" />
+    <ClInclude Include="..\..\asp3_dcre\mbed\hal\lp_ticker_api.h" />
+    <ClInclude Include="..\..\asp3_dcre\mbed\hal\pinmap.h" />
+    <ClInclude Include="..\..\asp3_dcre\mbed\hal\port_api.h" />
+    <ClInclude Include="..\..\asp3_dcre\mbed\hal\pwmout_api.h" />
+    <ClInclude Include="..\..\asp3_dcre\mbed\hal\rtc_api.h" />
+    <ClInclude Include="..\..\asp3_dcre\mbed\hal\serial_api.h" />
+    <ClInclude Include="..\..\asp3_dcre\mbed\hal\sleep_api.h" />
+    <ClInclude Include="..\..\asp3_dcre\mbed\hal\spi_api.h" />
+    <ClInclude Include="..\..\asp3_dcre\mbed\hal\ticker_api.h" />
+    <ClInclude Include="..\..\asp3_dcre\mbed\hal\us_ticker_api.h" />
+    <ClInclude Include="..\..\asp3_dcre\mbed\platform\mbed_critical.h" />
+    <ClInclude Include="..\..\asp3_dcre\mbed\platform\mbed_error.h" />
+    <ClInclude Include="..\..\asp3_dcre\mbed\target\device.h" />
+    <ClInclude Include="..\..\asp3_dcre\mbed\target\PinNames.h" />
+    <ClInclude Include="..\..\asp3_dcre\syssvc\banner.h" />
+    <ClInclude Include="..\..\asp3_dcre\syssvc\logtask.h" />
+    <ClInclude Include="..\..\asp3_dcre\syssvc\syslog.h" />
+    <ClInclude Include="..\..\asp3_dcre\kernel\eventflag.h" />
+    <ClInclude Include="..\..\asp3_dcre\kernel\exception.h" />
+    <ClInclude Include="..\..\asp3_dcre\include\histogram.h" />
+    <ClInclude Include="..\..\asp3_dcre\kernel\interrupt.h" />
+    <ClInclude Include="..\..\asp3_dcre\include\itron.h" />
+    <ClInclude Include="..\..\asp3_dcre\include\kernel.h" />
+    <ClInclude Include="..\..\asp3_dcre\arch\logtrace\kernel_fncode.h" />
+    <ClInclude Include="..\..\asp3_dcre\kernel\kernel_impl.h" />
+    <ClInclude Include="..\..\asp3_dcre\kernel\kernel_int.h" />
+    <ClInclude Include="..\..\asp3_dcre\kernel\kernel_rename.h" />
+    <ClInclude Include="..\..\asp3_dcre\kernel\kernel_unrename.h" />
+    <ClInclude Include="..\..\asp3_dcre\include\log_output.h" />
+    <ClInclude Include="..\..\asp3_dcre\kernel\mempfix.h" />
+    <ClInclude Include="..\..\asp3_dcre\kernel\pridataq.h" />
+    <ClInclude Include="..\..\asp3_dcre\include\queue.h" />
+    <ClInclude Include="..\..\asp3_dcre\kernel\semaphore.h" />
+    <ClInclude Include="..\..\asp3_dcre\include\sil.h" />
+    <ClInclude Include="..\..\asp3_dcre\include\t_stddef.h" />
+    <ClInclude Include="..\..\asp3_dcre\include\t_stdlib.h" />
+    <ClInclude Include="..\..\asp3_dcre\include\t_syslog.h" />
+    <ClInclude Include="..\..\asp3_dcre\target\gr_sakura_gcc\target_cfg1_out.h" />
+    <ClInclude Include="..\..\asp3_dcre\target\gr_sakura_gcc\target_kernel_impl.h" />
+    <ClInclude Include="..\..\asp3_dcre\target\gr_sakura_gcc\target_kernel.h" />
+    <ClInclude Include="..\..\asp3_dcre\target\gr_sakura_gcc\target_rename.h" />
+    <ClInclude Include="..\..\asp3_dcre\target\gr_sakura_gcc\target_serial.h" />
+    <ClInclude Include="..\..\asp3_dcre\target\gr_sakura_gcc\target_sil.h" />
+    <ClInclude Include="..\..\asp3_dcre\target\gr_sakura_gcc\target_stddef.h" />
+    <ClInclude Include="..\..\asp3_dcre\target\gr_sakura_gcc\target_syssvc.h" />
+    <ClInclude Include="..\..\asp3_dcre\target\gr_sakura_gcc\target_test.h" />
+    <ClInclude Include="..\..\asp3_dcre\target\gr_sakura_gcc\target_timer.h" />
+    <ClInclude Include="..\..\asp3_dcre\target\gr_sakura_gcc\target_unrename.h" />
+    <ClInclude Include="..\..\asp3_dcre\kernel\task.h" />
+    <ClInclude Include="..\..\asp3_dcre\kernel\time_event.h" />
+    <ClInclude Include="..\..\asp3_dcre\arch\msvc\tool_stddef.h" />
+    <ClInclude Include="..\..\asp3_dcre\kernel\wait.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="cfg\cfg.vcxproj">
+      <Project>{cb59d7c8-99f7-4069-bceb-bb14fdc646ff}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

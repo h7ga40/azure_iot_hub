@@ -57,8 +57,12 @@
  */
 #undef boundary_evttim
 #undef current_evttim
+#undef current_evttim_frac
 #undef current_hrtcnt
 #undef monotonic_evttim
+#undef drift_rate
+#undef evttim_step
+#undef evttim_step_frac
 #undef systim_offset
 #undef in_signal_time
 #undef initialize_tmevt
@@ -148,6 +152,13 @@
 #undef call_alarm
 
 /*
+ *  overrun.c
+ */
+#undef ovrtimer_start
+#undef ovrtimer_stop
+#undef call_ovrhdr
+
+/*
  *  interrupt.c
  */
 #undef free_isrcb
@@ -216,6 +227,7 @@
 #undef aalminib_table
 #undef aalm_nfyinfo_table
 #undef almcb_table
+#undef ovrinib
 #undef tnum_isr_queue
 #undef isr_queue_list
 #undef isr_queue_table

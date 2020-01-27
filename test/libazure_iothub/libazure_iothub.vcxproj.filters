@@ -1,0 +1,729 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\azure_iothub\deps\parson\parson.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\iothub_client\src\iothub_client.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\iothub_client\src\iothub_client_authorization.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\iothub_client\src\iothub_client_core_ll.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\iothub_client\src\iothub_client_diagnostic.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\iothub_client\src\iothub_client_ll.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\iothub_client\src\iothub_client_ll_uploadtoblob.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\iothub_client\src\iothub_transport_ll_private.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\iothub_client\src\iothubtransport.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\iothub_client\src\iothubtransporthttp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\iothub_client\src\blob.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\iothub_client\src\iothub_message.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\gb_stdio.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\sastoken.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\singlylinkedlist.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\strings.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\buffer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\constbuffer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\constmap.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\crt_abstractions.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\gb_time.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\gballoc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\httpapiexsas.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\map.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\optionhandler.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\sha224.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\urlencode.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\uuid.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\xlogging.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\connection_string_parser.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\vector.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\adapters\tlsio_wolfssl.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\iothub_client\src\version.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\sha1.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\azure_base64.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\doublylinkedlist.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\sha384-512.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\hmac.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\httpapiex.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\httpheaders.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\consolelogger.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\hmacsha256.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\string_tokenizer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\usha.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\xio.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\adapters\agenttime_mbed.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\adapters\socketio_berkeley.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\adapters\httpapi_curl.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\adapters\uniqueid_stub.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\http_proxy_io.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\iothub_client\src\iothub_client_retry_control.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\iothub_client\src\iothubtransport_mqtt_common.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\iothub_client\src\iothubtransportmqtt_websockets.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\umqtt\src\mqtt_client.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\umqtt\src\mqtt_codec.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\umqtt\src\mqtt_message.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\gb_rand.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\string_token.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\utf8_checker.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\uws_client.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\uws_frame_encoder.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\wsio.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\adapters\httpapi_compact.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\iothub_client\src\iothubtransportmqtt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\adapters\tlsio_mbedtls.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\certs\certs.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\uhttp\src\uhttp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\provisioning_client\src\prov_transport_http_client.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\provisioning_client\src\prov_transport_mqtt_common.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\provisioning_client\src\prov_transport_mqtt_ws_client.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\provisioning_client\src\prov_transport_mqtt_client.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\provisioning_client\src\prov_device_ll_client.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\provisioning_client\src\prov_security_factory.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\provisioning_client\src\prov_device_client.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\provisioning_client\src\iothub_security_factory.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\provisioning_client\adapters\hsm_client_data.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\provisioning_client\adapters\hsm_client_key.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\iothub_client\src\iothub.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\provisioning_client\src\iothub_auth_client.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\iothub_client\src\iothub_device_client_ll.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\provisioning_client\src\prov_auth_client.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\serializer\src\codefirst.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\serializer\src\multitree.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\serializer\src\schemaserializer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\serializer\src\methodreturn.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\serializer\src\schema.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\serializer\src\schemalib.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\serializer\src\datamarshaller.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\serializer\src\datapublisher.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\serializer\src\dataserializer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\serializer\src\iotdevice.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\serializer\src\jsondecoder.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\serializer\src\jsonencoder.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\serializer\src\agenttypesystem.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\serializer\src\commanddecoder.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\azure_base32.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\iothub_client\src\iothub_client_core.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\src\dns_resolver_sync.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\adapters\lock_toppers.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\adapters\platform_toppers.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\adapters\threadapi_toppers.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\c-utility\adapters\tickcounter_toppers.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\azure_iothub\provisioning_client\adapters\custom_hsm_example.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\azure_iothub\iothub_client\inc\iothub_client.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\iothub_client\inc\iothub_client_core_common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\iothub_client\inc\iothub_client_core_ll.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\iothub_client\inc\internal\blob.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\iothub_client\inc\internal\iothub_client_authorization.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\iothub_client\inc\internal\iothub_client_ll_uploadtoblob.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\iothub_client\inc\internal\iothub_client_private.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\iothub_client\inc\internal\iothub_transport_ll_private.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\iothub_client\inc\internal\iothubtransport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\iothub_client\inc\iothub_client_core.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\iothub_client\inc\internal\iothub_client_diagnostic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\iothub_client\inc\iothub_client_ll.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\iothub_client\inc\iothub_client_options.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\iothub_client\inc\iothub_message.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\iothub_client\inc\iothub_client_version.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\iothub_client\inc\iothub_device_client_ll.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\iothub_client\inc\iothub_transport_ll.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\pal\toppers\refcount_os.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\doublylinkedlist.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\singlylinkedlist.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\crt_abstractions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\macro_utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\string_tokenizer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\tlsio_wolfssl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\xlogging.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\constbuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\httpapi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\refcount.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\sha.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\shared_util_options.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\urlencode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\buffer_.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\gballoc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\tickcounter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\uuid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\deps\parson\parson.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\iothub_client\inc\iothubtransporthttp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\azure_base64.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\const_defines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\constmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\sastoken.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\uniqueid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\vector_types_internal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\gbnetwork.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\map.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\optionhandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\socketio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\threadapi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\umock_c_prod.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\vector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\condition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\lock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\optimize_size.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\platform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\strings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\tlsio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\vector_types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\string_tokenizer_types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\agenttime.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\gb_time.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\hmac.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\httpapiexsas.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\httpheaders.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\sha-private.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\strings_types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\tcpsocketconnection_c.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\connection_string_parser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\consolelogger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\httpapiex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\gb_stdio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\hmacsha256.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\xio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\http_proxy_io.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\iothub_client\inc\internal\iothub_client_retry_control.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\iothub_client\inc\internal\iothubtransport_mqtt_common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\iothub_client\inc\iothubtransportmqtt_websockets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\umqtt\inc\azure_umqtt_c\mqtt_client.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\umqtt\inc\azure_umqtt_c\mqtt_codec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\umqtt\inc\azure_umqtt_c\mqtt_message.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\umqtt\inc\azure_umqtt_c\mqttconst.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\gb_rand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\string_token.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\utf8_checker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\uws_client.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\uws_frame_encoder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\wsio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\iothub_client\inc\iothubtransportmqtt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\tlsio_mbedtls.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\certs\certs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\uhttp\inc\azure_uhttp_c\uhttp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\iothub_client\inc\internal\iothub_client_hsm_ll.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\provisioning_client\inc\azure_prov_client\prov_edge_trusted_certificates.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\provisioning_client\inc\azure_prov_client\prov_client_const.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\provisioning_client\adapters\hsm_client_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\provisioning_client\adapters\hsm_client_key.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\provisioning_client\adapters\hsm_client_riot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\provisioning_client\adapters\hsm_client_tpm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\iothub_client\inc\iothub.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\provisioning_client\inc\azure_prov_client\internal\iothub_auth_client.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\provisioning_client\inc\azure_prov_client\iothub_security_factory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\provisioning_client\inc\azure_prov_client\internal\prov_auth_client.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\provisioning_client\inc\azure_prov_client\prov_device_client.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\provisioning_client\inc\azure_prov_client\prov_device_ll_client.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\provisioning_client\inc\azure_prov_client\prov_security_factory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\provisioning_client\inc\azure_prov_client\prov_transport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\provisioning_client\inc\azure_prov_client\prov_transport_http_client.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\provisioning_client\inc\azure_prov_client\prov_transport_mqtt_client.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\provisioning_client\inc\azure_prov_client\internal\prov_transport_mqtt_common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\provisioning_client\inc\azure_prov_client\prov_transport_mqtt_ws_client.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\provisioning_client\inc\azure_prov_client\internal\prov_transport_private.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\serializer\inc\agenttypesystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\serializer\inc\codefirst.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\serializer\inc\commanddecoder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\serializer\inc\datamarshaller.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\serializer\inc\iotdevice.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\serializer\inc\jsonencoder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\serializer\inc\methodreturn.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\serializer\inc\multitree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\serializer\inc\schema.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\serializer\inc\datapublisher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\serializer\inc\jsondecoder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\serializer\inc\dataserializer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\serializer\inc\schemalib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\serializer\inc\serializer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\serializer\inc\serializer_devicetwin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\serializer\inc\schemaserializer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\deps\azure-macro-utils-c\inc\azure_macro_utils\macro_utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\deps\umock-c\inc\umock_c\umock_c_prod.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\azure_base32.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\iothub_client\inc\internal\iothub_internal_consts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\deps\azure-macro-utils-c\inc\azure_macro_utils\macro_utils_generated.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\pal\toppers\socket_async_os.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\azure_iothub\c-utility\inc\azure_c_shared_utility\dns_resolver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

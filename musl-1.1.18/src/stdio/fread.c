@@ -35,4 +35,11 @@ size_t fread(void *restrict destv, size_t size, size_t nmemb, FILE *restrict f)
 	return nmemb;
 }
 
+#ifndef __c2__
 weak_alias(fread, fread_unlocked);
+#else
+size_t fread_unlocked(void *restrict destv, size_t size, size_t nmemb, FILE *restrict f)
+{
+	return fread(destv, size, nmemb, f);
+}
+#endif

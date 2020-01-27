@@ -1,0 +1,27 @@
+# prc_kernel_impl.c
+intnest
+lock_flag
+saved_ipl
+prc_initialize
+prc_terminate
+config_int
+default_int_handler
+default_exc_handler
+
+# prc_support.src
+dispatch
+start_dispatch
+exit_and_dispatch
+call_exit_kernel
+start_r
+interrupt
+exception
+
+# rx630_kernel_impl.c
+ipr_reg_addr
+ier_reg_addr
+ir_reg_addr
+irqcr_reg_addr
+
+# kernel_cfg.c
+cfg_int_table

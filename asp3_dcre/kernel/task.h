@@ -198,6 +198,7 @@ typedef struct task_initialization_block {
 	size_t		stksz;			/* スタック領域のサイズ（丸めた値） */
 	void		*stk;			/* スタック領域の先頭番地 */
 #endif /* USE_TSKINICTXB */
+	char		*name;
 } TINIB;
 
 /*
@@ -214,7 +215,7 @@ typedef struct task_initialization_block {
  *  フィールドが有効な値を保持する条件は次の通り．
  *
  *  ・初期化後は常に有効：
- *  		p_tinib，tstat，actque
+ *  		p_tinib，tstat，actque, staovr, leftotm
  *  ・休止状態以外で有効（休止状態では初期値になっている）：
  *  		bpriority，priority，wupque，raster，enater，p_lastmtx
  *  ・待ち状態（二重待ち状態を含む）で有効：
@@ -241,9 +242,15 @@ typedef struct task_control_block {
 	BIT_FIELD_BOOL	wupque : 1;		/* 起床要求キューイング */
 	BIT_FIELD_BOOL	raster : 1;		/* タスク終了要求状態 */
 	BIT_FIELD_BOOL	enater : 1;		/* タスク終了許可状態 */
+#ifdef TOPPERS_SUPPORT_OVRHDR
+	BIT_FIELD_BOOL	staovr : 1;		/* オーバランハンドラ動作状態 */
+#endif /* TOPPERS_SUPPORT_OVRHDR */
 
 	WINFO			*p_winfo;		/* 待ち情報ブロックへのポインタ */
 	MTXCB			*p_lastmtx;		/* 最後にロックしたミューテックス */
+#ifdef TOPPERS_SUPPORT_OVRHDR
+	PRCTIM			leftotm;		/* 残りプロセッサ時間 */
+#endif /* TOPPERS_SUPPORT_OVRHDR */
 	TSKCTXB			tskctxb;		/* タスクコンテキストブロック */
 } TCB;
 

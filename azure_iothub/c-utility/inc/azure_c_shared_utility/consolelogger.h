@@ -12,7 +12,7 @@ extern "C" {
 
     void consolelogger_log(LOG_CATEGORY log_category, const char* file, const char* func, int line, unsigned int options, const char* format, ...);
 
-#if (defined(_MSC_VER))
+#if (defined(_MSC_VER) && !defined(__c2__))
     void consolelogger_log_with_GetLastError(const char* file, const char* func, int line, const char* format, ...);
 #endif
 

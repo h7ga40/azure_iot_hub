@@ -48,6 +48,7 @@
 #include "check.h"
 #include "task.h"
 #include "wait.h"
+#include "overrun.h"
 
 /*
  *  トレースログマクロのデフォルト定義
@@ -143,6 +144,11 @@ ext_tsk(void)
 		set_dspflg();
 	}
 
+#ifdef TOPPERS_SUPPORT_OVRHDR
+	if (p_runtsk->staovr) {
+		(void) target_ovrtimer_stop(INTNO_DUMMY_TIMER);
+	}
+#endif /* TOPPERS_SUPPORT_OVRHDR */
 	task_terminate(p_runtsk);				/* ［NGKI3449］*/
 	exit_and_dispatch();					/* ［NGKI1169］*/
 	ercd = E_SYS;							/* ［NGKI1163］*/
@@ -251,6 +257,11 @@ ena_ter(void)
 
 	lock_cpu();
 	if (p_runtsk->raster && dspflg) {
+#ifdef TOPPERS_SUPPORT_OVRHDR
+		if (p_runtsk->staovr) {
+			(void) target_ovrtimer_stop(INTNO_DUMMY_TIMER);
+		}
+#endif /* TOPPERS_SUPPORT_OVRHDR */
 		task_terminate(p_runtsk);
 		exit_and_dispatch();
 		ercd = E_SYS;

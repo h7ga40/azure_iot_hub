@@ -60,4 +60,11 @@ int __sigaction(int sig, const struct sigaction *restrict sa, struct sigaction *
 	return __libc_sigaction(sig, sa, old);
 }
 
+#ifndef __c2__
 weak_alias(__sigaction, sigaction);
+#else
+int sigaction(int sig, const struct sigaction *restrict sa, struct sigaction *restrict old)
+{
+	return __sigaction(sig, sa, old);
+}
+#endif

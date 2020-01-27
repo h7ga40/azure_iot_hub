@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{FE22754D-44F1-421E-A10E-E37B8356DFA7}</ProjectGuid>
+    <RootNamespace>cfg</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.51106.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <PreBuildEvent>
+      <Message>delete srec and syms</Message>
+      <Command>if exist "$(TargetDir)$(TargetName).map" del "$(TargetDir)$(TargetName).map"
+if exist cfg1_out.srec del cfg1_out.srec
+if exist cfg1_out.syms del cfg1_out.syms</Command>
+    </PreBuildEvent>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\..\libmusl\include;..\..\..\asp3_dcre;..\..\..\asp3_dcre\include;..\..\..\asp3_dcre\kernel;..\..\..\asp3_dcre\mbed;..\..\..\asp3_dcre\mbed\hal;..\..\..\asp3_dcre\mbed\target;..\..\..\asp3_dcre\arch\msvc;..\..\..\asp3_dcre\arch\rx630_msvc;..\..\..\asp3_dcre\target\gr_sakura_gcc;..\..\..\asp3_dcre\tinet;..\..\..\asp3_dcre\tinet\netdev\if_rx62n;..\..\..\ntshell\fatfs;..\..\..\ntshell\ntshell;..\..\..\ntshell\src;..\..\..\usbhost\src;..\..\..\app_iothub_client\src;..\..\..\app_iothub_client\pinkit;..</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;TOPPERS_OMIT_TECS;TARGET_KERNEL_ASP;SUPPORT_INET4;SUPPORT_INET6;SUPPORT_ETHER;SUPPORT_TCP;SUPPORT_UDP;SUPPORT_IGMP;USE_NETAPP_SUBR;DHCP4_CLI_CFG;USE_PING;USE_RESOLVER;ADAFRUIT_SSD1306;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <TreatSpecificWarningsAsErrors>4002;4003;4005;4007;4010;4013;4015;4020;4022;4024;4028;4029;4031;4033;4034;4042;4047;4048;4049;4056;4067;4074;4079;4083;4088;4089;4090;4091;4094;4096;4098;4099;4113;4715;4716</TreatSpecificWarningsAsErrors>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <UndefinePreprocessorDefinitions>_WIN32</UndefinePreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateMapFile>true</GenerateMapFile>
+      <SubSystem>console</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <PostBuildEvent>
+      <Message>output srec and syms</Message>
+      <Command>cscript //Nologo ..\..\tools\MapToSyms.js "$(TargetDir)$(TargetName).map" cfg1_out.syms
+..\..\tools\objcopy.exe -O srec -S "$(TargetPath)" cfg1_out.srec
+ruby -Eutf-8 ..\..\..\asp3_dcre\cfg\cfg.rb --pass 2 --kernel asp --api-table ..\..\..\asp3_dcre\tinet\tcpip_api.def:tcpip --api-table ..\..\..\asp3_dcre\kernel\kernel_api.def:kernel --symval-table ..\..\..\asp3_dcre\tinet\tcpip_sym.def --symval-table ..\..\..\asp3_dcre\kernel\kernel_sym.def --symval-table ..\..\..\asp3_dcre\arch\rx630_msvc\prc_sym.def --symval-table ..\..\..\asp3_dcre\target\gr_sakura_gcc\target_sym.def -T ..\..\..\asp3_dcre\tinet\tinet.trb:tcpip -T ..\..\..\asp3_dcre\target\gr_sakura_gcc\target_kernel.trb:kernel -I ..\..\..\asp3_dcre -I ..\..\..\asp3_dcre\arch\rx630_msvc -I ..\..\..\asp3_dcre\include -I ..\..\..\asp3_dcre\kernel -I ..\..\..\asp3_dcre\target\gr_sakura_gcc -I ..\..\..\asp3_dcre\mbed -I ..\..\..\asp3_dcre\mbed\hal -I ..\..\..\asp3_dcre\mbed\target -I ..\..\..\asp3_dcre\tinet -I ..\..\..\asp3_dcre\tinet\netdev\if_rx62n -I ..\..\..\app_iothub_client\src -I ..\..\..\app_iothub_client\pinkit ..\..\..\app_iothub_client\src\main_msvc.cfg
+cscript //Nologo ..\..\tools\cmp_update.js kernel_cfg.c ..\libapp\kernel_cfg.c
+cscript //Nologo ..\..\tools\cmp_update.js kernel_cfg.h ..\libapp\kernel_cfg.h
+cscript //Nologo ..\..\tools\cmp_update.js tinet_cfg.c ..\libapp\tinet_cfg.c
+cscript //Nologo ..\..\tools\cmp_update.js tinet_cfg.h ..\libapp\tinet_cfg.h</Command>
+      <Message>output srec and syms</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <PreBuildEvent>
+      <Message>delete srec and syms</Message>
+      <Command>if exist "$(TargetDir)$(TargetName).map" del "$(TargetDir)$(TargetName).map"
+if exist cfg1_out.srec del cfg1_out.srec
+if exist cfg1_out.syms del cfg1_out.syms</Command>
+    </PreBuildEvent>
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\libmusl\include;..\..\..\asp3_dcre;..\..\..\asp3_dcre\include;..\..\..\asp3_dcre\kernel;..\..\..\asp3_dcre\mbed;..\..\..\asp3_dcre\mbed\hal;..\..\..\asp3_dcre\mbed\target;..\..\..\asp3_dcre\arch\msvc;..\..\..\asp3_dcre\arch\rx630_msvc;..\..\..\asp3_dcre\target\gr_sakura_gcc;..\..\..\asp3_dcre\tinet;..\..\..\asp3_dcre\tinet\netdev\if_rx62n;..\..\..\ntshell\fatfs;..\..\..\ntshell\ntshell;..\..\..\ntshell\src;..\..\..\usbhost\src;..\..\..\app_iothub_client\src;..\..\..\app_iothub_client\pinkit;..</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;TOPPERS_OMIT_TECS;TARGET_KERNEL_ASP;SUPPORT_INET4;SUPPORT_INET6;SUPPORT_ETHER;SUPPORT_TCP;SUPPORT_UDP;SUPPORT_IGMP;USE_NETAPP_SUBR;DHCP4_CLI_CFG;USE_PING;USE_RESOLVER;ADAFRUIT_SSD1306;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <TreatSpecificWarningsAsErrors>4002;4003;4005;4007;4010;4013;4015;4020;4022;4024;4028;4029;4031;4033;4034;4042;4047;4048;4049;4056;4067;4074;4079;4083;4088;4089;4090;4091;4094;4096;4098;4099;4113;4715;4716</TreatSpecificWarningsAsErrors>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <UndefinePreprocessorDefinitions>_WIN32</UndefinePreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateMapFile>true</GenerateMapFile>
+      <SubSystem>console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <PostBuildEvent>
+      <Message>output srec and syms</Message>
+      <Command>cscript //Nologo ..\..\tools\MapToSyms.js "$(TargetDir)$(TargetName).map" cfg1_out.syms
+..\..\tools\objcopy.exe -O srec -S "$(TargetPath)" cfg1_out.srec
+ruby -Eutf-8 ..\..\..\asp3_dcre\cfg\cfg.rb --pass 2 --kernel asp --api-table ..\..\..\asp3_dcre\tinet\tcpip_api.def:tcpip --api-table ..\..\..\asp3_dcre\kernel\kernel_api.def:kernel --symval-table ..\..\..\asp3_dcre\tinet\tcpip_sym.def --symval-table ..\..\..\asp3_dcre\kernel\kernel_sym.def --symval-table ..\..\..\asp3_dcre\arch\rx630_msvc\prc_sym.def --symval-table ..\..\..\asp3_dcre\target\gr_sakura_gcc\target_sym.def -T ..\..\..\asp3_dcre\tinet\tinet.trb:tcpip -T ..\..\..\asp3_dcre\target\gr_sakura_gcc\target_kernel.trb:kernel -I ..\..\..\asp3_dcre -I ..\..\..\asp3_dcre\arch\rx630_msvc -I ..\..\..\asp3_dcre\include -I ..\..\..\asp3_dcre\kernel -I ..\..\..\asp3_dcre\target\gr_sakura_gcc -I ..\..\..\asp3_dcre\mbed -I ..\..\..\asp3_dcre\mbed\hal -I ..\..\..\asp3_dcre\mbed\target -I ..\..\..\asp3_dcre\tinet -I ..\..\..\asp3_dcre\tinet\netdev\if_rx62n -I ..\..\..\app_iothub_client\src -I ..\..\..\app_iothub_client\pinkit ..\..\..\app_iothub_client\src\main_msvc.cfg
+cscript //Nologo ..\..\tools\cmp_update.js kernel_cfg.c ..\libapp\kernel_cfg.c
+cscript //Nologo ..\..\tools\cmp_update.js kernel_cfg.h ..\libapp\kernel_cfg.h
+cscript //Nologo ..\..\tools\cmp_update.js tinet_cfg.c ..\libapp\tinet_cfg.c
+cscript //Nologo ..\..\tools\cmp_update.js tinet_cfg.h ..\libapp\tinet_cfg.h</Command>
+      <Message>output srec and syms</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="cfg1_out.c" />
+    <ClCompile Include="cfg.c" />
+    <ClCompile Include="stdafx.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\..\app_iothub_client\src\main_msvc.cfg">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">toppers configuration pass 1</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ruby -Eutf-8 ..\..\..\asp3_dcre\cfg\cfg.rb --pass 1 --kernel asp --api-table ..\..\..\asp3_dcre\tinet\tcpip_api.def:tcpip --api-table ..\..\..\asp3_dcre\kernel\kernel_api.def:kernel --symval-table ..\..\..\asp3_dcre\tinet\tcpip_sym.def --symval-table ..\..\..\asp3_dcre\kernel\kernel_sym.def --symval-table ..\..\..\asp3_dcre\arch\rx630_msvc\prc_sym.def --symval-table ..\..\..\asp3_dcre\target\gr_sakura_gcc\target_sym.def -I ..\..\..\asp3_dcre -I ..\..\..\asp3_dcre\include -I ..\..\..\asp3_dcre\target\gr_sakura_gcc -I ..\..\..\asp3_dcre\mbed -I ..\..\..\asp3_dcre\mbed\hal -I ..\..\..\asp3_dcre\mbed\target -I ..\..\..\asp3_dcre\tinet -I ..\..\..\asp3_dcre\tinet\netdev\if_rx62n -I ..\..\..\ntshell\fatfs -I ..\..\..\ntshell\src -I ..\..\..\usbhost\src -I ..\..\..\app_iothub_client\src -I ..\..\..\app_iothub_client\pinkit "%(FullPath)"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cfg1_out.c;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">toppers configuration pass 1</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">ruby -Eutf-8 ..\..\..\asp3_dcre\cfg\cfg.rb --pass 1 --kernel asp --api-table ..\..\..\asp3_dcre\tinet\tcpip_api.def:tcpip --api-table ..\..\..\asp3_dcre\kernel\kernel_api.def:kernel --symval-table ..\..\..\asp3_dcre\tinet\tcpip_sym.def --symval-table ..\..\..\asp3_dcre\kernel\kernel_sym.def --symval-table ..\..\..\asp3_dcre\arch\rx630_msvc\prc_sym.def --symval-table ..\..\..\asp3_dcre\target\gr_sakura_gcc\target_sym.def -I ..\..\..\asp3_dcre -I ..\..\..\asp3_dcre\include -I ..\..\..\asp3_dcre\target\gr_sakura_gcc -I ..\..\..\asp3_dcre\mbed -I ..\..\..\asp3_dcre\mbed\hal -I ..\..\..\asp3_dcre\mbed\target -I ..\..\..\asp3_dcre\tinet -I ..\..\..\asp3_dcre\tinet\netdev\if_rx62n -I ..\..\..\ntshell\fatfs -I ..\..\..\ntshell\src -I ..\..\..\usbhost\src -I ..\..\..\app_iothub_client\src -I ..\..\..\app_iothub_client\pinkit "%(FullPath)"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cfg1_out.c;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

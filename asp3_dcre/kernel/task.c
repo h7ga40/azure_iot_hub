@@ -307,6 +307,9 @@ make_dormant(TCB *p_tcb)
 	p_tcb->wupque = false;
 	p_tcb->raster = false;
 	p_tcb->enater = true;
+#ifdef TOPPERS_SUPPORT_OVRHDR
+	p_tcb->staovr = false;
+#endif /* TOPPERS_SUPPORT_OVRHDR */
 	LOG_TSKSTAT(p_tcb);
 }
 

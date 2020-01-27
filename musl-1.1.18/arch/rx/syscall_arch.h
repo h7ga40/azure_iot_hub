@@ -83,7 +83,9 @@ static inline long __syscall6(long n, long a, long b, long c, long d, long e, lo
 #define __scc(X) ((long) (X))
 typedef long syscall_arg_t;
 
+#ifndef __c2__
 __attribute__((visibility("hidden")))
+#endif
 long __syscall_ret(unsigned long), __syscall_nr(long nr, ...);
 
 #define __syscall0(n) n()

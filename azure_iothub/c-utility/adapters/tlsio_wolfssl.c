@@ -418,17 +418,17 @@ static int on_io_recv(WOLFSSL *ssl, char *buf, int sz, void *context)
 
 static int on_io_send(WOLFSSL *ssl, char *buf, int sz, void *context)
 {
-    int result;
+    int result, ret;
     AZURE_UNREFERENCED_PARAMETER(ssl);
 
     TLS_IO_INSTANCE* tls_io_instance = (TLS_IO_INSTANCE*)context;
 
-    if (xio_send(tls_io_instance->socket_io, buf, sz, tls_io_instance->on_send_complete, tls_io_instance->on_send_complete_callback_context) != 0)
+    if ((ret = xio_send(tls_io_instance->socket_io, buf, sz, tls_io_instance->on_send_complete, tls_io_instance->on_send_complete_callback_context)) != 0)
     {
-        LogError("Failed sending bytes through underlying IO");
+        LogError("Failed sending bytes through underlying IO %d", ret);
         tls_io_instance->tlsio_state = TLSIO_STATE_ERROR;
         indicate_error(tls_io_instance);
-        result = -1;
+        result = 0;
     }
     else
     {

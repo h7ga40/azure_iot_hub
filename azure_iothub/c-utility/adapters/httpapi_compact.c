@@ -19,7 +19,7 @@
 #include "azure_c_shared_utility/shared_util_options.h"
 #include "azure_c_shared_utility/http_proxy_io.h"
 
-#ifdef _MSC_VER
+#if (defined(_MSC_VER) && !defined(__c2__))
 #define snprintf _snprintf
 #endif
 

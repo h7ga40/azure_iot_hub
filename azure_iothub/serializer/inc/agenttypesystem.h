@@ -55,7 +55,9 @@ MU_DEFINE_ENUM_WITHOUT_INVALID(EDM_BOOLEANS, EDM_BOOLEANS_VALUES);
 
 /*ispositiveinfinity*/
 
-#ifdef _MSC_VER
+#if defined __c2__
+#define ISPOSITIVEINFINITY(x) (isinf((x)) && (signbit((x))==0))
+#elif defined _MSC_VER
 #define ISPOSITIVEINFINITY(x) ((_finite((x))==0) && ((_fpclass((x)) & _FPCLASS_PINF) == _FPCLASS_PINF))
 #else
 #if defined __STDC_VERSION__
@@ -74,7 +76,9 @@ MU_DEFINE_ENUM_WITHOUT_INVALID(EDM_BOOLEANS, EDM_BOOLEANS_VALUES);
 #endif
 #endif
 
-#ifdef _MSC_VER
+#if defined __c2__
+#define ISNEGATIVEINFINITY(x) (isinf((x)) && (signbit((x))!=0))
+#elif defined _MSC_VER
 /*not exactly signbit*/
 #define ISNEGATIVEINFINITY(x) ((_finite((x))==0) && ((_fpclass((x)) & _FPCLASS_NINF) == _FPCLASS_NINF))
 #else

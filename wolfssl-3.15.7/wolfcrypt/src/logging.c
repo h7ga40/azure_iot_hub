@@ -228,6 +228,10 @@ void WOLFSSL_TIME(int count)
     int dc_log_printf(char*, ...);
 #endif
 
+#ifdef _MSC_VER
+extern void __stdcall OutputDebugStringA(const char *text);
+#endif
+
 static void wolfssl_log(const int logLevel, const char *const logMessage)
 {
     if (log_function)
@@ -257,6 +261,9 @@ static void wolfssl_log(const int logLevel, const char *const logMessage)
 #elif defined(WOLFSSL_ESPIDF)
         extern char* TAG;
         ESP_LOGI(TAG, "%s", logMessage);
+#elif defined(_MSC_VER)
+        OutputDebugStringA(logMessage);
+        OutputDebugStringA("\n");
 #else
         fprintf(stderr, "%s\n", logMessage);
 #endif

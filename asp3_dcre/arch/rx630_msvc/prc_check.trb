@@ -1,0 +1,11 @@
+# -*- coding: utf-8 -*-
+# 
+#		パス3の生成スクリプトのコア依存部（ARM用）
+# 
+#  $Id: core_check.trb 730 2016-04-03 02:04:52Z ertl-hiro $
+#
+
+#
+#  ターゲット非依存部のインクルード
+#
+IncludeTrb("kernel/kernel_check.trb")

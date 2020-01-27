@@ -51,7 +51,7 @@
 KERNEL_FCSRCS = startup.c task.c taskhook.c wait.c time_event.c \
 				task_manage.c task_refer.c task_sync.c task_term.c \
 				semaphore.c eventflag.c dataqueue.c pridataq.c mutex.c \
-				mempfix.c time_manage.c cyclic.c alarm.c \
+				mempfix.c time_manage.c cyclic.c alarm.c overrun.c \
 				sys_manage.c interrupt.c exception.c
 
 #
@@ -101,11 +101,13 @@ mutex = mtxini.o mtxchk.o mtxscan.o mtxdrop.o mtxacq.o mtxrel.o mtxrela.o \
 mempfix = mpfini.o mpfget.o acre_mpf.o del_mpf.o get_mpf.o \
 		pget_mpf.o tget_mpf.o rel_mpf.o ini_mpf.o ref_mpf.o
 
-time_manage = set_tim.o get_tim.o adj_tim.o fch_hrt.o chknfy.o nfyhdr.o
+time_manage = set_tim.o get_tim.o adj_tim.o set_dft.o fch_hrt.o chknfy.o nfyhdr.o
 
 cyclic = cycini.o acre_cyc.o del_cyc.o sta_cyc.o stp_cyc.o ref_cyc.o cyccal.o
 
 alarm = almini.o acre_alm.o del_alm.o sta_alm.o stp_alm.o ref_alm.o almcal.o
+
+overrun = ovrsta.o ovrstp.o sta_ovr.o stp_ovr.o ref_ovr.o ovrcal.o
 
 sys_manage = rot_rdq.o get_tid.o get_lod.o get_nth.o \
 		loc_cpu.o unl_cpu.o dis_dsp.o ena_dsp.o \
@@ -137,6 +139,7 @@ $(addprefix $(OBJDIR)/, $(mempfix)) $(mempfix:.o=.s): mempfix.c
 $(addprefix $(OBJDIR)/, $(time_manage)) $(time_manage:.o=.s): time_manage.c
 $(addprefix $(OBJDIR)/, $(cyclic)) $(cyclic:.o=.s): cyclic.c
 $(addprefix $(OBJDIR)/, $(alarm)) $(alarm:.o=.s): alarm.c
+$(addprefix $(OBJDIR)/, $(overrun)) $(overrun:.o=.s): overrun.c
 $(addprefix $(OBJDIR)/, $(sys_manage)) $(sys_manage:.o=.s): sys_manage.c
 $(addprefix $(OBJDIR)/, $(interrupt)) $(interrupt:.o=.s): interrupt.c
 $(addprefix $(OBJDIR)/, $(exception)) $(exception:.o=.s): exception.c

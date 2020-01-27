@@ -10,4 +10,11 @@ int fileno(FILE *f)
 	return f->fd;
 }
 
+#ifndef __c2__
 weak_alias(fileno, fileno_unlocked);
+#else
+int fileno_unlocked(FILE *f)
+{
+	return fileno(f);
+}
+#endif
