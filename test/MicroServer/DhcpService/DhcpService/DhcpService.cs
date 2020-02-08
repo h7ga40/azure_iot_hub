@@ -7,7 +7,7 @@ using System.Collections;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
+using uITron3;
 using ThreadPool = MicroServer.Threading.ThreadPool;
 using WaitCallback = MicroServer.Threading.WaitCallback;
 
@@ -184,9 +184,11 @@ namespace MicroServer.Net.Dhcp
 		/// <summary>
 		///  Starts the service listener if in a stopped state.
 		/// </summary>
-		public override bool Start()
+		public override bool Start(Itron itron, ThreadPool threadPool)
 		{
-			_listener = new UdpListener {
+			_itron = itron;
+			_bindmgr.Start(itron);
+			_listener = new UdpListener(itron) {
 				InterfaceAddress = _interfaceAddress,
 				BufferSize = Constants.DHCP_MAX_MESSAGE_SIZE,
 				ReceiveTimeout = Constants.DHCP_RECEIVE_TIMEOUT,
@@ -195,7 +197,7 @@ namespace MicroServer.Net.Dhcp
 			_listener.ClientConnected += OnClientConnect;
 			_listener.ClientDisconnected += OnClientDisconnect;
 
-			return _listener.Start(Constants.DHCP_SERVICE_PORT, true);
+			return _listener.Start(itron, Constants.DHCP_SERVICE_PORT, true);
 		}
 
 		/// <summary>
@@ -235,7 +237,7 @@ namespace MicroServer.Net.Dhcp
 				var messageArgs = new DhcpMessageEventArgs(args.Channel, args.ChannelBuffer);
 				OnDhcpMessageReceived(this, messageArgs);
 
-				ThreadPool.QueueUserWorkItem(new WaitCallback(ProcessRequest), messageArgs);
+				threadPool.QueueUserWorkItem(new WaitCallback(ProcessRequest), messageArgs);
 			}
 		}
 
@@ -265,30 +267,32 @@ namespace MicroServer.Net.Dhcp
 					var requestId = args.RequestMessage.SessionId.ToHexString("0x");
 					var requestMac = args.RequestMessage.ClientHardwareAddress.ToString();
 
+					ID tskid = ID.NULL;
+					ER ret = _itron.get_tid(ref tskid);
 					// classify the client mesage type
 					switch (messageType) {
 					case MessageType.Discover:
-						Logger.WriteInfo(this, "DISCOVER for message id " + requestId + " from client " + requestMac + " processed on thread #" + Thread.CurrentThread.ManagedThreadId);
+						Logger.WriteInfo(this, "DISCOVER for message id " + requestId + " from client " + requestMac + " processed on thread #" + tskid);
 						DhcpDiscover(args);
 						break;
 
 					case MessageType.Request:
-						Logger.WriteInfo(this, "REQUEST for message id " + requestId + " from client " + requestMac + " processed on thread #" + Thread.CurrentThread.ManagedThreadId);
+						Logger.WriteInfo(this, "REQUEST for message id " + requestId + " from client " + requestMac + " processed on thread #" + tskid);
 						DhcpRequest(args);
 						break;
 
 					case MessageType.Decline:
-						Logger.WriteInfo(this, "DECLINE for message id " + requestId + " from client " + requestMac + " processed on thread #" + Thread.CurrentThread.ManagedThreadId);
+						Logger.WriteInfo(this, "DECLINE for message id " + requestId + " from client " + requestMac + " processed on thread #" + tskid);
 						DhcpDecline(args);
 						break;
 
 					case MessageType.Release:
-						Logger.WriteInfo(this, "RELEASE for message id " + requestId + " from client " + requestMac + " processed on thread #" + Thread.CurrentThread.ManagedThreadId);
+						Logger.WriteInfo(this, "RELEASE for message id " + requestId + " from client " + requestMac + " processed on thread #" + tskid);
 						DhcpRelease(args);
 						break;
 
 					case MessageType.Inform:
-						Logger.WriteInfo(this, "INFORM for message id " + requestId + " from client " + requestMac + " processed on thread #" + Thread.CurrentThread.ManagedThreadId);
+						Logger.WriteInfo(this, "INFORM for message id " + requestId + " from client " + requestMac + " processed on thread #" + tskid);
 						DhcpInform(args);
 						break;
 
@@ -545,7 +549,9 @@ namespace MicroServer.Net.Dhcp
 				args.ResponseMessage.OptionOrdering = paramList;
 			}
 
-			Logger.WriteInfo(this, "OFFER for message id " + args.RequestMessage.SessionId.ToHexString("0x") + " sent on thread(#" + Thread.CurrentThread.ManagedThreadId + ")");
+			ID tskid = ID.NULL;
+			ER ret = _itron.get_tid(ref tskid);
+			Logger.WriteInfo(this, "OFFER for message id " + args.RequestMessage.SessionId.ToHexString("0x") + " sent on thread(#" + tskid + ")");
 			SendReply(args);
 		}
 
@@ -581,7 +587,9 @@ namespace MicroServer.Net.Dhcp
 				args.ResponseMessage.OptionOrdering = paramList;
 			}
 
-			Logger.WriteInfo(this, "ACK (Acknowledge) for message id " + args.RequestMessage.SessionId.ToHexString("0x") + " sent on thread(#" + Thread.CurrentThread.ManagedThreadId + ")");
+			ID tskid = ID.NULL;
+			ER ret = _itron.get_tid(ref tskid);
+			Logger.WriteInfo(this, "ACK (Acknowledge) for message id " + args.RequestMessage.SessionId.ToHexString("0x") + " sent on thread(#" + tskid + ")");
 			SendReply(args);
 		}
 
@@ -593,8 +601,10 @@ namespace MicroServer.Net.Dhcp
 			// Set options
 			args.ResponseMessage.AddOption(DhcpOption.DhcpMessageType, (byte)MessageType.Nak);
 
+			ID tskid = ID.NULL;
+			ER ret = _itron.get_tid(ref tskid);
 			Logger.WriteInfo(this, "NAK (Negative Acknowledge) for message id " + args.RequestMessage.SessionId.ToHexString("0x") + " sent on thread(#" +
-				Thread.CurrentThread.ManagedThreadId + ")" + " with option message: " + ByteUtility.GetSafeString(args.ResponseMessage.GetOptionData(DhcpOption.DhcpMessage)));
+				tskid + ")" + " with option message: " + ByteUtility.GetSafeString(args.ResponseMessage.GetOptionData(DhcpOption.DhcpMessage)));
 			SendReply(args);
 		}
 

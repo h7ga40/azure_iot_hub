@@ -1867,6 +1867,52 @@ namespace uITron3
 			return Result;
 		}
 
+		public ER udp_set_opt(ID cepid, int optname, pointer optval, int optlen)
+		{
+			ER Result = ER.E_NOEXS;
+			UdpCep UdpCep;
+
+			if (g_Kernel == null)
+				return ER.E_DLT;
+
+			g_Kernel.LockCPU();
+			try {
+				UdpCep = g_Kernel.Nucleus.GetUdpCep(cepid);
+				if (UdpCep == null)
+					Result = ER.E_NOEXS;
+				else
+					Result = UdpCep.SetOption(optname, optval, optlen);
+			}
+			finally {
+				g_Kernel.UnlockCPU();
+			}
+
+			return Result;
+		}
+
+		public ER udp_get_opt(ID cepid, int optname, pointer optval, int optlen)
+		{
+			ER Result = ER.E_NOEXS;
+			UdpCep UdpCep;
+
+			if (g_Kernel == null)
+				return ER.E_DLT;
+
+			g_Kernel.LockCPU();
+			try {
+				UdpCep = g_Kernel.Nucleus.GetUdpCep(cepid);
+				if (UdpCep == null)
+					Result = ER.E_NOEXS;
+				else
+					Result = UdpCep.GetOption(optname, optval, optlen);
+			}
+			finally {
+				g_Kernel.UnlockCPU();
+			}
+
+			return Result;
+		}
+
 		public ER udp6_cre_cep(ID cepid, ref T_UDP6_CCEP pk_ccep, out ID p_cepid)
 		{
 			ER Result = ER.E_NOEXS;
@@ -1946,6 +1992,52 @@ namespace uITron3
 					Result = ER.E_NOEXS;
 				else
 					Result = UdpCep.ReceiveData(p_dstaddr, data, len, tmout);
+			}
+			finally {
+				g_Kernel.UnlockCPU();
+			}
+
+			return Result;
+		}
+
+		public ER udp6_set_opt(ID cepid, int optname, pointer optval, int optlen)
+		{
+			ER Result = ER.E_NOEXS;
+			Udp6Cep UdpCep;
+
+			if (g_Kernel == null)
+				return ER.E_DLT;
+
+			g_Kernel.LockCPU();
+			try {
+				UdpCep = g_Kernel.Nucleus.GetUdp6Cep(cepid);
+				if (UdpCep == null)
+					Result = ER.E_NOEXS;
+				else
+					Result = UdpCep.SetOption(optname, optval, optlen);
+			}
+			finally {
+				g_Kernel.UnlockCPU();
+			}
+
+			return Result;
+		}
+
+		public ER udp6_get_opt(ID cepid, int optname, pointer optval, int optlen)
+		{
+			ER Result = ER.E_NOEXS;
+			Udp6Cep UdpCep;
+
+			if (g_Kernel == null)
+				return ER.E_DLT;
+
+			g_Kernel.LockCPU();
+			try {
+				UdpCep = g_Kernel.Nucleus.GetUdp6Cep(cepid);
+				if (UdpCep == null)
+					Result = ER.E_NOEXS;
+				else
+					Result = UdpCep.GetOption(optname, optval, optlen);
 			}
 			finally {
 				g_Kernel.UnlockCPU();
@@ -2380,6 +2472,444 @@ namespace uITron3
 			g_Kernel.LockCPU();
 			try {
 				TcpCep = g_Kernel.Nucleus.GetTcpCep(cepid);
+				if (TcpCep == null)
+					Result = ER.E_NOEXS;
+				else
+					Result = TcpCep.GetOption(optname, optval, optlen);
+			}
+			finally {
+				g_Kernel.UnlockCPU();
+			}
+
+			return Result;
+		}
+
+		public ER tcp6_cre_rep(ID repid, ref T_TCP6_CREP pk_crep, out ID p_repid)
+		{
+			ER Result = ER.E_NOEXS;
+
+			p_repid = ID.NULL;
+
+			if (g_Kernel == null)
+				return ER.E_DLT;
+
+			g_Kernel.LockCPU();
+			try {
+				Result = g_Kernel.Nucleus.CreateTcp6Rep(repid, ref pk_crep, out p_repid);
+			}
+			finally {
+				g_Kernel.UnlockCPU();
+			}
+
+			return Result;
+		}
+
+		public ER tcp6_del_rep(ID repid)
+		{
+			ER Result = ER.E_NOEXS;
+
+			if (g_Kernel == null)
+				return ER.E_DLT;
+
+			g_Kernel.LockCPU();
+			try {
+				Result = g_Kernel.Nucleus.DeleteTcp6Rep(repid);
+			}
+			finally {
+				g_Kernel.UnlockCPU();
+			}
+
+			return Result;
+		}
+
+		public ER tcp6_cre_cep(ID cepid, ref T_TCP6_CCEP pk_ccep, out ID p_cepid)
+		{
+			ER Result = ER.E_NOEXS;
+
+			p_cepid = ID.NULL;
+
+			if (g_Kernel == null)
+				return ER.E_DLT;
+
+			g_Kernel.LockCPU();
+			try {
+				Result = g_Kernel.Nucleus.CreateTcp6Cep(cepid, ref pk_ccep, out p_cepid);
+			}
+			finally {
+				g_Kernel.UnlockCPU();
+			}
+
+			return Result;
+		}
+
+		public ER tcp6_del_cep(ID cepid)
+		{
+			ER Result = ER.E_NOEXS;
+
+			if (g_Kernel == null)
+				return ER.E_DLT;
+
+			g_Kernel.LockCPU();
+			try {
+				Result = g_Kernel.Nucleus.DeleteTcp6Cep(cepid);
+			}
+			finally {
+				g_Kernel.UnlockCPU();
+			}
+
+			return Result;
+		}
+
+		public ER tcp6_acp_cep(ID cepid, ID repid, T_IPV6EP p_dstaddr, TMO tmout)
+		{
+			ER Result = ER.E_NOEXS;
+			Tcp6Cep TcpCep;
+			Tcp6Rep TcpRep;
+
+			if (p_dstaddr == null)
+				return ER.E_PAR;
+
+			if (g_Kernel == null)
+				return ER.E_DLT;
+
+			g_Kernel.LockCPU();
+			try {
+				TcpCep = g_Kernel.Nucleus.GetTcp6Cep(cepid);
+				if (TcpCep == null)
+					Result = ER.E_NOEXS;
+				else {
+					TcpRep = g_Kernel.Nucleus.GetTcp6Rep(repid);
+					if (TcpRep == null)
+						Result = ER.E_NOEXS;
+					else
+						Result = TcpCep.Accept(TcpRep, p_dstaddr, tmout);
+				}
+			}
+			finally {
+				g_Kernel.UnlockCPU();
+			}
+
+			return Result;
+		}
+
+		public ER tcp6_con_cep(ID cepid, T_IPV6EP p_myaddr, T_IPV6EP p_dstaddr, TMO tmout)
+		{
+			ER Result = ER.E_NOEXS;
+			Tcp6Cep TcpCep;
+
+			if (p_dstaddr == null)
+				return ER.E_PAR;
+
+			if (g_Kernel == null)
+				return ER.E_DLT;
+
+			g_Kernel.LockCPU();
+			try {
+				TcpCep = g_Kernel.Nucleus.GetTcp6Cep(cepid);
+				if (TcpCep == null)
+					Result = ER.E_NOEXS;
+				else
+					Result = TcpCep.Connect(p_myaddr, p_dstaddr, tmout);
+			}
+			finally {
+				g_Kernel.UnlockCPU();
+			}
+
+			return Result;
+		}
+
+		public ER tcp6_sht_cep(ID cepid)
+		{
+			ER Result = ER.E_NOEXS;
+			Tcp6Cep TcpCep;
+
+			if (g_Kernel == null)
+				return ER.E_DLT;
+
+			g_Kernel.LockCPU();
+			try {
+				TcpCep = g_Kernel.Nucleus.GetTcp6Cep(cepid);
+				if (TcpCep == null)
+					Result = ER.E_NOEXS;
+				else
+					Result = TcpCep.Shutdown();
+			}
+			finally {
+				g_Kernel.UnlockCPU();
+			}
+
+			return Result;
+		}
+
+		public ER tcp6_cls_cep(ID cepid, TMO tmout)
+		{
+			ER Result = ER.E_NOEXS;
+			Tcp6Cep TcpCep;
+
+			if (g_Kernel == null)
+				return ER.E_DLT;
+
+			g_Kernel.LockCPU();
+			try {
+				TcpCep = g_Kernel.Nucleus.GetTcp6Cep(cepid);
+				if (TcpCep == null)
+					Result = ER.E_NOEXS;
+				else
+					Result = TcpCep.Close(tmout);
+			}
+			finally {
+				g_Kernel.UnlockCPU();
+			}
+
+			return Result;
+		}
+
+		public ER tcp6_snd_dat(ID cepid, pointer data, int len, TMO tmout)
+		{
+			ER Result = ER.E_NOEXS;
+			Tcp6Cep TcpCep;
+
+			if ((data == null) || (len <= 0))
+				return ER.E_PAR;
+
+			if (g_Kernel == null)
+				return ER.E_DLT;
+
+			g_Kernel.LockCPU();
+			try {
+				TcpCep = g_Kernel.Nucleus.GetTcp6Cep(cepid);
+				if (TcpCep == null)
+					Result = ER.E_NOEXS;
+				else
+					Result = TcpCep.SendData(data, len, tmout);
+			}
+			finally {
+				g_Kernel.UnlockCPU();
+			}
+
+			return Result;
+		}
+
+		public ER tcp6_rcv_dat(ID cepid, pointer data, int len, TMO tmout)
+		{
+			ER Result = ER.E_NOEXS;
+			Tcp6Cep TcpCep;
+
+			if (g_Kernel == null)
+				return ER.E_DLT;
+
+			g_Kernel.LockCPU();
+			try {
+				TcpCep = g_Kernel.Nucleus.GetTcp6Cep(cepid);
+				if (TcpCep == null)
+					Result = ER.E_NOEXS;
+				else if (tmout == TMO.TMO_NBLK)
+					Result = TcpCep.ReceiveDataNblk(data, len);
+				else
+					Result = TcpCep.ReceiveData(data, len, tmout);
+			}
+			finally {
+				g_Kernel.UnlockCPU();
+			}
+
+			return Result;
+		}
+
+		public ER tcp6_get_buf(ID cepid, ref pointer p_buf, TMO tmout)
+		{
+			ER Result = ER.E_NOEXS;
+			Tcp6Cep TcpCep;
+
+			if (g_Kernel == null)
+				return ER.E_DLT;
+
+			g_Kernel.LockCPU();
+			try {
+				TcpCep = g_Kernel.Nucleus.GetTcp6Cep(cepid);
+				if (TcpCep == null)
+					Result = ER.E_NOEXS;
+				else
+					Result = TcpCep.GetBuffer(ref p_buf, tmout);
+			}
+			finally {
+				g_Kernel.UnlockCPU();
+			}
+
+			return Result;
+		}
+
+		public ER tcp6_snd_buf(ID cepid, int len)
+		{
+			ER Result = ER.E_NOEXS;
+			Tcp6Cep TcpCep;
+
+			if (g_Kernel == null)
+				return ER.E_DLT;
+
+			g_Kernel.LockCPU();
+			try {
+				TcpCep = g_Kernel.Nucleus.GetTcp6Cep(cepid);
+				if (TcpCep == null)
+					Result = ER.E_NOEXS;
+				else
+					Result = TcpCep.SendBuffer(len);
+			}
+			finally {
+				g_Kernel.UnlockCPU();
+			}
+
+			return Result;
+		}
+
+		public ER tcp6_rcv_buf(ID cepid, ref pointer p_buf, TMO tmout)
+		{
+			ER Result = ER.E_NOEXS;
+			Tcp6Cep TcpCep;
+
+			if (g_Kernel == null)
+				return ER.E_DLT;
+
+			g_Kernel.LockCPU();
+			try {
+				TcpCep = g_Kernel.Nucleus.GetTcp6Cep(cepid);
+				if (TcpCep == null)
+					Result = ER.E_NOEXS;
+				else
+					Result = TcpCep.ReceiveBuffer(ref p_buf, tmout);
+			}
+			finally {
+				g_Kernel.UnlockCPU();
+			}
+
+			return Result;
+		}
+
+		public ER tcp6_rel_buf(ID cepid, int len)
+		{
+			ER Result = ER.E_NOEXS;
+			Tcp6Cep TcpCep;
+
+			if (g_Kernel == null)
+				return ER.E_DLT;
+
+			g_Kernel.LockCPU();
+			try {
+				TcpCep = g_Kernel.Nucleus.GetTcp6Cep(cepid);
+				if (TcpCep == null)
+					Result = ER.E_NOEXS;
+				else
+					Result = TcpCep.ReleaseBuffer(len);
+			}
+			finally {
+				g_Kernel.UnlockCPU();
+			}
+
+			return Result;
+		}
+
+		public ER tcp6_snd_oob(ID cepid, pointer data, int len, TMO tmout)
+		{
+			ER Result = ER.E_NOEXS;
+			Tcp6Cep TcpCep;
+
+			if (g_Kernel == null)
+				return ER.E_DLT;
+
+			g_Kernel.LockCPU();
+			try {
+				TcpCep = g_Kernel.Nucleus.GetTcp6Cep(cepid);
+				if (TcpCep == null)
+					Result = ER.E_NOEXS;
+				else
+					Result = TcpCep.SendUrgentData(data, len, tmout);
+			}
+			finally {
+				g_Kernel.UnlockCPU();
+			}
+
+			return Result;
+		}
+
+		public ER tcp6_rcv_oob(ID cepid, pointer data, int len)
+		{
+			ER Result = ER.E_NOEXS;
+			Tcp6Cep TcpCep;
+
+			if (g_Kernel == null)
+				return ER.E_DLT;
+
+			g_Kernel.LockCPU();
+			try {
+				TcpCep = g_Kernel.Nucleus.GetTcp6Cep(cepid);
+				if (TcpCep == null)
+					Result = ER.E_NOEXS;
+				else
+					Result = TcpCep.ReceiveUrgentData(data, len);
+			}
+			finally {
+				g_Kernel.UnlockCPU();
+			}
+
+			return Result;
+		}
+
+		public ER tcp6_can_cep(ID cepid, FN fncd)
+		{
+			ER Result = ER.E_NOEXS;
+			Tcp6Cep TcpCep;
+
+			if (g_Kernel == null)
+				return ER.E_DLT;
+
+			g_Kernel.LockCPU();
+			try {
+				TcpCep = g_Kernel.Nucleus.GetTcp6Cep(cepid);
+				if (TcpCep == null)
+					Result = ER.E_NOEXS;
+				else
+					Result = TcpCep.Cancel(fncd);
+			}
+			finally {
+				g_Kernel.UnlockCPU();
+			}
+
+			return Result;
+		}
+
+		public ER tcp6_set_opt(ID cepid, int optname, pointer optval, int optlen)
+		{
+			ER Result = ER.E_NOEXS;
+			Tcp6Cep TcpCep;
+
+			if (g_Kernel == null)
+				return ER.E_DLT;
+
+			g_Kernel.LockCPU();
+			try {
+				TcpCep = g_Kernel.Nucleus.GetTcp6Cep(cepid);
+				if (TcpCep == null)
+					Result = ER.E_NOEXS;
+				else
+					Result = TcpCep.SetOption(optname, optval, optlen);
+			}
+			finally {
+				g_Kernel.UnlockCPU();
+			}
+
+			return Result;
+		}
+
+		public ER tcp6_get_opt(ID cepid, int optname, pointer optval, int optlen)
+		{
+			ER Result = ER.E_NOEXS;
+			Tcp6Cep TcpCep;
+
+			if (g_Kernel == null)
+				return ER.E_DLT;
+
+			g_Kernel.LockCPU();
+			try {
+				TcpCep = g_Kernel.Nucleus.GetTcp6Cep(cepid);
 				if (TcpCep == null)
 					Result = ER.E_NOEXS;
 				else

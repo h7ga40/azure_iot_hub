@@ -103,10 +103,6 @@
       <Project>{f28b7b2d-8b61-4545-b3f1-aeacc4f1b34c}</Project>
       <Name>SimEnv</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SvgFigure\SvgFigure.csproj">
-      <Project>{2C8FAFDB-9C2F-4A58-A0BC-173C721FA70B}</Project>
-      <Name>SvgFigure</Name>
-    </ProjectReference>
     <ProjectReference Include="..\uITron3\uITron3.csproj">
       <Project>{79badcdc-8ddb-4ccd-8151-bb3889090706}</Project>
       <Name>uITron3</Name>

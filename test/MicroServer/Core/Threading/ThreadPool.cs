@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Diagnostics;
-using System.Threading;
+using uITron3;
 
 namespace MicroServer.Threading
 {
@@ -23,10 +23,13 @@ namespace MicroServer.Threading
 	/// Multiple long running operations would block the available threads.
 	/// New operations will not be called at all if all threads are blocked.
 	/// </remarks>
-	public static class ThreadPool
+	public class ThreadPool
 	{
-		static ThreadPool()
+		Itron _itron;
+
+		public ThreadPool(Itron itron)
 		{
+			_itron = itron;
 			// create the initial number of threads
 			SetMinThreads(3);
 		}
@@ -36,7 +39,7 @@ namespace MicroServer.Threading
 		/// </summary>
 		/// <param name="callback">A WaitCallback that represents the method to be executed.</param>
 		/// <returns>true if the method is successfully queued.</returns>
-		public static bool QueueUserWorkItem(WaitCallback callback)
+		public bool QueueUserWorkItem(WaitCallback callback)
 		{
 			return QueueUserWorkItem(callback, null);
 		}
@@ -48,7 +51,7 @@ namespace MicroServer.Threading
 		/// <param name="callback">A WaitCallback representing the method to execute.</param>
 		/// <param name="state">An object containing data to be used by the method.</param>
 		/// <returns>true if the method is successfully queued.</returns>
-		public static bool QueueUserWorkItem(WaitCallback callback, object state)
+		public bool QueueUserWorkItem(WaitCallback callback, object state)
 		{
 			lock (_ItemsQueue.SyncRoot) {
 				var thread = GetThread();
@@ -62,7 +65,7 @@ namespace MicroServer.Threading
 			}
 		}
 
-		private static ThreadPoolThread GetThread()
+		private ThreadPoolThread GetThread()
 		{
 			lock (_Threads) {
 				foreach (ThreadPoolThread thread in _Threads) {
@@ -72,7 +75,7 @@ namespace MicroServer.Threading
 					}
 				}
 				if (_Threads.Count < _maxThreadCount) {
-					var thread = new ThreadPoolThread { IsBusy = true };
+					var thread = new ThreadPoolThread(_itron, this) { IsBusy = true };
 					_Threads.Add(thread);
 					return thread;
 				}
@@ -99,7 +102,7 @@ namespace MicroServer.Threading
 		/// </summary>
 		/// <param name="count">The minimum number of worker threads that the thread pool creates on demand.</param>
 		/// <returns>true if the change is successful; otherwise, false.</returns>
-		public static bool SetMinThreads(int count)
+		public bool SetMinThreads(int count)
 		{
 			_minThreadCount = count;
 
@@ -114,7 +117,7 @@ namespace MicroServer.Threading
 		/// All requests above that number remain queued until thread pool threads become available.
 		/// </summary>
 		/// <returns>The maximum number of asynchronous I/O threads in the thread pool.</returns>
-		public static int GetMaxThreads()
+		public int GetMaxThreads()
 		{
 			return _maxThreadCount;
 		}
@@ -125,16 +128,16 @@ namespace MicroServer.Threading
 		/// </summary>
 		/// <param name="count">The maximum number of worker threads in the thread pool.</param>
 		/// <returns>true if the change is successful; otherwise, false.</returns>
-		public static bool SetMaxThreads(int count)
+		public bool SetMaxThreads(int count)
 		{
 			_maxThreadCount = count;
 			return true;
 		}
 
-		private static void CreateNewThread()
+		private void CreateNewThread()
 		{
 			lock (_Threads) {
-				_Threads.Add(new ThreadPoolThread());
+				_Threads.Add(new ThreadPoolThread(_itron, this));
 			}
 		}
 
@@ -151,7 +154,7 @@ namespace MicroServer.Threading
 			}
 		}
 
-		internal static bool NotifyThreadIdle(ThreadPoolThread thread)
+		internal bool NotifyThreadIdle(ThreadPoolThread thread)
 		{
 			lock (_Threads) {
 				if (_Threads.Count > _maxThreadCount) {
@@ -171,7 +174,7 @@ namespace MicroServer.Threading
 			return false;
 		}
 
-		internal static void OnUnhandledThreadPoolException(ThreadPoolItem item, Exception exception)
+		internal void OnUnhandledThreadPoolException(ThreadPoolItem item, Exception exception)
 		{
 			var tmp = UnhandledThreadPoolException;
 			if (tmp != null) {
@@ -182,7 +185,7 @@ namespace MicroServer.Threading
 		/// <summary>
 		/// Is fired when a excption in one of the worker threads in unhandeld.
 		/// </summary>
-		public static event UnhandledThreadPoolExceptionDelegate UnhandledThreadPoolException;
+		public event UnhandledThreadPoolExceptionDelegate UnhandledThreadPoolException;
 	}
 
 	internal class ThreadPoolItem
@@ -199,31 +202,47 @@ namespace MicroServer.Threading
 
 	internal class ThreadPoolThread : IDisposable
 	{
-		public ThreadPoolThread()
+		Itron _itron;
+		ThreadPool _threadPool;
+
+		public ThreadPoolThread(Itron itron, ThreadPool threadPool)
 		{
-			_thread = new Thread(ThreadProc);
-			_thread.Start();
+			ER ret;
+			_itron = itron;
+			_threadPool = threadPool;
+
+			T_CFLG cflg = new T_CFLG();
+			ret = _itron.cre_flg(ID.ID_AUTO, ref cflg, out _WaitEvent);
+
+			T_CTSK ctsk = new T_CTSK();
+			ctsk.task = ThreadProc;
+			ret = _itron.cre_tsk(ID.ID_AUTO, ref ctsk, out _thread);
+			if (ret != ER.E_OK) {
+
+			}
+			ret = _itron.sta_tsk(_thread, 0);
 		}
 
-		private void ThreadProc()
+		private void ThreadProc(object exinf)
 		{
-			while (_thread != null) {
+			while (_thread != ID.NULL) {
+				FLGPTN flgptn = new FLGPTN();
 				try {
-					_WaitEvent.WaitOne();
+					_itron.wai_flg(ref flgptn, _WaitEvent, 0b0001, MODE.TWF_ANDW);
 
-					if (_thread != null && _item != null) {
+					if (_thread != ID.NULL && _item != null) {
 						_item.Callback(_item.State);
 					}
 				}
 				// ReSharper disable once EmptyGeneralCatchClause
 				catch (Exception ex) {
-					ThreadPool.OnUnhandledThreadPoolException(Item, ex);
+					_threadPool.OnUnhandledThreadPoolException(Item, ex);
 				}
 
-				if (_thread != null) {
-					_WaitEvent.Reset();
+				if (_thread != ID.NULL) {
+					_itron.clr_flg(_WaitEvent, 0b0001);
 					_item = null;
-					IsBusy = ThreadPool.NotifyThreadIdle(this);
+					IsBusy = _threadPool.NotifyThreadIdle(this);
 				}
 			}
 		}
@@ -238,20 +257,20 @@ namespace MicroServer.Threading
 				_item = value;
 				if (_item != null) {
 					IsBusy = true;
-					_WaitEvent.Set();
+					_itron.set_flg(_WaitEvent, 0b0001);
 				}
 			}
 		}
 
-		private readonly ManualResetEvent _WaitEvent = new ManualResetEvent(false);
+		private ID _WaitEvent;
 
-		private Thread _thread;
+		private ID _thread;
 
 		public void Dispose()
 		{
 			IsBusy = true;
-			_thread = null;
-			_WaitEvent.Set();
+			_thread = ID.NULL;
+			_itron.set_flg(_WaitEvent, 0b0001);
 		}
 	}
 }

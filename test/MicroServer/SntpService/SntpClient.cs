@@ -3,7 +3,7 @@ using MicroServer.Utilities;
 using System;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading;
+using uITron3;
 using Socket = MicroServer.Net.Sockets.Socket;
 
 namespace MicroServer.Net.Sntp
@@ -12,9 +12,11 @@ namespace MicroServer.Net.Sntp
 	{
 		#region Private Properties
 
+		Itron _itron;
+
 		private readonly IPAddress _dhcpInterfaceAddress = IPAddress.Any;
 
-		private Timer _pollingTimer;
+		private readonly HNO _pollingTimer = new HNO(2);
 
 		private string _primaryServer = Constants.SNTP_DEFAULT_PRIMARY_SERVER;
 		private string _alternateServer = Constants.SNTP_DEFAULT_ALTERNATE_SERVER;
@@ -79,7 +81,7 @@ namespace MicroServer.Net.Sntp
 		protected virtual void Dispose(bool disposing)
 		{
 			if (disposing) {
-				_pollingTimer.Dispose();
+				_itron.act_cyc(_pollingTimer, CYCACT.TCY_OFF);
 			}
 		}
 
@@ -101,17 +103,22 @@ namespace MicroServer.Net.Sntp
 
 		public void Start(int pollingDelay = 10000, int pollingInterval = 30000)
 		{
-			_pollingTimer = new Timer(new TimerCallback(Synchronize), null, pollingDelay, pollingInterval);
+			T_DCYC dcyc = new T_DCYC();
+			dcyc.cycact = CYCACT.TCY_ON;
+			dcyc.cychdr = Synchronize;
+			dcyc.cyctim = pollingInterval;
+			_itron.def_cyc(_pollingTimer, ref dcyc);
 		}
 
 		public void Stop()
 		{
-			_pollingTimer.Dispose();
+			_itron.act_cyc(_pollingTimer, CYCACT.TCY_OFF);
 		}
 
-		public void Synchronize()
+		public ID Synchronize()
 		{
 			Synchronize(null);
+			return ID.NULL;
 		}
 
 		private void Synchronize(object state)
@@ -142,7 +149,7 @@ namespace MicroServer.Net.Sntp
 					var timeHost = MicroServer.Dns.GetHostEntry(timeServer);
 					var remoteEndPoint = new IPEndPoint(timeHost.AddressList[0], Constants.SNTP_CLIENT_PORT);
 
-					responseMessage = SendRequest(requestMessage, remoteEndPoint);
+					responseMessage = SendRequest(_itron, requestMessage, remoteEndPoint);
 				}
 				else {
 					responseMessage = SendRequest(requestMessage);
@@ -157,13 +164,14 @@ namespace MicroServer.Net.Sntp
 
 		public SntpMessage SendRequest(SntpMessage sentMessage)
 		{
-			return SendRequest(sentMessage, null);
+			return SendRequest(_itron, sentMessage, null);
 		}
 
-		public SntpMessage SendRequest(SntpMessage sentMessage, IPEndPoint remoteEndPoint)
+		public SntpMessage SendRequest(Itron itron, SntpMessage sentMessage, IPEndPoint remoteEndPoint)
 		{
+			_itron = itron;
 			try {
-				using (var _socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp)) {
+				using (var _socket = new Socket(_itron, AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp)) {
 					if (remoteEndPoint == null) {
 						try {
 							var timeHost = MicroServer.Dns.GetHostEntry(_primaryServer);

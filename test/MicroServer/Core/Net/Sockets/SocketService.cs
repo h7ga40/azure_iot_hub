@@ -1,6 +1,7 @@
 using System;
 using System.Net;
-
+using MicroServer.Threading;
+using uITron3;
 
 namespace MicroServer.Net.Sockets
 {
@@ -13,6 +14,8 @@ namespace MicroServer.Net.Sockets
 
 		private IPAddress _interfaceAddress = IPAddress.Parse("192.168.137.1")/*GetDefaultLocalAddress()*/;
 		private int _servicePort = 0;
+		internal Itron _itron;
+		internal ThreadPool threadPool;
 
 		#endregion Private Properties
 
@@ -78,7 +81,7 @@ namespace MicroServer.Net.Sockets
 		/// <summary>
 		///  Starts the service listener if it is in a stopped state.
 		/// </summary>
-		public abstract bool Start();
+		public abstract bool Start(Itron itron, ThreadPool threadPool);
 
 		/// <summary>
 		///  Stops the service listener if in started state.
@@ -91,7 +94,7 @@ namespace MicroServer.Net.Sockets
 		public bool Restart()
 		{
 			Stop();
-			return Start();
+			return Start(_itron, threadPool);
 		}
 
 		#endregion Methods

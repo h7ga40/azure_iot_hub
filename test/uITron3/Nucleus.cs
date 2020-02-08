@@ -38,6 +38,8 @@ namespace uITron3
 		List<Udp6Cep> m_Udp6CepTable = new List<Udp6Cep>();
 		List<TcpCep> m_TcpCepTable = new List<TcpCep>();
 		List<TcpRep> m_TcpRepTable = new List<TcpRep>();
+		List<Tcp6Cep> m_Tcp6CepTable = new List<Tcp6Cep>();
+		List<Tcp6Rep> m_Tcp6RepTable = new List<Tcp6Rep>();
 		PacketBridge m_IPPacketBridge;
 		long m_Lock;
 
@@ -1330,6 +1332,192 @@ namespace uITron3
 
 			for (i = 0; i < m_TcpRepTable.Count; i++) {
 				Result = m_TcpRepTable[i];
+				if (cepid == Result.RepID) {
+					return Result;
+				}
+			}
+
+			return null;
+		}
+
+		internal ER CreateTcp6Cep(ID cepid, ref T_TCP6_CCEP pk_ccep, out ID p_cepid)
+		{
+			int i;
+
+			//if (pk_ccep == null)
+			//	return ER.E_PAR;
+
+			if (cepid == ID.ID_AUTO) {
+				//if (p_cepid == 0)
+				//	return ER.E_PAR;
+
+				cepid.Value = 1;
+
+				for (i = 0; ; i++) {
+					if (i >= m_Tcp6CepTable.Count) {
+						Tcp6Cep tcpCep = new Tcp6Cep(cepid, ref pk_ccep, this, m_lwIP);
+						m_Tcp6CepTable.Add(tcpCep);
+						break;
+					}
+
+					if (cepid == m_Tcp6CepTable[i].CepID) {
+						cepid.Value++;
+					}
+					else {
+						Tcp6Cep tcpCep = new Tcp6Cep(cepid, ref pk_ccep, this, m_lwIP);
+						m_Tcp6CepTable.Insert(i, tcpCep);
+						break;
+					}
+				}
+				p_cepid = cepid;
+			}
+			else {
+				ID tmpid;
+
+				p_cepid = ID.NULL;
+
+				for (i = 0; i < m_Tcp6CepTable.Count; i++) {
+					tmpid = m_Tcp6CepTable[i].CepID;
+
+					if (cepid == tmpid) {
+						return ER.E_OBJ;
+					}
+					else if (cepid < tmpid) {
+						break;
+					}
+				}
+				Tcp6Cep tcpCep = new Tcp6Cep(cepid, ref pk_ccep, this, m_lwIP);
+				m_Tcp6CepTable.Insert(i, tcpCep);
+			}
+
+			return ER.E_OK;
+		}
+
+		public ER DeleteTcp6Cep(ID cepid)
+		{
+			int i;
+			ID tmpid;
+			Tcp6Cep Tcp6Cep;
+
+			for (i = 0; i < m_Tcp6CepTable.Count; i++) {
+				Tcp6Cep = m_Tcp6CepTable[i];
+				tmpid = Tcp6Cep.CepID;
+
+				if (cepid == tmpid) {
+					m_Tcp6CepTable.RemoveAt(i);
+
+					//delete Tcp6Cep;
+
+					return ER.E_OK;
+				}
+				else if (cepid < tmpid) {
+					break;
+				}
+			}
+
+			return ER.E_OBJ;
+		}
+
+		public Tcp6Cep GetTcp6Cep(ID cepid)
+		{
+			int i;
+			Tcp6Cep Result;
+
+			for (i = 0; i < m_Tcp6CepTable.Count; i++) {
+				Result = m_Tcp6CepTable[i];
+				if (cepid == Result.CepID) {
+					return Result;
+				}
+			}
+
+			return null;
+		}
+
+		internal ER CreateTcp6Rep(ID cepid, ref T_TCP6_CREP pk_ccep, out ID p_cepid)
+		{
+			int i;
+
+			//if (pk_ccep == null)
+			//	return ER.E_PAR;
+
+			if (cepid == ID.ID_AUTO) {
+				//if (p_cepid == 0)
+				//	return ER.E_PAR;
+
+				cepid.Value = 1;
+
+				for (i = 0; ; i++) {
+					if (i >= m_Tcp6RepTable.Count) {
+						Tcp6Rep tcpRep = new Tcp6Rep(cepid, ref pk_ccep, this, m_lwIP);
+						m_Tcp6RepTable.Add(tcpRep);
+						break;
+					}
+
+					if (cepid == m_Tcp6RepTable[i].RepID) {
+						cepid.Value++;
+					}
+					else {
+						Tcp6Rep tcpRep = new Tcp6Rep(cepid, ref pk_ccep, this, m_lwIP);
+						m_Tcp6RepTable.Insert(i, tcpRep);
+						break;
+					}
+				}
+				p_cepid = cepid;
+			}
+			else {
+				ID tmpid;
+
+				p_cepid = ID.NULL;
+
+				for (i = 0; i < m_Tcp6RepTable.Count; i++) {
+					tmpid = m_Tcp6RepTable[i].RepID;
+
+					if (cepid == tmpid) {
+						return ER.E_OBJ;
+					}
+					else if (cepid < tmpid) {
+						break;
+					}
+				}
+				Tcp6Rep tcpRep = new Tcp6Rep(cepid, ref pk_ccep, this, m_lwIP);
+				m_Tcp6RepTable.Insert(i, tcpRep);
+			}
+
+			return ER.E_OK;
+		}
+
+		public ER DeleteTcp6Rep(ID cepid)
+		{
+			int i;
+			ID tmpid;
+			Tcp6Rep Tcp6Rep;
+
+			for (i = 0; i < m_Tcp6RepTable.Count; i++) {
+				Tcp6Rep = m_Tcp6RepTable[i];
+				tmpid = Tcp6Rep.RepID;
+
+				if (cepid == tmpid) {
+					m_Tcp6RepTable.RemoveAt(i);
+
+					//delete Tcp6Rep;
+
+					return ER.E_OK;
+				}
+				else if (cepid < tmpid) {
+					break;
+				}
+			}
+
+			return ER.E_OBJ;
+		}
+
+		public Tcp6Rep GetTcp6Rep(ID cepid)
+		{
+			int i;
+			Tcp6Rep Result;
+
+			for (i = 0; i < m_Tcp6RepTable.Count; i++) {
+				Result = m_Tcp6RepTable[i];
 				if (cepid == Result.RepID) {
 					return Result;
 				}

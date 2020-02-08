@@ -12,12 +12,12 @@ namespace SystemSim
 	{
 		private ServiceManager Server;
 		private Itron m_Itron;
+		ID MAIN_TASK;
 
 		public GateWay(uint addr, uint subNet)
 		{
 			Addr = addr;
 			SubNet = subNet;
-			Server = new ServiceManager();
 		}
 
 		public uint Addr { get; }
@@ -26,9 +26,18 @@ namespace SystemSim
 		public override void Init(Itron itron)
 		{
 			m_Itron = itron;
+
+			T_CTSK ctsk = new T_CTSK();
+			ctsk.task = main;
+			ER er = m_Itron.cre_tsk(ID.ID_AUTO, ref ctsk, out MAIN_TASK);
 		}
 
 		protected override void Start()
+		{
+			m_Itron.sta_tsk(MAIN_TASK, 0);
+		}
+
+		private void main(object exinf)
 		{
 			Server = new ServiceManager(LogType.Output, LogLevel.Info, @"\winfs") {
 
@@ -48,7 +57,7 @@ namespace SystemSim
 			SntpInit();
 
 			// SERVICES: Start all services
-			//Server.StartAll();
+			Server.StartAll(m_Itron);
 
 			// enables basic authentication on server using AccountService class for user name and password
 			//Server.HttpService.Add(new AuthenticationModule(new BasicAuthentication(new AccountService(), Server.ServerName)));
@@ -91,7 +100,6 @@ namespace SystemSim
 			// event handlers for dns service
 			Server.DnsService.OnDnsMessageReceived += DnsService_OnDnsMessageReceived;
 			Server.DnsService.OnDnsMessageSent += DnsService_OnDnsMessageSent;
-
 		}
 
 		private void SntpInit()

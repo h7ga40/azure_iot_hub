@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Text;
-using System.Threading;
+using uITron3;
 
 namespace MicroServer.Net.Dhcp
 {
@@ -13,7 +13,7 @@ namespace MicroServer.Net.Dhcp
 		private static readonly Random RANDOM = new Random();
 
 		private readonly object _bindingSync = new object();
-		private readonly Timer _reaperTimer;
+		private readonly HNO _reaperTimer = new HNO(1);
 		private string _storageRoot;
 		private string _filePath;
 
@@ -29,9 +29,24 @@ namespace MicroServer.Net.Dhcp
 		private int _leaseRenewal = 60 * 60 * 6; //  6 Hours
 		private int _leaseRebinding = 60 * 60 * 18; //  18 Hours
 
+		private int _reaperDelay;
+		private int _reaperInterval;
+		Itron _itron;
+
 		public BindingManager(int reaperDelay = 30000, int reaperInterval = 30000)
 		{
-			_reaperTimer = new Timer(new TimerCallback(Reaper), null, reaperDelay, reaperInterval);
+			_reaperDelay = reaperDelay;
+			_reaperInterval = reaperInterval;
+		}
+
+		public void Start(Itron itron)
+		{ 
+			_itron = itron;
+			T_DCYC dcyc = new T_DCYC();
+			dcyc.cycact = CYCACT.TCY_ON;
+			dcyc.cychdr = Reaper;
+			dcyc.cyctim = _reaperInterval;
+			_itron.def_cyc(_reaperTimer, ref dcyc);
 		}
 
 		public string StorageRoot {
@@ -358,7 +373,7 @@ namespace MicroServer.Net.Dhcp
 			}
 		}
 
-		private void Reaper(object state)
+		private ID Reaper()
 		{
 			Logger.WriteDebug(this, "Binding manager processed " + _assignedTable.Count.ToString() + " records");
 			foreach (BindingLease lease in _assignedTable.Values) {
@@ -391,6 +406,7 @@ namespace MicroServer.Net.Dhcp
 			//{
 			//    Logger.WriteDebug(" RESERVATION | " + lease.ToString());
 			//}
+			return ID.NULL;
 		}
 
 		[Serializable]

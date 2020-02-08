@@ -4,6 +4,7 @@ using MicroServer.Net.Sockets;
 using System;
 using System.Net;
 using System.Net.Sockets;
+using uITron3;
 using Socket = MicroServer.Net.Sockets.Socket;
 using ThreadPool = MicroServer.Threading.ThreadPool;
 using WaitCallback = MicroServer.Threading.WaitCallback;
@@ -97,9 +98,10 @@ namespace MicroServer.Net.Dns
 		/// <summary>
 		///  Starts the service listener if in a stopped state.
 		/// </summary>
-		public override bool Start()
+		public override bool Start(Itron itron, ThreadPool threadPool)
 		{
-			_listener = new UdpListener {
+			_itron = itron;
+			_listener = new UdpListener(itron) {
 				InterfaceAddress = _interfaceAddress,
 				BufferSize = Constants.DNS_MAX_MESSAGE_SIZE,
 				ReceiveTimeout = Constants.DNS_RECEIVE_TIMEOUT,
@@ -108,7 +110,7 @@ namespace MicroServer.Net.Dns
 			_listener.ClientConnected += OnClientConnect;
 			_listener.ClientDisconnected += OnClientDisconnect;
 
-			return _listener.Start(Constants.DNS_SERVICE_PORT, false);
+			return _listener.Start(itron, Constants.DNS_SERVICE_PORT, false);
 		}
 
 		/// <summary>
@@ -148,7 +150,7 @@ namespace MicroServer.Net.Dns
 				var messageArgs = new DnsMessageEventArgs(args.Channel, args.ChannelBuffer);
 				OnDnsMessageReceived(this, messageArgs);
 
-				ThreadPool.QueueUserWorkItem(new WaitCallback(ProcessRequest), messageArgs);
+				threadPool.QueueUserWorkItem(new WaitCallback(ProcessRequest), messageArgs);
 			}
 		}
 
@@ -273,7 +275,7 @@ namespace MicroServer.Net.Dns
 		private void SendRequest(DnsMessageEventArgs args)
 		{
 			try {
-				using (var _sendSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp)) {
+				using (var _sendSocket = new Socket(_itron, AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp)) {
 					var messageBuffer = new byte[Constants.DNS_MAX_MESSAGE_SIZE];
 
 					IPEndPoint remoteEndPoint = null;

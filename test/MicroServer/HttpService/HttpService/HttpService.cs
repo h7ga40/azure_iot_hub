@@ -3,9 +3,11 @@ using MicroServer.Net.Http.Messages;
 using MicroServer.Net.Http.Modules;
 using MicroServer.Net.Http.Serializers;
 using MicroServer.Net.Sockets;
+using MicroServer.Threading;
 using System;
 using System.Net;
 using System.Text;
+using uITron3;
 
 namespace MicroServer.Net.Http
 {
@@ -95,10 +97,11 @@ namespace MicroServer.Net.Http
 
 		#region Methods
 
-		public override bool Start()
+		public override bool Start(Itron itron, ThreadPool threadPool)
 		{
+			_itron = itron;
 			try {
-				_listener = new TcpListener {
+				_listener = new TcpListener(itron) {
 					InterfaceAddress = _interfaceAddress,
 					BufferSize = Constants.HTTP_MAX_MESSAGE_SIZE,
 					ReceiveTimeout = Constants.HTTP_RECEIVE_TIMEOUT,
@@ -107,7 +110,7 @@ namespace MicroServer.Net.Http
 				};
 				_listener.ClientConnected += OnClientConnected;
 				_listener.ClientDisconnected += OnClientDisconnect;
-				return _listener.Start(_servicePort);
+				return _listener.Start(itron, _servicePort);
 			}
 			catch {
 				return false;

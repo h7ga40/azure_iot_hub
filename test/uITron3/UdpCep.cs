@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace uITron3
 {
@@ -248,6 +245,16 @@ namespace uITron3
 			//SetDebugInfo(p_dat, lpszFileName, nLine);
 
 			return ER.E_OK;
+		}
+
+		internal ER SetOption(int optname, pointer optval, int optlen)
+		{
+			throw new NotImplementedException();
+		}
+
+		internal ER GetOption(int optname, pointer optval, int optlen)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

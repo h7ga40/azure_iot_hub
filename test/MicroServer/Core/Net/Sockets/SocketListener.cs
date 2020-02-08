@@ -2,7 +2,7 @@ using MicroServer.Logging;
 using System;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading;
+using uITron3;
 
 namespace MicroServer.Net.Sockets
 {
@@ -13,8 +13,9 @@ namespace MicroServer.Net.Sockets
 	{
 		#region Private Properties
 
+		protected Itron _itron;
 		internal Socket _socket;
-		internal Thread _thread;
+		internal ID _thread;
 
 		private IPAddress _interfaceAddress = IPAddress.Any;
 		private byte[] sendBuffer = new byte[1460];
@@ -99,7 +100,10 @@ namespace MicroServer.Net.Sockets
 		/// <summary>
 		/// Initializes a new instance of the <see cref="SocketListener"/> class.
 		/// </summary>
-		public SocketListener() { }
+		public SocketListener(Itron itron)
+		{
+			_itron = itron;
+		}
 
 		/// <summary>
 		/// Handles object cleanup for GC finalization.
@@ -129,8 +133,8 @@ namespace MicroServer.Net.Sockets
 					Stop();
 			}
 
-			if (_thread != null)
-				_thread = null;
+			if (_thread != ID.NULL)
+				_thread = ID.NULL;
 		}
 
 		#endregion  Constructors / Deconstructors
@@ -194,7 +198,7 @@ namespace MicroServer.Net.Sockets
 					}
 				}
 				else {
-					Thread.Sleep(10);
+					_itron.tslp_tsk(new TMO(10));
 				}
 			}
 			catch (SocketException ex) {

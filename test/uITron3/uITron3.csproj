@@ -76,11 +76,12 @@
     <Compile Include="SIFLayer.cs" />
     <Compile Include="StateMachine.cs" />
     <Compile Include="Task.cs" />
+    <Compile Include="Tcp6Cep.cs" />
     <Compile Include="TcpCep.cs" />
     <Compile Include="TMemNode.cs" />
     <Compile Include="TMemNodeList.cs" />
+    <Compile Include="Udp6Cep.cs" />
     <Compile Include="UdpCep.cs" />
-    <Compile Include="UdpCep6.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

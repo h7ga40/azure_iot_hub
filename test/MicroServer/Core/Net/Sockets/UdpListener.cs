@@ -2,7 +2,7 @@ using MicroServer.Logging;
 using System;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading;
+using uITron3;
 
 namespace MicroServer.Net.Sockets
 {
@@ -11,6 +11,11 @@ namespace MicroServer.Net.Sockets
 	/// </summary>
 	public class UdpListener : SocketListener
 	{
+		public UdpListener(Itron itron)
+			: base(itron)
+		{
+		}
+
 		#region Methods
 
 		/// <summary>
@@ -18,8 +23,9 @@ namespace MicroServer.Net.Sockets
 		/// </summary>
 		/// <param name="servicePort">The port used to listen on.</param>
 		/// <param name="allowBroadcast">Allows the listener to accept broadcast packets.</param>
-		public bool Start(int servicePort, bool allowBroadcast)
+		public bool Start(Itron itron, int servicePort, bool allowBroadcast)
 		{
+			_itron = itron;
 			if (servicePort > IPEndPoint.MaxPort || servicePort < IPEndPoint.MinPort)
 				throw new ArgumentOutOfRangeException("port", "Port must be less then " + IPEndPoint.MaxPort + " and more then " + IPEndPoint.MinPort);
 
@@ -32,7 +38,7 @@ namespace MicroServer.Net.Sockets
 			}
 
 			try {
-				_socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+				_socket = new Socket(_itron, AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 				_socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, 1);
 
 				if (allowBroadcast)
@@ -43,8 +49,10 @@ namespace MicroServer.Net.Sockets
 				_socket.SendTimeout = SendTimeout;
 
 				IsActive = true;
-				_thread = new Thread(StartUdpListening);
-				_thread.Start();
+				T_CTSK ctsk = new T_CTSK();
+				ctsk.task = StartUdpListening;
+				_itron.cre_tsk(ID.ID_AUTO, ref ctsk, out _thread);
+				_itron.sta_tsk(_thread, 0);
 
 				Logger.WriteInfo(this, "Started listening for requests on " + _socket.LocalEndPoint.ToString());
 
@@ -59,7 +67,7 @@ namespace MicroServer.Net.Sockets
 		/// <summary>
 		///  Listener thread
 		/// </summary>
-		private void StartUdpListening()
+		private void StartUdpListening(object exinf)
 		{
 			while (IsActive) {
 				try {

@@ -7,10 +7,12 @@ using MicroServer.Net.Http.Modules;
 using MicroServer.Net.Http.Mvc.Controllers;
 using MicroServer.Net.Http.Routing;
 using MicroServer.Net.Sntp;
+using MicroServer.Threading;
 using MicroServer.Utilities;
 using System;
 using System.Diagnostics;
 using System.Net;
+using uITron3;
 
 namespace MicroServer.Service
 {
@@ -37,6 +39,10 @@ namespace MicroServer.Service
 		private IPAddress _interfaceAddress = IPAddress.Any;
 		private string _dnsSuffix;
 		private string _serverName;
+
+		Itron _itron;
+		ThreadPool _threadPool;
+
 
 		#endregion Private Properties
 
@@ -219,8 +225,10 @@ namespace MicroServer.Service
 
 		#region Methods
 
-		public void StartAll()
+		public void StartAll(Itron itron)
 		{
+			_itron = itron;
+			_threadPool = new ThreadPool(itron);
 			_service = this;
 
 			// DHCP Service
@@ -234,7 +242,7 @@ namespace MicroServer.Service
 					_dhcpService.RemoveOption(DhcpOption.NTPServer);
 					_dhcpService.AddOption(DhcpOption.NTPServer, _interfaceAddress.GetAddressBytes());
 				}
-				_dhcpService.Start();
+				_dhcpService.Start(_itron, _threadPool);
 			}
 
 			// DNS Service
@@ -257,13 +265,13 @@ namespace MicroServer.Service
 					Logger.WriteInfo(this, "Device registered with dns:  " + record.Domain);
 				}
 
-				_dnsService.Start();
+				_dnsService.Start(_itron, _threadPool);
 			}
 
 			// SNTP Service
 			if (_sntpEnabled == true) {
 				_sntpService.InterfaceAddress = _interfaceAddress;
-				_sntpService.Start();
+				_sntpService.Start(_itron, _threadPool);
 			}
 
 			// HTTP Service
@@ -291,7 +299,7 @@ namespace MicroServer.Service
 				_httpService = new HttpService(_moduleManager) {
 					InterfaceAddress = _interfaceAddress
 				};
-				_httpService.Start();
+				_httpService.Start(_itron, _threadPool);
 			}
 
 			Logger.WriteInfo(this, "Service Manager started all services");

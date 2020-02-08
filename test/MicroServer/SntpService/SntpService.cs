@@ -3,6 +3,7 @@ using MicroServer.Net.Sockets;
 using System;
 using System.Net;
 using System.Net.Sockets;
+using uITron3;
 using Socket = MicroServer.Net.Sockets.Socket;
 using ThreadPool = MicroServer.Threading.ThreadPool;
 using WaitCallback = MicroServer.Threading.WaitCallback;
@@ -65,9 +66,11 @@ namespace MicroServer.Net.Sntp
 		/// <summary>
 		///  Starts the service listener if in a stopped state.
 		/// </summary>
-		public override bool Start()
+		public override bool Start(Itron itron, ThreadPool threadPool)
 		{
-			_listener = new UdpListener {
+			_itron = itron;
+			this.threadPool = threadPool;
+			_listener = new UdpListener(itron) {
 				InterfaceAddress = _interfaceAddress,
 				BufferSize = Constants.SNTP_MAX_MESSAGE_SIZE,
 				ReceiveTimeout = Constants.SNTP_RECEIVE_TIMEOUT,
@@ -75,7 +78,7 @@ namespace MicroServer.Net.Sntp
 			};
 			_listener.ClientConnected += OnClientConnect;
 			_listener.ClientDisconnected += OnClientDisconnect;
-			return _listener.Start(Constants.SNTP_SERVICE_PORT, false);
+			return _listener.Start(itron, Constants.SNTP_SERVICE_PORT, false);
 		}
 
 		/// <summary>
@@ -115,7 +118,7 @@ namespace MicroServer.Net.Sntp
 				var messageArgs = new SntpMessageEventArgs(args.Channel, args.ChannelBuffer);
 				OnSntpMessageReceived(this, messageArgs);
 
-				ThreadPool.QueueUserWorkItem(new WaitCallback(ProcessRequest), messageArgs);
+				threadPool.QueueUserWorkItem(new WaitCallback(ProcessRequest), messageArgs);
 			}
 		}
 
@@ -197,7 +200,7 @@ namespace MicroServer.Net.Sntp
 		private void SendRequest(SntpMessageEventArgs args)
 		{
 			try {
-				using (var _sendSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp)) {
+				using (var _sendSocket = new Socket(_itron, AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp)) {
 					var messageBuffer = new byte[Constants.SNTP_MAX_MESSAGE_SIZE];
 
 					IPEndPoint remoteEndPoint = null;
