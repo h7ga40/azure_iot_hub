@@ -59,11 +59,13 @@ uintmax_t strtoumax(const char *restrict s, char **restrict p, int base)
 #if defined(_MSC_VER) || defined(__c2__)
 weak_alias(musl_strtol, __strtol_internal);
 weak_alias(musl_strtoul, __strtoul_internal);
+weak_alias(musl_strtoll, __strtoll_internal);
+weak_alias(musl_strtoull, __strtoull_internal);
 #else
 weak_alias(strtol, __strtol_internal);
 weak_alias(strtoul, __strtoul_internal);
-#endif
 weak_alias(strtoll, __strtoll_internal);
 weak_alias(strtoull, __strtoull_internal);
+#endif
 weak_alias(strtoimax, __strtoimax_internal);
 weak_alias(strtoumax, __strtoumax_internal);

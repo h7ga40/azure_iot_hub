@@ -124,35 +124,17 @@
     <ProjectReference Include="..\libazure_iothub\libazure_iothub.vcxproj">
       <Project>{e6aa3488-7f25-4654-bc8f-20620820b0bb}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\libbb\libbb.vcxproj">
-      <Project>{cf9a9ebd-6480-4f11-8d82-dbcb8839cfb2}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\libbtstack\libbtstack.vcxproj">
-      <Project>{07eab121-1857-4e9b-866c-3ad1e84d3845}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\libcurl\libcurl.vcxproj">
       <Project>{ccd8d631-b4ca-4c13-8e41-e1771b7a3bb7}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\libexpat\libexpat.vcxproj">
-      <Project>{15f5128f-6eb4-4e2f-92d5-1fe6446cd4eb}</Project>
     </ProjectReference>
     <ProjectReference Include="..\libmbedtls\libmbedtls.vcxproj">
       <Project>{d81d89dd-6f1b-4f1d-b4ba-11f02de516b2}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\libmruby\libmruby.vcxproj">
-      <Project>{d4378089-a3b4-4f64-980b-bf69015e30b8}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\libmusl\libmusl.vcxproj">
       <Project>{d4a696ec-4a34-458e-bf97-d2ca486577ad}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\libonigmo\libonigmo.vcxproj">
-      <Project>{5a4fe472-d98d-4492-a048-9cdc5f7ceeaf}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\librx63nsim\librx63nsim.vcxproj">
       <Project>{54495cfb-722c-4594-88db-2b4e8331a014}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\libusbhost\libusbhost.vcxproj">
-      <Project>{f43f20d3-1e54-4173-bf2d-c6d0a8574073}</Project>
     </ProjectReference>
     <ProjectReference Include="..\libwolfssl\libwolfssl.vcxproj">
       <Project>{c7d76c13-6b12-4fed-b0ee-8afb9625f520}</Project>

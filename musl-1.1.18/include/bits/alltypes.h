@@ -34,6 +34,9 @@
 #define unlink musl_unlink
 #define strncmp musl_strncmp
 #define strtol musl_strtol
+#define strtoll musl_strtoll
+#define strtoull musl_strtoull
+#define getenv musl_getenv
 #define strchr musl_strchr
 #define strdup musl_strdup
 #define puts musl_puts
@@ -46,6 +49,14 @@
 #define fread musl_fread
 #define fgets musl_fgets
 #define vsnprintf musl_vsnprintf
+#define wcscmp musl_wcscmp
+#define wcsncmp musl_wcsncmp
+#define wcschr musl_wcschr
+#define wcslen musl_wcslen
+#define wmemchr musl_wmemchr
+#define wmemcmp musl_wmemcmp
+#define wmemcpy musl_wmemcpy
+#define wmemmove musl_wmemmove
 #endif
 #ifdef _MSC_VER
 #define __builtin_va_list char *
