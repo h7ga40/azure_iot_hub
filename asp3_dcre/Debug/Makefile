@@ -465,7 +465,7 @@ $(OBJDIR)/@(BANNEROBJ): $(filter-out $(OBJDIR)/@(BANNEROBJ),$(ALL_OBJS)) \
 #  全体のリンク
 #
 $(OBJFILE): $(ALL_OBJS) $(LIBS_DEP)
-	$(LINK) $(CFLAGS) $(LDFLAGS) $(OBJ_LDFLAGS) -o $(OBJFILE) -Wl,-Map=$(OBJNAME).map,--cref \
+	$(LINK) $(CFLAGS) $(LDFLAGS) $(OBJ_LDFLAGS) -o $(OBJFILE) -Wl,--gc-sections,-e_start -Wl,-Map=$(OBJNAME).map,--cref \
 			$(START_OBJS) $(APPL_OBJS) $(SYSSVC_OBJS) $(CFG_OBJS) \
 			-Wl,--start-group $(ALL_LIBS) -Wl,--end-group $(END_OBJS)
 
@@ -514,7 +514,7 @@ check.timestamp: cfg2_out.db $(OBJNAME).syms $(OBJNAME).srec
 .PHONY: clean
 clean:
 	rm -f \#* *~ $(OBJDIR)/*.o $(DEPDIR)/*.d $(CLEAN_FILES) check.timestamp
-	rm -f $(OBJFILE) $(OBJNAME).syms $(OBJNAME).srec $(OBJNAME).bin
+	rm -f $(OBJFILE) $(OBJNAME).syms $(OBJNAME).srec $(OBJNAME).bin $(OBJNAME).mot
 	rm -f kernel_cfg.timestamp $(CFG2_OUT_SRCS) cfg2_out.db
 	rm -f offset.timestamp $(OFFSET_H)
 	rm -f cfg1_out.syms cfg1_out.srec $(CFG1_OUT)
