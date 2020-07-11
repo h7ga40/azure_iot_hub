@@ -1,7 +1,7 @@
 /*
  *  TOPPERS PROJECT Home Network Working Group Software
  * 
- *  Copyright (C) 2019 Cores Co., Ltd. Japan
+ *  Copyright (C) 2017-2019 Cores Co., Ltd. Japan
  * 
  *  上記著作権者は，以下の(1)～(4)の条件を満たす場合に限り，本ソフトウェ
  *  ア（本ソフトウェアを改変したものを含む．以下同じ）を使用・複製・改
@@ -32,34 +32,112 @@
  *  アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
  *  の責任を負わない．
  * 
- *  @(#) $Id$
+ *  @(#) $Id: fdtable.c 1994 2019-07-25 10:56:14Z coas-nagasima $
  */
+#include "shellif.h"
 #include <stdint.h>
-#include <stdlib.h>
 #include <kernel.h>
-#include "azure_c_shared_utility/platform.h"
-#include "azure_c_shared_utility/optimize_size.h"
-#include "azure_c_shared_utility/xio.h"
-#include "azure_c_shared_utility/tlsio_wolfssl.h"
+#include <t_syslog.h>
+#include <t_stdlib.h>
+#include <sil.h>
+#include "syssvc/serial.h"
+#include "syssvc/syslog.h"
 #include "target_syssvc.h"
+#include "fdtable.h"
+#include "kernel_cfg.h"
+#include <string.h>
+#include "util/ntstdio.h"
+#include "hal/serial_api.h"
 
-int platform_init(void)
+#ifdef _DEBUG
+static const char THIS_FILE[] = __FILE__;
+#endif
+
+static int pipe_close(struct SHELL_FILE *fp);
+static size_t pipe_read(struct SHELL_FILE *fp, unsigned char *data, size_t len);
+static size_t pipe_write(struct SHELL_FILE *fp, const unsigned char *data, size_t len);
+static off_t pipe_seek(struct SHELL_FILE *fp, off_t ofs, int org);
+static int pipe_ioctl(struct SHELL_FILE *fp, int req, void *arg);
+static bool_t pipe_readable(struct SHELL_FILE *fp);
+static bool_t pipe_writable(struct SHELL_FILE *fp);
+static void pipe_delete(struct SHELL_FILE *fp);
+
+IO_TYPE IO_TYPE_PIPE = { pipe_close, pipe_read, pipe_write, pipe_seek, pipe_ioctl, pipe_readable, pipe_writable, pipe_delete };
+
+struct SHELL_PIPE {
+	unsigned int flags;
+	struct SHELL_PIPE *pair;
+	unsigned char buff[64];
+};
+
+int shell_pipe(int *fds)
 {
+	struct SHELL_FILE *fp1 = new_fp(&IO_TYPE_PIPE, 0, 0);
+	if (fp1 == NULL)
+		return -ENOMEM;
+	fp1->exinf = calloc(1, sizeof(struct SHELL_PIPE));
+
+	struct SHELL_FILE *fp2 = new_fp(&IO_TYPE_PIPE, 0, 0);
+	if (fp2 == NULL) {
+		delete_fp(fp1);
+		return -ENOMEM;
+	}
+	fp2->exinf = calloc(1, sizeof(struct SHELL_PIPE));
+	((struct SHELL_PIPE *)fp2->exinf)->pair = fp1;
+	((struct SHELL_PIPE *)fp1->exinf)->pair = fp2;
+
+	fds[0] = fp1->fd;
+	fds[1] = fp2->fd;
+
 	return 0;
 }
 
-const IO_INTERFACE_DESCRIPTION* platform_get_default_tlsio(void)
+int pipe_close(struct SHELL_FILE *fp)
 {
-	return tlsio_wolfssl_get_interface_description();
+	return -ENOSYS;
 }
 
-STRING_HANDLE platform_get_platform_info(PLATFORM_INFO_OPTION options)
+size_t pipe_read(struct SHELL_FILE *fp, unsigned char *data, size_t len)
 {
-	// Expected format: "(<runtime name>; <operating system name>; <platform>)"
-
-	return STRING_construct("(native; TOPPERS/ASP3; "TARGET_NAME")");
+	return -ENOSYS;
 }
 
-void platform_deinit(void)
+size_t pipe_write(struct SHELL_FILE *fp, const unsigned char *data, size_t len)
 {
+	return -ENOSYS;
+}
+
+off_t pipe_seek(struct SHELL_FILE *fp, off_t ofs, int org)
+{
+	return -ENOSYS;
+}
+
+int pipe_ioctl(struct SHELL_FILE *fp, int req, void *arg)
+{
+	switch (req) {
+	case F_GETFD:
+		*(unsigned int *)arg = ((struct SHELL_PIPE *)fp->exinf)->flags;
+		return 0;
+	case F_SETFD:
+		((struct SHELL_PIPE *)fp->exinf)->flags = (unsigned int)arg;
+		return 0;
+	}
+
+	return -ENOSYS;
+}
+
+bool_t pipe_readable(struct SHELL_FILE *fp)
+{
+	return false;
+}
+
+bool_t pipe_writable(struct SHELL_FILE *fp)
+{
+	return false;
+}
+
+void pipe_delete(struct SHELL_FILE *fp)
+{
+	free((struct SHELL_PIPE *)fp->exinf);
+	fp->exinf = NULL;
 }

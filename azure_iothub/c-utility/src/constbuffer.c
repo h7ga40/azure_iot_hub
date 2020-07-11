@@ -2,19 +2,18 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 #include <stdlib.h>
+#include <stddef.h>
 #include <stdbool.h>
 #include "azure_macro_utils/macro_utils.h"
 #include "azure_c_shared_utility/gballoc.h"
+#include "azure_c_shared_utility/constbuffer.h"
 #include "azure_c_shared_utility/xlogging.h"
 #include "azure_c_shared_utility/refcount.h"
-
-#include "azure_c_shared_utility/constbuffer.h"
 
 #define CONSTBUFFER_TYPE_VALUES \
     CONSTBUFFER_TYPE_COPIED, \
     CONSTBUFFER_TYPE_MEMORY_MOVED, \
-    CONSTBUFFER_TYPE_WITH_CUSTOM_FREE, \
-    CONSTBUFFER_TYPE_FROM_OFFSET_AND_SIZE
+    CONSTBUFFER_TYPE_WITH_CUSTOM_FREE
 
 MU_DEFINE_ENUM(CONSTBUFFER_TYPE, CONSTBUFFER_TYPE_VALUES)
 
@@ -25,7 +24,6 @@ typedef struct CONSTBUFFER_HANDLE_DATA_TAG
     CONSTBUFFER_TYPE buffer_type;
     CONSTBUFFER_CUSTOM_FREE_FUNC custom_free_func;
     void* custom_free_func_context;
-    CONSTBUFFER_HANDLE originalHandle; /*where the CONSTBUFFER_TYPE_FROM_OFFSET_AND_SIZE was build from*/
 } CONSTBUFFER_HANDLE_DATA;
 
 static CONSTBUFFER_HANDLE CONSTBUFFER_Create_Internal(const unsigned char* source, size_t size)
@@ -53,7 +51,7 @@ static CONSTBUFFER_HANDLE CONSTBUFFER_Create_Internal(const unsigned char* sourc
         }
         else
         {
-            unsigned char* temp = (unsigned char*)(result + 1);
+            unsigned char* temp = (void*)(result + 1);
             /*Codes_SRS_CONSTBUFFER_02_004: [Otherwise CONSTBUFFER_Create shall return a non-NULL handle.]*/
             /*Codes_SRS_CONSTBUFFER_02_007: [Otherwise, CONSTBUFFER_CreateFromBuffer shall copy the content of buffer.]*/
             /*Codes_SRS_CONSTBUFFER_02_009: [Otherwise, CONSTBUFFER_CreateFromBuffer shall return a non-NULL handle.]*/
@@ -66,7 +64,7 @@ static CONSTBUFFER_HANDLE CONSTBUFFER_Create_Internal(const unsigned char* sourc
     return result;
 }
 
-IMPLEMENT_MOCKABLE_FUNCTION(, CONSTBUFFER_HANDLE, CONSTBUFFER_Create, const unsigned char*, source, size_t, size)
+CONSTBUFFER_HANDLE CONSTBUFFER_Create(const unsigned char* source, size_t size)
 {
     CONSTBUFFER_HANDLE result;
     /*Codes_SRS_CONSTBUFFER_02_001: [If source is NULL and size is different than 0 then CONSTBUFFER_Create shall fail and return NULL.]*/
@@ -86,7 +84,7 @@ IMPLEMENT_MOCKABLE_FUNCTION(, CONSTBUFFER_HANDLE, CONSTBUFFER_Create, const unsi
 }
 
 /*this creates a new constbuffer from an existing BUFFER_HANDLE*/
-IMPLEMENT_MOCKABLE_FUNCTION(, CONSTBUFFER_HANDLE, CONSTBUFFER_CreateFromBuffer, BUFFER_HANDLE, buffer)
+CONSTBUFFER_HANDLE CONSTBUFFER_CreateFromBuffer(BUFFER_HANDLE buffer)
 {
     CONSTBUFFER_HANDLE result;
     /*Codes_SRS_CONSTBUFFER_02_006: [If buffer is NULL then CONSTBUFFER_CreateFromBuffer shall fail and return NULL.]*/
@@ -104,7 +102,7 @@ IMPLEMENT_MOCKABLE_FUNCTION(, CONSTBUFFER_HANDLE, CONSTBUFFER_CreateFromBuffer, 
     return result;
 }
 
-IMPLEMENT_MOCKABLE_FUNCTION(, CONSTBUFFER_HANDLE, CONSTBUFFER_CreateWithMoveMemory, unsigned char*, source, size_t, size)
+CONSTBUFFER_HANDLE CONSTBUFFER_CreateWithMoveMemory(unsigned char* source, size_t size)
 {
     CONSTBUFFER_HANDLE result;
 
@@ -138,7 +136,7 @@ IMPLEMENT_MOCKABLE_FUNCTION(, CONSTBUFFER_HANDLE, CONSTBUFFER_CreateWithMoveMemo
     return result;
 }
 
-IMPLEMENT_MOCKABLE_FUNCTION(, CONSTBUFFER_HANDLE, CONSTBUFFER_CreateWithCustomFree, const unsigned char*, source, size_t, size, CONSTBUFFER_CUSTOM_FREE_FUNC, customFreeFunc, void*, customFreeFuncContext)
+CONSTBUFFER_HANDLE CONSTBUFFER_CreateWithCustomFree(const unsigned char* source, size_t size, CONSTBUFFER_CUSTOM_FREE_FUNC customFreeFunc, void* customFreeFuncContext)
 {
     CONSTBUFFER_HANDLE result;
 
@@ -183,55 +181,7 @@ IMPLEMENT_MOCKABLE_FUNCTION(, CONSTBUFFER_HANDLE, CONSTBUFFER_CreateWithCustomFr
     return result;
 }
 
-IMPLEMENT_MOCKABLE_FUNCTION(, CONSTBUFFER_HANDLE, CONSTBUFFER_CreateFromOffsetAndSize, CONSTBUFFER_HANDLE, handle, size_t, offset, size_t, size)
-{
-    CONSTBUFFER_HANDLE result;
-
-    if (
-        /*Codes_SRS_CONSTBUFFER_02_025: [ If handle is NULL then CONSTBUFFER_CreateFromOffsetAndSize shall fail and return NULL. ]*/
-        (handle == NULL) ||
-        /*Codes_SRS_CONSTBUFFER_02_026: [ If offset is greater than or equal to handles's size then CONSTBUFFER_CreateFromOffsetAndSize shall fail and return NULL. ]*/
-        (offset > handle->alias.size) ||
-        /*Codes_SRS_CONSTBUFFER_02_032: [ If there are any failures then CONSTBUFFER_CreateFromOffsetAndSize shall fail and return NULL. ]*/
-        (offset > SIZE_MAX - size) ||
-        /*Codes_SRS_CONSTBUFFER_02_027: [ If offset + size exceed handles's size then CONSTBUFFER_CreateFromOffsetAndSize shall fail and return NULL. ]*/
-        (offset + size > handle->alias.size)
-        )
-    {
-        LogError("invalid arguments CONSTBUFFER_HANDLE handle=%p, size_t offset=%zu, size_t size=%zu",
-            handle, offset, size);
-        result = NULL;
-    }
-    else
-    {
-        /*Codes_SRS_CONSTBUFFER_02_028: [ CONSTBUFFER_CreateFromOffsetAndSize shall allocate memory for a new CONSTBUFFER_HANDLE's content. ]*/
-        result = (CONSTBUFFER_HANDLE)malloc(sizeof(CONSTBUFFER_HANDLE_DATA));
-        if (result == NULL)
-        {
-            /*Codes_SRS_CONSTBUFFER_02_032: [ If there are any failures then CONSTBUFFER_CreateFromOffsetAndSize shall fail and return NULL. ]*/
-            LogError("failure in malloc(sizeof(CONSTBUFFER_HANDLE_DATA)=%zu)", sizeof(CONSTBUFFER_HANDLE_DATA));
-            /*return as is*/
-        }
-        else
-        {
-            result->buffer_type = CONSTBUFFER_TYPE_FROM_OFFSET_AND_SIZE;
-            result->alias.buffer = handle->alias.buffer+offset;
-            result->alias.size = size;
-
-            /*Codes_SRS_CONSTBUFFER_02_030: [ CONSTBUFFER_CreateFromOffsetAndSize shall increment the reference count of handle. ]*/
-            INC_REF_VAR(handle->count);
-            result->originalHandle = handle;
-
-            /*Codes_SRS_CONSTBUFFER_02_029: [ CONSTBUFFER_CreateFromOffsetAndSize shall set the ref count of the newly created CONSTBUFFER_HANDLE to the initial value. ]*/
-            INIT_REF_VAR(result->count);
-
-            /*Codes_SRS_CONSTBUFFER_02_031: [ CONSTBUFFER_CreateFromOffsetAndSize shall succeed and return a non-NULL value. ]*/
-        }
-    }
-    return result;
-}
-
-IMPLEMENT_MOCKABLE_FUNCTION(, void, CONSTBUFFER_IncRef, CONSTBUFFER_HANDLE, constbufferHandle)
+void CONSTBUFFER_IncRef(CONSTBUFFER_HANDLE constbufferHandle)
 {
     if (constbufferHandle == NULL)
     {
@@ -245,7 +195,7 @@ IMPLEMENT_MOCKABLE_FUNCTION(, void, CONSTBUFFER_IncRef, CONSTBUFFER_HANDLE, cons
     }
 }
 
-IMPLEMENT_MOCKABLE_FUNCTION(, const CONSTBUFFER*, CONSTBUFFER_GetContent, CONSTBUFFER_HANDLE, constbufferHandle)
+const CONSTBUFFER* CONSTBUFFER_GetContent(CONSTBUFFER_HANDLE constbufferHandle)
 {
     const CONSTBUFFER* result;
     if (constbufferHandle == NULL)
@@ -262,32 +212,7 @@ IMPLEMENT_MOCKABLE_FUNCTION(, const CONSTBUFFER*, CONSTBUFFER_GetContent, CONSTB
     return result;
 }
 
-static void CONSTBUFFER_DecRef_internal(CONSTBUFFER_HANDLE constbufferHandle)
-{
-    /*Codes_SRS_CONSTBUFFER_02_016: [Otherwise, CONSTBUFFER_DecRef shall decrement the refcount on the constbufferHandle handle.]*/
-    if (DEC_REF_VAR(constbufferHandle->count) == DEC_RETURN_ZERO)
-    {
-        if (constbufferHandle->buffer_type == CONSTBUFFER_TYPE_MEMORY_MOVED)
-        {
-            free((void*)constbufferHandle->alias.buffer);
-        }
-        else if (constbufferHandle->buffer_type == CONSTBUFFER_TYPE_WITH_CUSTOM_FREE)
-        {
-            /* Codes_SRS_CONSTBUFFER_01_012: [ If the buffer was created by calling CONSTBUFFER_CreateWithCustomFree, the customFreeFunc function shall be called to free the memory, while passed customFreeFuncContext as argument. ]*/
-            constbufferHandle->custom_free_func(constbufferHandle->custom_free_func_context);
-        }
-        /*Codes_SRS_CONSTBUFFER_02_024: [ If the constbufferHandle was created by calling CONSTBUFFER_CreateFromOffsetAndSize then CONSTBUFFER_DecRef shall decrement the ref count of the original handle passed to CONSTBUFFER_CreateFromOffsetAndSize. ]*/
-        else if (constbufferHandle->buffer_type == CONSTBUFFER_TYPE_FROM_OFFSET_AND_SIZE)
-        {
-            CONSTBUFFER_DecRef_internal(constbufferHandle->originalHandle);
-        }
-
-        /*Codes_SRS_CONSTBUFFER_02_017: [If the refcount reaches zero, then CONSTBUFFER_DecRef shall deallocate all resources used by the CONSTBUFFER_HANDLE.]*/
-        free(constbufferHandle);
-    }
-}
-
-IMPLEMENT_MOCKABLE_FUNCTION(, void, CONSTBUFFER_DecRef, CONSTBUFFER_HANDLE, constbufferHandle)
+void CONSTBUFFER_DecRef(CONSTBUFFER_HANDLE constbufferHandle)
 {
     if (constbufferHandle == NULL)
     {
@@ -296,12 +221,27 @@ IMPLEMENT_MOCKABLE_FUNCTION(, void, CONSTBUFFER_DecRef, CONSTBUFFER_HANDLE, cons
     }
     else
     {
-        CONSTBUFFER_DecRef_internal(constbufferHandle);
+        /*Codes_SRS_CONSTBUFFER_02_016: [Otherwise, CONSTBUFFER_DecRef shall decrement the refcount on the constbufferHandle handle.]*/
+        if (DEC_REF_VAR(constbufferHandle->count) == DEC_RETURN_ZERO)
+        {
+            if (constbufferHandle->buffer_type == CONSTBUFFER_TYPE_MEMORY_MOVED)
+            {
+                free((void*)constbufferHandle->alias.buffer);
+            }
+            else if (constbufferHandle->buffer_type == CONSTBUFFER_TYPE_WITH_CUSTOM_FREE)
+            {
+                /* Codes_SRS_CONSTBUFFER_01_012: [ If the buffer was created by calling CONSTBUFFER_CreateWithCustomFree, the customFreeFunc function shall be called to free the memory, while passed customFreeFuncContext as argument. ]*/
+                constbufferHandle->custom_free_func(constbufferHandle->custom_free_func_context);
+            }
+
+            /*Codes_SRS_CONSTBUFFER_02_017: [If the refcount reaches zero, then CONSTBUFFER_DecRef shall deallocate all resources used by the CONSTBUFFER_HANDLE.]*/
+            free(constbufferHandle);
+        }
     }
 }
 
 
-IMPLEMENT_MOCKABLE_FUNCTION(, bool, CONSTBUFFER_HANDLE_contain_same, CONSTBUFFER_HANDLE, left, CONSTBUFFER_HANDLE, right)
+bool CONSTBUFFER_HANDLE_contain_same(CONSTBUFFER_HANDLE left, CONSTBUFFER_HANDLE right)
 {
     bool result;
     if (left == NULL)

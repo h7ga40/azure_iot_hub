@@ -24,6 +24,7 @@
 			<storageModule moduleId="com.renesas.cdt.managedbuild.core.toolchainInfo">
 				<option id="toolchain.id" value="RENESAS_GCC_RX"/>
 				<option id="toolchain.version" value="8.3.0.201904"/>
+				<option id="toolchain.enable" value="true"/>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 				<configuration artifactExtension="a" artifactName="musl" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="rm -rf *.lst *.lis *.lpp *.map" description="" id="com.renesas.cdt.managedbuild.gcc.rx.ui.configuration.debug.lib.922945172" name="Debug" parent="com.renesas.cdt.managedbuild.gcc.rx.ui.configuration.debug.lib">
@@ -36,7 +37,7 @@
 							<option id="com.renesas.cdt.managedbuild.gcc.core.option.cpu.architecture.applicability.326382737" name="Architecture Applicability" superClass="com.renesas.cdt.managedbuild.gcc.core.option.cpu.architecture.applicability" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<option id="com.renesas.cdt.managedbuild.gcc.core.option.deviceShortName.556693418" name="DeviceName" superClass="com.renesas.cdt.managedbuild.gcc.core.option.deviceShortName" useByScannerDiscovery="false" value="R5F563NBDxFP" valueType="string"/>
 							<option id="com.renesas.cdt.managedbuild.gcc.core.option.deviceCommand.614640820" name="DeviceCommand" superClass="com.renesas.cdt.managedbuild.gcc.core.option.deviceCommand" useByScannerDiscovery="false" value="R5F563NB" valueType="string"/>
-							<option id="com.renesas.cdt.managedbuild.gcc.core.option.debug.warnStackSize.223830224" name="Warn if stack size exceeds the limit (-Wstack-usage) (H')" superClass="com.renesas.cdt.managedbuild.gcc.core.option.debug.warnStackSize" useByScannerDiscovery="false" value="100" valueType="string"/>
+							<option id="com.renesas.cdt.managedbuild.gcc.core.option.debug.warnStackSize.223830224" name="Warn if stack size exceeds the limit, in bytes (-Wstack-usage)" superClass="com.renesas.cdt.managedbuild.gcc.core.option.debug.warnStackSize" useByScannerDiscovery="false" value="100" valueType="string"/>
 							<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.renesas.cdt.managedbuild.gcc.core.option.warnings.otherFlags.1638796861" name="Other Flags" superClass="com.renesas.cdt.managedbuild.gcc.core.option.warnings.otherFlags" useByScannerDiscovery="false" valueType="stringList">
 								<listOptionValue builtIn="false" value="-Werror=implicit-function-declaration"/>
 								<listOptionValue builtIn="false" value="-Werror=implicit-int"/>
@@ -55,6 +56,7 @@
 								<option id="com.renesas.cdt.managedbuild.gcc.core.option.librarygenerator.headerfiles.stdlib.2100068518" name="stdlib.h : Performs C program standard processing" superClass="com.renesas.cdt.managedbuild.gcc.core.option.librarygenerator.headerfiles.stdlib" useByScannerDiscovery="true" value="false" valueType="boolean"/>
 								<option id="com.renesas.cdt.managedbuild.gcc.core.option.librarygenerator.headerfiles.string.937981782" name="string.h : Performs string operations" superClass="com.renesas.cdt.managedbuild.gcc.core.option.librarygenerator.headerfiles.string" useByScannerDiscovery="true" value="false" valueType="boolean"/>
 								<option id="com.renesas.cdt.managedbuild.gcc.core.option.librarygenerator.settings.libraryType.862347981" name="Library type" superClass="com.renesas.cdt.managedbuild.gcc.core.option.librarygenerator.settings.libraryType" useByScannerDiscovery="true" value="com.renesas.cdt.managedbuild.gcc.core.option.librarygenerator.settings.libraryType.preBuilt" valueType="enumerated"/>
+								<option id="com.renesas.cdt.managedbuild.gcc.core.option.libgen.libstd.applicability.1220111905" superClass="com.renesas.cdt.managedbuild.gcc.core.option.libgen.libstd.applicability" value="true" valueType="boolean"/>
 							</tool>
 							<tool id="com.renesas.cdt.managedbuild.gcc.rx.tool.compiler.763816090" name="Compiler" superClass="com.renesas.cdt.managedbuild.gcc.rx.tool.compiler">
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.renesas.cdt.managedbuild.gcc.core.option.compiler.includes.includeFileDir.1951916691" name="Include file directories" superClass="com.renesas.cdt.managedbuild.gcc.core.option.compiler.includes.includeFileDir" useByScannerDiscovery="false" valueType="includePath">
@@ -79,7 +81,7 @@
 								<inputType id="com.renesas.cdt.managedbuild.gcc.core.inputType.compiler.c.915674107" superClass="com.renesas.cdt.managedbuild.gcc.core.inputType.compiler.c"/>
 							</tool>
 							<tool id="com.renesas.cdt.managedbuild.gcc.rx.tool.cpp.compiler.547534028" name="Compiler CPP" superClass="com.renesas.cdt.managedbuild.gcc.rx.tool.cpp.compiler">
-								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="true" id="com.renesas.cdt.managedbuild.gcc.core.option.compiler.includes.includeFileDir.319518528" name="Include file directories" superClass="com.renesas.cdt.managedbuild.gcc.core.option.compiler.includes.includeFileDir" valueType="includePath"/>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="true" id="com.renesas.cdt.managedbuild.gcc.core.option.compiler.includes.includeFileDir.319518528" name="Include file directories" superClass="com.renesas.cdt.managedbuild.gcc.core.option.compiler.includes.includeFileDir" useByScannerDiscovery="false" valueType="includePath"/>
 							</tool>
 							<tool id="com.renesas.cdt.managedbuild.gcc.rx.tool.assembler.976766199" name="Assembler" superClass="com.renesas.cdt.managedbuild.gcc.rx.tool.assembler">
 								<option id="com.renesas.cdt.managedbuild.gcc.core.option.assembler.source.usepreprocessor.1250603937" name="Use preprocessor" superClass="com.renesas.cdt.managedbuild.gcc.core.option.assembler.source.usepreprocessor" useByScannerDiscovery="false"/>
@@ -89,6 +91,7 @@
 							<tool id="com.renesas.cdt.managedbuild.gcc.rx.tool.cpp.linker.656351591" name="Linker CPP" superClass="com.renesas.cdt.managedbuild.gcc.rx.tool.cpp.linker"/>
 							<tool id="com.renesas.cdt.managedbuild.gcc.rx.tool.objcopy.1548183937" name="Objcopy" superClass="com.renesas.cdt.managedbuild.gcc.rx.tool.objcopy"/>
 							<tool id="com.renesas.cdt.managedbuild.gcc.rx.tool.archiver.14438548" name="Archiver" superClass="com.renesas.cdt.managedbuild.gcc.rx.tool.archiver"/>
+							<tool id="com.renesas.cdt.managedbuild.gcc.rx.tool.printsize.1487000265" name="Print Size" superClass="com.renesas.cdt.managedbuild.gcc.rx.tool.printsize"/>
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>

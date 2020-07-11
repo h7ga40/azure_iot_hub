@@ -6,23 +6,21 @@
 *    a @c buffer using standard base64 encoding.
 */
 
-#ifndef AZURE_BASE64_H
-#define AZURE_BASE64_H
-
-#ifdef __cplusplus
-#include <cstddef>
-#else
-#include <stddef.h>
-#endif
+#ifndef BASE64_H
+#define BASE64_H
 
 #include "azure_c_shared_utility/strings.h"
 #include "azure_c_shared_utility/buffer_.h"
 
+#ifdef __cplusplus
+#include <cstddef>
+extern "C" {
+#else
+#include <stddef.h>
+#endif
+
 #include "umock_c/umock_c_prod.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 /**
  * @brief    Base64 encodes a buffer and returns the resulting string.
@@ -82,4 +80,4 @@ MOCKABLE_FUNCTION(, BUFFER_HANDLE, Azure_Base64_Decode, const char*, source);
 }
 #endif
 
-#endif /* AZURE_BASE64_H */
+#endif /* BASE64_H */

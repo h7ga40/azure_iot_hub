@@ -76,7 +76,7 @@ class TaskObject < KernelObject
     if params[:stk] == "NULL"
       # スタック領域の生成［NGKI1049］
       stkName = "_kernel_stack_#{params[:tskid]}"
-      params[:tinib_stksz] = AllocStack(stkName, params[:stksz])
+      params[:tinib_stksz] = AllocStack(stkName, params[:stksz], "SU")
       params[:tinib_stk] = stkName
     else
       # stkszがターゲット定義の制約に合致しない場合（E_PAR）［NGKI1056］

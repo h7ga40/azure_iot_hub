@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <stdint.h>
+#include <stddef.h>
 #include <stdbool.h>
 #include "azure_c_shared_utility/gballoc.h"
 #include "azure_c_shared_utility/gb_rand.h"

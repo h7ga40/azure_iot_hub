@@ -7,7 +7,6 @@
 #include <stddef.h>
 #include <ctype.h>
 
-#include "azure_macro_utils/macro_utils.h"
 #include "azure_c_shared_utility/strings.h"
 #include "azure_c_shared_utility/httpapi.h"
 #include "azure_c_shared_utility/httpheaders.h"
@@ -21,9 +20,6 @@
 #include "wolfssl/options.h"
 #include "wolfssl/ssl.h"
 #include "wolfssl/error-ssl.h"
-#elif USE_MBEDTLS
-#include "mbedtls/x509_crt.h"
-#include "mbedtls/ssl.h"
 #endif
 #include "azure_c_shared_utility/shared_util_options.h"
 
@@ -44,11 +40,6 @@ typedef struct HTTP_HANDLE_DATA_TAG
     const char* x509privatekey;
     const char* x509certificate;
     const char* certificates; /*a list of CA certificates*/
-#if USE_MBEDTLS
-    mbedtls_x509_crt cert;
-    mbedtls_pk_context key;
-    mbedtls_x509_crt trusted_certificates;
-#endif
 } HTTP_HANDLE_DATA;
 
 typedef struct HTTP_RESPONSE_CONTENT_BUFFER_TAG
@@ -68,7 +59,7 @@ HTTPAPI_RESULT HTTPAPI_Init(void)
         if (curl_global_init(CURL_GLOBAL_NOTHING) != 0)
         {
             result = HTTPAPI_INIT_FAILED;
-            LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+            LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
         }
         else
         {
@@ -144,11 +135,6 @@ HTTP_HANDLE HTTPAPI_CreateConnection(const char* hostName)
                         httpHandleData->x509certificate = NULL;
                         httpHandleData->x509privatekey = NULL;
                         httpHandleData->certificates = NULL;
-#if USE_MBEDTLS
-                        mbedtls_x509_crt_init(&httpHandleData->cert);
-                        mbedtls_pk_init(&httpHandleData->key);
-                        mbedtls_x509_crt_init(&httpHandleData->trusted_certificates);
-#endif
                     }
                 }
                 else
@@ -171,11 +157,6 @@ void HTTPAPI_CloseConnection(HTTP_HANDLE handle)
     {
         free(httpHandleData->hostURL);
         curl_easy_cleanup(httpHandleData->curl);
-#if USE_MBEDTLS
-        mbedtls_x509_crt_free(&httpHandleData->cert);
-        mbedtls_pk_free(&httpHandleData->key);
-        mbedtls_x509_crt_free(&httpHandleData->trusted_certificates);
-#endif
         free(httpHandleData);
     }
 }
@@ -293,34 +274,6 @@ static CURLcode ssl_ctx_callback(CURL *curl, void *ssl_ctx, void *userptr)
             LogError("failure in adding trusted certificate to client");
             result = CURLE_SSL_CERTPROBLEM;
         }
-#elif USE_MBEDTLS
-        // set device cert and key
-        if (
-            (httpHandleData->x509certificate != NULL) && (httpHandleData->x509privatekey != NULL) &&
-            !(
-                (mbedtls_x509_crt_parse(&httpHandleData->cert, (const unsigned char *)httpHandleData->x509certificate, (int)(strlen(httpHandleData->x509certificate) + 1)) == 0) &&
-                (mbedtls_pk_parse_key(&httpHandleData->key, (const unsigned char *)httpHandleData->x509privatekey, (int)(strlen(httpHandleData->x509privatekey) + 1), NULL, 0) == 0) &&
-                (mbedtls_ssl_conf_own_cert(ssl_ctx, &httpHandleData->cert, &httpHandleData->key) == 0)
-                )
-            )
-        {
-            LogError("unable to set x509 credentials");
-            result = CURLE_SSL_CERTPROBLEM;
-        }
-        // set CA
-        else if (httpHandleData->certificates != NULL)
-        {
-            if (mbedtls_x509_crt_parse(&httpHandleData->trusted_certificates, (const unsigned char *)httpHandleData->certificates, (int)(strlen(httpHandleData->certificates) + 1)) != 0)
-            {
-                LogError("unable to set trusted certificate");
-                result = CURLE_SSL_CERTPROBLEM;
-            }
-            else
-            {
-                mbedtls_ssl_conf_ca_chain(ssl_ctx, &httpHandleData->trusted_certificates, NULL);
-                result = CURLE_OK;
-            }
-        }
 #else
         if (httpHandleData->x509certificate != NULL || httpHandleData->x509privatekey != NULL)
         {
@@ -354,12 +307,12 @@ HTTPAPI_RESULT HTTPAPI_ExecuteRequest(HTTP_HANDLE handle, HTTPAPI_REQUEST_TYPE r
     )
     {
         result = HTTPAPI_INVALID_ARG;
-        LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+        LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
     }
     else if (HTTPHeaders_GetHeaderCount(httpHeadersHandle, &headersCount) != HTTP_HEADERS_OK)
     {
         result = HTTPAPI_INVALID_ARG;
-        LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+        LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
     }
     else
     {
@@ -369,56 +322,56 @@ HTTPAPI_RESULT HTTPAPI_ExecuteRequest(HTTP_HANDLE handle, HTTPAPI_REQUEST_TYPE r
         if (tempHostURL == NULL)
         {
             result = HTTPAPI_ERROR;
-            LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+            LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
         }
         else
         {
             if (curl_easy_setopt(httpHandleData->curl, CURLOPT_VERBOSE, httpHandleData->verbose) != CURLE_OK)
             {
                 result = HTTPAPI_SET_OPTION_FAILED;
-                LogError("failed to set CURLOPT_VERBOSE (result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                LogError("failed to set CURLOPT_VERBOSE (result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
             }
             else if ((strcpy_s(tempHostURL, tempHostURL_size, httpHandleData->hostURL) != 0) ||
                 (strcat_s(tempHostURL, tempHostURL_size, relativePath) != 0))
             {
                 result = HTTPAPI_STRING_PROCESSING_ERROR;
-                LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
             }
             /* set the URL */
             else if (curl_easy_setopt(httpHandleData->curl, CURLOPT_URL, tempHostURL) != CURLE_OK)
             {
                 result = HTTPAPI_SET_OPTION_FAILED;
-                LogError("failed to set CURLOPT_URL (result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                LogError("failed to set CURLOPT_URL (result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
             }
             else if (curl_easy_setopt(httpHandleData->curl, CURLOPT_TIMEOUT_MS, httpHandleData->timeout) != CURLE_OK)
             {
                 result = HTTPAPI_SET_OPTION_FAILED;
-                LogError("failed to set CURLOPT_TIMEOUT_MS (result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                LogError("failed to set CURLOPT_TIMEOUT_MS (result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
             }
             else if (curl_easy_setopt(httpHandleData->curl, CURLOPT_LOW_SPEED_LIMIT, httpHandleData->lowSpeedLimit) != CURLE_OK)
             {
                 result = HTTPAPI_SET_OPTION_FAILED;
-                LogError("failed to set CURLOPT_LOW_SPEED_LIMIT (result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                LogError("failed to set CURLOPT_LOW_SPEED_LIMIT (result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
             }
             else if (curl_easy_setopt(httpHandleData->curl, CURLOPT_LOW_SPEED_TIME, httpHandleData->lowSpeedTime) != CURLE_OK)
             {
                 result = HTTPAPI_SET_OPTION_FAILED;
-                LogError("failed to set CURLOPT_LOW_SPEED_TIME (result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                LogError("failed to set CURLOPT_LOW_SPEED_TIME (result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
             }
             else if (curl_easy_setopt(httpHandleData->curl, CURLOPT_FRESH_CONNECT, httpHandleData->freshConnect) != CURLE_OK)
             {
                 result = HTTPAPI_SET_OPTION_FAILED;
-                LogError("failed to set CURLOPT_FRESH_CONNECT (result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                LogError("failed to set CURLOPT_FRESH_CONNECT (result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
             }
             else if (curl_easy_setopt(httpHandleData->curl, CURLOPT_FORBID_REUSE, httpHandleData->forbidReuse) != CURLE_OK)
             {
                 result = HTTPAPI_SET_OPTION_FAILED;
-                LogError("failed to set CURLOPT_FORBID_REUSE (result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                LogError("failed to set CURLOPT_FORBID_REUSE (result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
             }
             else if (curl_easy_setopt(httpHandleData->curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1) != CURLE_OK)
             {
                 result = HTTPAPI_SET_OPTION_FAILED;
-                LogError("failed to set CURLOPT_HTTP_VERSION (result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                LogError("failed to set CURLOPT_HTTP_VERSION (result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
             }
             else
             {
@@ -428,21 +381,21 @@ HTTPAPI_RESULT HTTPAPI_ExecuteRequest(HTTP_HANDLE handle, HTTPAPI_REQUEST_TYPE r
                 {
                 default:
                     result = HTTPAPI_INVALID_ARG;
-                    LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                    LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
                     break;
 
                 case HTTPAPI_REQUEST_GET:
                     if (curl_easy_setopt(httpHandleData->curl, CURLOPT_HTTPGET, 1L) != CURLE_OK)
                     {
                         result = HTTPAPI_SET_OPTION_FAILED;
-                        LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                        LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
                     }
                     else
                     {
                         if (curl_easy_setopt(httpHandleData->curl, CURLOPT_CUSTOMREQUEST, NULL) != CURLE_OK)
                         {
                             result = HTTPAPI_SET_OPTION_FAILED;
-                            LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                            LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
                         }
                     }
 
@@ -452,17 +405,17 @@ HTTPAPI_RESULT HTTPAPI_ExecuteRequest(HTTP_HANDLE handle, HTTPAPI_REQUEST_TYPE r
                     if (curl_easy_setopt(httpHandleData->curl, CURLOPT_HTTPGET, 1L) != CURLE_OK)
                     {
                         result = HTTPAPI_SET_OPTION_FAILED;
-                        LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                        LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
                     }
                     else if (curl_easy_setopt(httpHandleData->curl, CURLOPT_NOBODY, 1L) != CURLE_OK)
                     {
                         result = HTTPAPI_SET_OPTION_FAILED;
-                        LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                        LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
                     }
                     else if (curl_easy_setopt(httpHandleData->curl, CURLOPT_CUSTOMREQUEST, NULL) != CURLE_OK)
                     {
                         result = HTTPAPI_SET_OPTION_FAILED;
-                        LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                        LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
                     }
 
                     break;
@@ -471,14 +424,14 @@ HTTPAPI_RESULT HTTPAPI_ExecuteRequest(HTTP_HANDLE handle, HTTPAPI_REQUEST_TYPE r
                     if (curl_easy_setopt(httpHandleData->curl, CURLOPT_POST, 1L) != CURLE_OK)
                     {
                         result = HTTPAPI_SET_OPTION_FAILED;
-                        LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                        LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
                     }
                     else
                     {
                         if (curl_easy_setopt(httpHandleData->curl, CURLOPT_CUSTOMREQUEST, NULL) != CURLE_OK)
                         {
                             result = HTTPAPI_SET_OPTION_FAILED;
-                            LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                            LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
                         }
                     }
 
@@ -488,14 +441,14 @@ HTTPAPI_RESULT HTTPAPI_ExecuteRequest(HTTP_HANDLE handle, HTTPAPI_REQUEST_TYPE r
                     if (curl_easy_setopt(httpHandleData->curl, CURLOPT_POST, 1L))
                     {
                         result = HTTPAPI_SET_OPTION_FAILED;
-                        LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                        LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
                     }
                     else
                     {
                         if (curl_easy_setopt(httpHandleData->curl, CURLOPT_CUSTOMREQUEST, "PUT") != CURLE_OK)
                         {
                             result = HTTPAPI_SET_OPTION_FAILED;
-                            LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                            LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
                         }
                     }
                     break;
@@ -504,14 +457,14 @@ HTTPAPI_RESULT HTTPAPI_ExecuteRequest(HTTP_HANDLE handle, HTTPAPI_REQUEST_TYPE r
                     if (curl_easy_setopt(httpHandleData->curl, CURLOPT_POST, 1L) != CURLE_OK)
                     {
                         result = HTTPAPI_SET_OPTION_FAILED;
-                        LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                        LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
                     }
                     else
                     {
                         if (curl_easy_setopt(httpHandleData->curl, CURLOPT_CUSTOMREQUEST, "DELETE") != CURLE_OK)
                         {
                             result = HTTPAPI_SET_OPTION_FAILED;
-                            LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                            LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
                         }
                     }
                     break;
@@ -520,14 +473,14 @@ HTTPAPI_RESULT HTTPAPI_ExecuteRequest(HTTP_HANDLE handle, HTTPAPI_REQUEST_TYPE r
                     if (curl_easy_setopt(httpHandleData->curl, CURLOPT_POST, 1L) != CURLE_OK)
                     {
                         result = HTTPAPI_SET_OPTION_FAILED;
-                        LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                        LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
                     }
                     else
                     {
                         if (curl_easy_setopt(httpHandleData->curl, CURLOPT_CUSTOMREQUEST, "PATCH") != CURLE_OK)
                         {
                             result = HTTPAPI_SET_OPTION_FAILED;
-                            LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                            LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
                         }
                     }
 
@@ -547,7 +500,7 @@ HTTPAPI_RESULT HTTPAPI_ExecuteRequest(HTTP_HANDLE handle, HTTPAPI_REQUEST_TYPE r
                         {
                             /* error */
                             result = HTTPAPI_HTTP_HEADERS_FAILED;
-                            LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                            LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
                             break;
                         }
                         else
@@ -556,7 +509,7 @@ HTTPAPI_RESULT HTTPAPI_ExecuteRequest(HTTP_HANDLE handle, HTTPAPI_REQUEST_TYPE r
                             if (newHeaders == NULL)
                             {
                                 result = HTTPAPI_ALLOC_FAILED;
-                                LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                                LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
                                 free(tempBuffer);
                                 break;
                             }
@@ -573,7 +526,7 @@ HTTPAPI_RESULT HTTPAPI_ExecuteRequest(HTTP_HANDLE handle, HTTPAPI_REQUEST_TYPE r
                         if (curl_easy_setopt(httpHandleData->curl, CURLOPT_HTTPHEADER, headers) != CURLE_OK)
                         {
                             result = HTTPAPI_SET_OPTION_FAILED;
-                            LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                            LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
                         }
                         else
                         {
@@ -585,7 +538,7 @@ HTTPAPI_RESULT HTTPAPI_ExecuteRequest(HTTP_HANDLE handle, HTTPAPI_REQUEST_TYPE r
                                     (curl_easy_setopt(httpHandleData->curl, CURLOPT_POSTFIELDSIZE, contentLength) != CURLE_OK))
                                 {
                                     result = HTTPAPI_SET_OPTION_FAILED;
-                                    LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                                    LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
                                 }
                             }
                             else
@@ -596,7 +549,7 @@ HTTPAPI_RESULT HTTPAPI_ExecuteRequest(HTTP_HANDLE handle, HTTPAPI_REQUEST_TYPE r
                                         (curl_easy_setopt(httpHandleData->curl, CURLOPT_POSTFIELDSIZE, 0) != CURLE_OK))
                                     {
                                         result = HTTPAPI_SET_OPTION_FAILED;
-                                        LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                                        LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
                                     }
                                 }
                                 else
@@ -612,7 +565,7 @@ HTTPAPI_RESULT HTTPAPI_ExecuteRequest(HTTP_HANDLE handle, HTTPAPI_REQUEST_TYPE r
                                     (curl_easy_setopt(httpHandleData->curl, CURLOPT_WRITEFUNCTION, ContentWriteFunction) != CURLE_OK))
                                 {
                                     result = HTTPAPI_SET_OPTION_FAILED;
-                                    LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                                    LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
                                 }
                                 else
                                 {
@@ -623,7 +576,7 @@ HTTPAPI_RESULT HTTPAPI_ExecuteRequest(HTTP_HANDLE handle, HTTPAPI_REQUEST_TYPE r
                                             (curl_easy_setopt(httpHandleData->curl, CURLOPT_HEADERFUNCTION, HeadersWriteFunction) != CURLE_OK))
                                         {
                                             result = HTTPAPI_SET_OPTION_FAILED;
-                                            LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                                            LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
                                         }
                                     }
 
@@ -636,7 +589,7 @@ HTTPAPI_RESULT HTTPAPI_ExecuteRequest(HTTP_HANDLE handle, HTTPAPI_REQUEST_TYPE r
                                         if (curl_easy_setopt(httpHandleData->curl, CURLOPT_WRITEDATA, &responseContentBuffer) != CURLE_OK)
                                         {
                                             result = HTTPAPI_SET_OPTION_FAILED;
-                                            LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                                            LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
                                         }
 
                                         if (result == HTTPAPI_OK)
@@ -647,7 +600,7 @@ HTTPAPI_RESULT HTTPAPI_ExecuteRequest(HTTP_HANDLE handle, HTTPAPI_REQUEST_TYPE r
                                             {
                                                 LogError("curl_easy_perform() failed: %s\n", curl_easy_strerror(curlRes));
                                                 result = HTTPAPI_OPEN_REQUEST_FAILED;
-                                                LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                                                LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
                                             }
                                             else
                                             {
@@ -657,12 +610,12 @@ HTTPAPI_RESULT HTTPAPI_ExecuteRequest(HTTP_HANDLE handle, HTTPAPI_REQUEST_TYPE r
                                                 if (curl_easy_getinfo(httpHandleData->curl, CURLINFO_RESPONSE_CODE, &httpCode) != CURLE_OK)
                                                 {
                                                     result = HTTPAPI_QUERY_HEADERS_FAILED;
-                                                    LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                                                    LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
                                                 }
                                                 else if (responseContentBuffer.error)
                                                 {
                                                     result = HTTPAPI_READ_DATA_FAILED;
-                                                    LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                                                    LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
                                                 }
                                                 else
                                                 {
@@ -677,7 +630,7 @@ HTTPAPI_RESULT HTTPAPI_ExecuteRequest(HTTP_HANDLE handle, HTTPAPI_REQUEST_TYPE r
                                                         if ((responseContentBuffer.bufferSize > 0) && (BUFFER_build(responseContent, responseContentBuffer.buffer, responseContentBuffer.bufferSize) != 0))
                                                         {
                                                             result = HTTPAPI_INSUFFICIENT_RESPONSE_BUFFER;
-                                                            LogError("(result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                                                            LogError("(result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
                                                         }
                                                         else
                                                         {
@@ -935,7 +888,7 @@ HTTPAPI_RESULT HTTPAPI_CloneOption(const char* optionName, const void* value, co
             if (temp == NULL)
             {
                 result = HTTPAPI_ERROR;
-                LogError("malloc failed (result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                LogError("malloc failed (result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
             }
             else
             {
@@ -1019,7 +972,7 @@ HTTPAPI_RESULT HTTPAPI_CloneOption(const char* optionName, const void* value, co
             if (temp == NULL)
             {
                 result = HTTPAPI_ERROR;
-                LogError("malloc failed (result = %" PRI_MU_ENUM ")", MU_ENUM_VALUE(HTTPAPI_RESULT, result));
+                LogError("malloc failed (result = %s)", MU_ENUM_TO_STRING(HTTPAPI_RESULT, result));
             }
             else
             {

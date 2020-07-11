@@ -95,7 +95,6 @@ SECTIONS
 	} > RAM
 	.ustack 0x00400 (NOLOAD) : AT (0x00400)
 	{
-		_heap_stop = .;
 		*(SU)
 		_ustack = .;
 	} > RAM
@@ -140,6 +139,7 @@ SECTIONS
 	} > RAM
 	.heap (NOLOAD) :
 	{
+		_heap_stop = .;
 		*(.heap*)
 		__HeapBase = .;
 	} > RAM

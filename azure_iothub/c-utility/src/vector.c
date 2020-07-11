@@ -9,7 +9,7 @@
 
 #include "azure_c_shared_utility/vector_types_internal.h"
 
-IMPLEMENT_MOCKABLE_FUNCTION(, VECTOR_HANDLE, VECTOR_create, size_t, elementSize)
+VECTOR_HANDLE VECTOR_create(size_t elementSize)
 {
     VECTOR_HANDLE result;
 
@@ -38,7 +38,7 @@ IMPLEMENT_MOCKABLE_FUNCTION(, VECTOR_HANDLE, VECTOR_create, size_t, elementSize)
     return result;
 }
 
-IMPLEMENT_MOCKABLE_FUNCTION(, void, VECTOR_destroy, VECTOR_HANDLE, handle)
+void VECTOR_destroy(VECTOR_HANDLE handle)
 {
     /* Codes_SRS_VECTOR_10_009: [VECTOR_destroy shall return if the given handle is NULL.] */
     if (handle == NULL)
@@ -53,7 +53,7 @@ IMPLEMENT_MOCKABLE_FUNCTION(, void, VECTOR_destroy, VECTOR_HANDLE, handle)
     }
 }
 
-IMPLEMENT_MOCKABLE_FUNCTION(, VECTOR_HANDLE, VECTOR_move, VECTOR_HANDLE, handle)
+VECTOR_HANDLE VECTOR_move(VECTOR_HANDLE handle)
 {
     VECTOR_HANDLE result;
     if (handle == NULL)
@@ -86,7 +86,7 @@ IMPLEMENT_MOCKABLE_FUNCTION(, VECTOR_HANDLE, VECTOR_move, VECTOR_HANDLE, handle)
 
 /* insertion */
 
-IMPLEMENT_MOCKABLE_FUNCTION(, int, VECTOR_push_back, VECTOR_HANDLE, handle, const void*, elements, size_t, numElements)
+int VECTOR_push_back(VECTOR_HANDLE handle, const void* elements, size_t numElements)
 {
     int result;
     if (handle == NULL || elements == NULL || numElements == 0)
@@ -123,7 +123,7 @@ IMPLEMENT_MOCKABLE_FUNCTION(, int, VECTOR_push_back, VECTOR_HANDLE, handle, cons
 
 /* removal */
 
-IMPLEMENT_MOCKABLE_FUNCTION(, void, VECTOR_erase, VECTOR_HANDLE, handle, void*, elements, size_t, numElements)
+void VECTOR_erase(VECTOR_HANDLE handle, void* elements, size_t numElements)
 {
     if (handle == NULL || elements == NULL || numElements == 0)
     {
@@ -186,7 +186,7 @@ IMPLEMENT_MOCKABLE_FUNCTION(, void, VECTOR_erase, VECTOR_HANDLE, handle, void*, 
     }
 }
 
-IMPLEMENT_MOCKABLE_FUNCTION(, void, VECTOR_clear, VECTOR_HANDLE, handle)
+void VECTOR_clear(VECTOR_HANDLE handle)
 {
     /* Codes_SRS_VECTOR_10_017: [VECTOR_clear shall if the object is NULL or empty.] */
     if (handle == NULL)
@@ -204,7 +204,7 @@ IMPLEMENT_MOCKABLE_FUNCTION(, void, VECTOR_clear, VECTOR_HANDLE, handle)
 
 /* access */
 
-IMPLEMENT_MOCKABLE_FUNCTION(, void*, VECTOR_element, VECTOR_HANDLE, handle, size_t, index)
+void* VECTOR_element(VECTOR_HANDLE handle, size_t index)
 {
     void* result;
     if (handle == NULL)
@@ -230,7 +230,7 @@ IMPLEMENT_MOCKABLE_FUNCTION(, void*, VECTOR_element, VECTOR_HANDLE, handle, size
     return result;
 }
 
-IMPLEMENT_MOCKABLE_FUNCTION(, void*, VECTOR_front, VECTOR_HANDLE, handle)
+void* VECTOR_front(VECTOR_HANDLE handle)
 {
     void* result;
     if (handle == NULL)
@@ -256,7 +256,7 @@ IMPLEMENT_MOCKABLE_FUNCTION(, void*, VECTOR_front, VECTOR_HANDLE, handle)
     return result;
 }
 
-IMPLEMENT_MOCKABLE_FUNCTION(, void*, VECTOR_back, VECTOR_HANDLE, handle)
+void* VECTOR_back(VECTOR_HANDLE handle)
 {
     void* result;
     if (handle == NULL)
@@ -282,7 +282,7 @@ IMPLEMENT_MOCKABLE_FUNCTION(, void*, VECTOR_back, VECTOR_HANDLE, handle)
     return result;
 }
 
-IMPLEMENT_MOCKABLE_FUNCTION(, void*, VECTOR_find_if, VECTOR_HANDLE, handle, PREDICATE_FUNCTION, pred, const void*, value)
+void* VECTOR_find_if(VECTOR_HANDLE handle, PREDICATE_FUNCTION pred, const void* value)
 {
     void* result;
     if (handle == NULL || pred == NULL)
@@ -320,7 +320,7 @@ IMPLEMENT_MOCKABLE_FUNCTION(, void*, VECTOR_find_if, VECTOR_HANDLE, handle, PRED
 
 /* capacity */
 
-IMPLEMENT_MOCKABLE_FUNCTION(, size_t, VECTOR_size, VECTOR_HANDLE, handle)
+size_t VECTOR_size(VECTOR_HANDLE handle)
 {
     size_t result;
     if (handle == NULL)

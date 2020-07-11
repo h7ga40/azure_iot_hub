@@ -18,7 +18,6 @@
 #include "azure_c_shared_utility/optimize_size.h"
 #include "azure_c_shared_utility/xlogging.h"
 #include "azure_c_shared_utility/shared_util_options.h"
-#include "azure_c_shared_utility/threadapi.h"
 
 typedef enum TLSIO_STATE_ENUM_TAG
 {
@@ -159,7 +158,7 @@ static OPTIONHANDLER_HANDLE tlsio_wolfssl_retrieveoptions(CONCRETE_IO_HANDLE tls
             TLS_IO_INSTANCE* tls_io_instance = (TLS_IO_INSTANCE*)tls_io;
             if (
                 (tls_io_instance->x509certificate != NULL) &&
-                (OptionHandler_AddOption(result, SU_OPTION_X509_CERT, tls_io_instance->x509certificate) != OPTIONHANDLER_OK)
+                (OptionHandler_AddOption(result, SU_OPTION_X509_CERT, tls_io_instance->x509certificate) != 0)
                 )
             {
                 LogError("unable to save x509certificate option");
@@ -168,7 +167,7 @@ static OPTIONHANDLER_HANDLE tlsio_wolfssl_retrieveoptions(CONCRETE_IO_HANDLE tls
             }
             else if (
                 (tls_io_instance->x509privatekey != NULL) &&
-                (OptionHandler_AddOption(result, SU_OPTION_X509_PRIVATE_KEY, tls_io_instance->x509privatekey) != OPTIONHANDLER_OK)
+                (OptionHandler_AddOption(result, SU_OPTION_X509_PRIVATE_KEY, tls_io_instance->x509privatekey) != 0)
                 )
             {
                 LogError("unable to save x509privatekey option");
@@ -177,7 +176,7 @@ static OPTIONHANDLER_HANDLE tlsio_wolfssl_retrieveoptions(CONCRETE_IO_HANDLE tls
             }
             else if (
                 (tls_io_instance->certificate != NULL) &&
-                (OptionHandler_AddOption(result, OPTION_TRUSTED_CERT, tls_io_instance->certificate) != OPTIONHANDLER_OK)
+                (OptionHandler_AddOption(result, OPTION_TRUSTED_CERT, tls_io_instance->certificate) != 0)
                 )
             {
                 LogError("unable to save TrustedCerts option");
@@ -908,11 +907,6 @@ int tlsio_wolfssl_setoption(CONCRETE_IO_HANDLE tls_io, const char* optionName, c
         else if (strcmp(SU_OPTION_X509_PRIVATE_KEY, optionName) == 0 || strcmp(OPTION_X509_ECC_KEY, optionName) == 0)
         {
             result = process_option(&tls_io_instance->x509privatekey, optionName, value);
-        }
-        else if (strcmp(optionName, OPTION_SET_TLS_RENEGOTIATION) == 0)
-        {
-            // No need to do anything for WolfSSL
-            result = 0;
         }
 #ifdef INVALID_DEVID
         else if (strcmp(OPTION_WOLFSSL_SET_DEVICE_ID, optionName) == 0)

@@ -86,9 +86,9 @@ $kernelCfgC.add()
 #  スタック領域の定義分と，スタック領域のサイズ記述を配列で返す．
 #
 unless defined? AllocStack()
-  def AllocStack(stack, size)
+  def AllocStack(stack, size, section)
     # 大きい方に丸めたサイズで確保する［NGKI1050］［NGKI3220］
-    $kernelCfgC.add("static STK_T #{stack}[COUNT_STK_T(#{size})];")
+    $kernelCfgC.add("static STK_T __attribute__((section(\"#{section}\"))) #{stack}[COUNT_STK_T(#{size})];")
     return("ROUND_STK_T(#{size})")
   end
 end
@@ -362,7 +362,7 @@ if $cfgData[:DEF_ICS].size == 0
   # DEF_ICSがない場合のデフォルト値の設定
   if !defined?($DEFAULT_ISTK)
     # スタック領域の自動割付け
-    istksz = AllocStack("_kernel_istack", "DEFAULT_ISTKSZ")
+    istksz = AllocStack("_kernel_istack", "DEFAULT_ISTKSZ", "SI")
     istk = "_kernel_istack"
   else
     istksz = "DEFAULT_ISTKSZ"

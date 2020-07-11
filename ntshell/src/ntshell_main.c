@@ -49,7 +49,6 @@
 #include "syssvc/serial.h"
 #include "syssvc/syslog.h"
 #include "target_syssvc.h"
-#include "target_serial.h"
 #include "kernel_cfg.h"
 #include "ffarch.h"
 #include "ff.h"

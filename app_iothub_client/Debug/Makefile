@@ -211,7 +211,7 @@ CFLAGS = $(COPTS) $(CDEFS) $(INCLUDES)
 APPLDIRS := $(APPLDIRS) $(SRCDIR)/$(TINETDIR)/netapp
 APPL_COBJS := $(APPL_COBJS) ping.o ping6.o resolver.o dhcp4_cli.o netapp_subr.o ntp_cli.o net_misc.o
 APPLDIRS := $(APPLDIRS) ../../ntshell/fatfs ../../ntshell/ntshell ../../ntshell/ntshell/core ../../ntshell/ntshell/util ../../ntshell/src
-APPL_COBJS := $(APPL_COBJS) netcmd.o fdtable.o stdio_stub.o io_stub.o socket_stub.o ffarch.o diskio.o ff.o mmc_rspi.o ccsbcs.o ntshell.o text_editor.o text_history.o usrcmd.o vtrecv.o vtsend.o ntlibc.o ntstdio.o ntopt.o syscall.o
+APPL_COBJS := $(APPL_COBJS) netcmd.o fdtable.o stdio_stub.o io_stub.o socket_stub.o pipe_stub.o ffarch.o diskio.o ff.o mmc_rspi.o ccsbcs.o ntshell.o text_editor.o text_history.o usrcmd.o vtrecv.o vtsend.o ntlibc.o ntstdio.o ntopt.o syscall.o
 APPLDIRS := $(APPLDIRS) ../pinkit
 APPL_COBJS := $(APPL_COBJS) accelerometer.o boardfullcolorled.o lightsensor.o temperature.o pinkit.o
 
@@ -381,7 +381,7 @@ endif
 #  ソースファイルのあるディレクトリに関する定義
 #
 vpath %.c $(KERNEL_DIRS) $(SYSSVC_DIRS) $(APPL_DIRS)
-vpath %.cpp $(KERNEL_DIRS) $(SYSSVC_DIRS) $(APPL_DIRS)
+vpath %.cpp $(APPL_DIRS)
 vpath %.S $(KERNEL_DIRS) $(SYSSVC_DIRS) $(APPL_DIRS)
 vpath %.cfg $(APPL_DIRS)
 vpath %.cdl $(APPL_DIRS)
@@ -500,7 +500,8 @@ $(OBJDIR)/@(BANNEROBJ): $(filter-out $(OBJDIR)/@(BANNEROBJ),$(ALL_OBJS)) \
 #  全体のリンク
 #
 $(OBJFILE): $(ALL_OBJS) $(LIBS_DEP)
-	$(LINK) $(CFLAGS) $(LDFLAGS) $(OBJ_LDFLAGS) -o $(OBJFILE) -Wl,-Map=$(OBJNAME).map,--cref \
+	$(LINK) $(CFLAGS) $(LDFLAGS) $(OBJ_LDFLAGS) -o $(OBJFILE) \
+			-Wl,-Map=$(OBJNAME).map,--cref -Wl,--gc-sections -Wl,-e_start \
 			$(START_OBJS) $(APPL_OBJS) $(SYSSVC_OBJS) $(CFG_OBJS) \
 			-Wl,--start-group $(ALL_LIBS) -Wl,--end-group $(END_OBJS)
 
@@ -563,7 +564,6 @@ endif
 cleankernel:
 	rm -f $(OFFSET_H) $(KERNEL_LIB_OBJS)
 	rm -f $(KERNEL_LIB_OBJS:$(OBJDIR)/%.o=$(DEPDIR)/%.d)
-
 
 .PHONY: realclean
 realclean: clean

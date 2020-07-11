@@ -1,22 +1,19 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-#ifndef BUFFER__H
-#define BUFFER__H
+#ifndef BUFFER_H
+#define BUFFER_H
 
 #ifdef __cplusplus
 #include <cstddef>
+extern "C"
+{
 #else
 #include <stddef.h>
 #include <stdbool.h>
 #endif
 
 #include "umock_c/umock_c_prod.h"
-
-#ifdef __cplusplus
-extern "C"
-{
-#endif
 
 typedef struct BUFFER_TAG* BUFFER_HANDLE;
 
@@ -43,4 +40,5 @@ MOCKABLE_FUNCTION(, BUFFER_HANDLE, BUFFER_clone, BUFFER_HANDLE, handle);
 }
 #endif
 
-#endif  /* BUFFER__H */
+
+#endif  /* BUFFER_H */

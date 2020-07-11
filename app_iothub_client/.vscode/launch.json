@@ -27,7 +27,7 @@
             },
             "linux": {
                 "MIMode": "gdb",
-                "MIDebuggerPath": "/usr/local/gcc-for-renesas-rx-4.8.4.201902-gnurx-elf/rx-elf/rx-elf/bin/rx-elf-gdb",
+                "MIDebuggerPath": "/usr/local/gcc-for-renesas-rx-8.3.0.201904-gnurx-elf/rx-elf/rx-elf/bin/rx-elf-gdb",
                 "debugServerPath": "/usr/local/gnu-mcu-eclipse/openocd/0.10.0-12-20190422-2015/bin/openocd",
                 "setupCommands": [
                     {
@@ -95,7 +95,7 @@
                 ]
             },
             "osx": {
-                "MIDebuggerPath": "/usr/local/gcc-for-renesas-rx-4.8.4.201902-gnurx-elf/rx-elf/rx-elf/bin/rx-elf-gdb",
+                "MIDebuggerPath": "/usr/local/gcc-for-renesas-rx-8.3.0.201904-gnurx-elf/rx-elf/rx-elf/bin/rx-elf-gdb",
                 "debugServerPath": "/usr/local/gnu-mcu-eclipse/openocd/0.10.0-12-20190422-2015/bin/openocd",
                 "setupCommands": [
                     {

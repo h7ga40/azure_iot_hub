@@ -1,23 +1,20 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-#ifndef AZURE_BASE32_H
-#define AZURE_BASE32_H
-
-#ifdef __cplusplus
-#include <cstddef>
-#else
-#include <stddef.h>
-#endif
+#ifndef BASE32_H
+#define BASE32_H
 
 #include "azure_c_shared_utility/strings.h"
 #include "azure_c_shared_utility/buffer_.h"
 
-#include "umock_c/umock_c_prod.h"
-
 #ifdef __cplusplus
+#include <cstddef>
 extern "C" {
+#else
+#include <stddef.h>
 #endif
+
+#include "umock_c/umock_c_prod.h"
 
 /**
 * @brief Encodes the BUFFER_HANDLE to a base 32 STRING_HANDLE
@@ -60,4 +57,4 @@ MOCKABLE_FUNCTION(, BUFFER_HANDLE, Azure_Base32_Decode_String, const char*, sour
 }
 #endif
 
-#endif /* AZURE_BASE32_H */
+#endif /* BASE64_H */
