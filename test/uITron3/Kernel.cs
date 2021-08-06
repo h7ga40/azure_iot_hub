@@ -91,18 +91,11 @@ namespace uITron3
 		public TOutputEvent OnOutput { get { return m_OnOutput; } set { m_OnOutput = value; } }
 		public TGetSystemTimeEvent OnGetSystemTime { get { return m_OnGetSystemTimeEvent; } }
 
-		public PacketBridge IPPacketBridge
-		{
-			get { return m_Nucleus.IPPacketBridge; }
-			set { m_Nucleus.IPPacketBridge = value; }
-		}
+		public lwip lwip { get { return m_Nucleus.lwip; } }
 
-		public ip_addr IP4Addr { get { return m_Nucleus.IP4Addr; } }
-		public ip_addr SubNetMask { get { return m_Nucleus.SubNetMask; } }
-
-		public void SetIPv4Addr(uint addr, uint mask)
+		public void AddNetIf(netif netif, ip_addr addr, ip_addr mask, ip_addr gw, object state, netif_init_fn init, netif_input_fn input)
 		{
-			m_Nucleus.SetIPv4Addr(addr, mask);
+			m_Nucleus.AddNetIf(netif, addr, mask, gw, state, init, input);
 		}
 
 		ICPUContext IKernel.GetCurrent() { return /*m_Current*/CPUContext.GetCurrent(); }

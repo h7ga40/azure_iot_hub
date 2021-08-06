@@ -144,7 +144,7 @@ namespace uITron3
 			//LWIP_UNUSED_ARG(arg);
 			lwip.LWIP_DEBUGF(opt.TIMERS_DEBUG, "tcpip: etharp_tmr()\n");
 			lwip.etharp.etharp_tmr();
-			sys_timeout(etharp_hdr.ARP_TMR_INTERVAL, arp_timer, null);
+			sys_timeout(etharp.ARP_TMR_INTERVAL, arp_timer, null);
 		}
 #endif // LWIP_ARP
 
@@ -228,7 +228,7 @@ namespace uITron3
 			sys_timeout(IP_TMR_INTERVAL, ip_reass_timer, null);
 #endif // IP_REASSEMBLY
 #if LWIP_ARP
-			sys_timeout(etharp_hdr.ARP_TMR_INTERVAL, arp_timer, null);
+			sys_timeout(etharp.ARP_TMR_INTERVAL, arp_timer, null);
 #endif // LWIP_ARP
 #if LWIP_DHCP
 			sys_timeout(dhcp.DHCP_COARSE_TIMER_MSECS, dhcp_timer_coarse, null);
@@ -417,7 +417,7 @@ namespace uITron3
 		 * @param mbox the mbox to fetch the message from
 		 * @param msg the place to store the message
 		 */
-		public void sys_timeouts_mbox_fetch<P>(sys_mbox_t mbox, out P msg) where P : class
+		public void sys_timeouts_mbox_fetch<P>(sys_mbox_t<P> mbox, out P msg) where P : class
 		{
 			int time_needed;
 			sys_timeo tmptimeout;
@@ -466,7 +466,7 @@ namespace uITron3
 						handler(arg);
 						lwip.tcpip.UNLOCK_TCPIP_CORE();
 					}
-					tcpip.LWIP_TCPIP_THREAD_ALIVE();
+					lwip.tcpip.LWIP_TCPIP_THREAD_ALIVE();
 
 					/* We try again to fetch a message from the mbox. */
 					goto again;
@@ -492,7 +492,7 @@ namespace uITron3
 
 #else // LWIP_TIMERS
 		/* Satisfy the TCP code which calls this function */
-		public static void tcp_timer_needed()
+		public void tcp_timer_needed()
 		{
 		}
 #endif // LWIP_TIMERS

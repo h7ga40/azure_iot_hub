@@ -395,7 +395,7 @@ namespace uITron3
 			acc = FOLD_U32T(acc);
 			acc = FOLD_U32T(acc);
 			lwip.LWIP_DEBUGF(opt.INET_DEBUG, "inet_chksum_pseudo(): pbuf chain lwip_chksum()={0}\n", acc);
-			return (ushort)~(acc & 0xffffUL);
+			return (ushort)~(acc & 0xffffU);
 		}
 
 		/* lwip.inet_chksum:

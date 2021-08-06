@@ -56,16 +56,17 @@ namespace uITron3
 		/* These variables are global to all functions involved in the input
 		   processing of TCP segments. They are set by the tcp_input()
 		   function. */
-		public tcp_seg inseg;
-		public tcp_hdr tcphdr;
-		public uint seqno, ackno;
-		public byte flags;
-		public ushort tcplen;
+		private tcp_seg inseg;
+		private tcp_hdr tcphdr;
+		private ip_hdr iphdr;
+		private uint seqno, ackno;
+		private byte flags;
+		private ushort tcplen;
 
-		public byte recv_flags;
-		public pbuf recv_data;
+		private byte recv_flags;
+		private pbuf recv_data;
 
-		public tcp_pcb tcp_input_pcb;
+		private tcp_pcb tcp_input_pcb;
 
 		/**
 		 * The initial input processing of TCP. It verifies the TCP header, demultiplexes
@@ -76,7 +77,7 @@ namespace uITron3
 		 * @param p received TCP segment to process (p.payload pointing to the IP header)
 		 * @param inp network interface on which this segment was received
 		 */
-		public void tcp_input(pbuf p, lwip inp)
+		public void tcp_input(pbuf p, netif inp)
 		{
 			tcp_pcb pcb, prev;
 			tcp_pcb_listen lpcb;
@@ -90,28 +91,37 @@ namespace uITron3
 			//PERF_START;
 
 			++lwip.lwip_stats.tcp.recv;
-			////snmp.snmp_inc_tcpinsegs();
+			//snmp.snmp_inc_tcpinsegs();
 
-			tcphdr = new tcp_hdr(p.payload);
+			iphdr = new ip_hdr(p.payload);
+			tcphdr = new tcp_hdr(p.payload + iphdr.hl * 4);
 
 #if TCP_INPUT_DEBUG
 			tcp_debug_print(tcphdr);
 #endif
 
+			/* remove header from payload */
+			if ((lwip.pbuf_header(p, (short)-(iphdr.hl * 4)) != 0) || (p.tot_len < tcp_hdr.length)) {
+				/* drop short packets */
+				lwip.LWIP_DEBUGF(opt.TCP_INPUT_DEBUG, "tcp_input: short packet ({0} bytes) discarded\n", p.tot_len);
+				//TCP_STATS_INC(tcp.lenerr);
+				goto dropped;
+			}
+
 			/* Don't even process incoming broadcasts/multicasts. */
-			if (ip_addr.ip_addr_isbroadcast(lwip.current_iphdr_dest, inp) ||
-				ip_addr.ip_addr_ismulticast(lwip.current_iphdr_dest)) {
+			if (ip_addr.ip_addr_isbroadcast(lwip.ip.current_iphdr_dest, inp) ||
+				ip_addr.ip_addr_ismulticast(lwip.ip.current_iphdr_dest)) {
 				++lwip.lwip_stats.tcp.proterr;
 				goto dropped;
 			}
 
 #if CHECKSUM_CHECK_TCP
 			/* Verify TCP checksum. */
-			if (lwip.inet_chksum_pseudo(p, lwip.ip_current_src_addr(), lwip.ip_current_dest_addr(),
-				lwip.IP_PROTO_TCP, p.tot_len) != 0) {
+			if (lwip.inet_chksum_pseudo(p, lwip.ip.ip_current_src_addr(), lwip.ip.ip_current_dest_addr(),
+				ip.IP_PROTO_TCP, p.tot_len) != 0) {
 				lwip.LWIP_DEBUGF(opt.TCP_INPUT_DEBUG, "tcp_input: packet discarded due to failing checksum 0x{0:X4}\n",
-					lwip.inet_chksum_pseudo(p, lwip.ip_current_src_addr(), lwip.ip_current_dest_addr(),
-					lwip.IP_PROTO_TCP, p.tot_len));
+					lwip.inet_chksum_pseudo(p, lwip.ip.ip_current_src_addr(), lwip.ip.ip_current_dest_addr(),
+					ip.IP_PROTO_TCP, p.tot_len));
 #if TCP_DEBUG
 				tcp_debug_print(tcphdr);
 #endif // TCP_DEBUG
@@ -151,8 +161,8 @@ namespace uITron3
 				lwip.LWIP_ASSERT("tcp_input: active pcb.state != tcp_state.LISTEN", pcb.state != tcp_state.LISTEN);
 				if (pcb.remote_port == tcphdr.src &&
 					pcb.local_port == tcphdr.dest &&
-					ip_addr.ip_addr_cmp(pcb.remote_ip, lwip.current_iphdr_src) &&
-					ip_addr.ip_addr_cmp(pcb.local_ip, lwip.current_iphdr_dest)) {
+					ip_addr.ip_addr_cmp(pcb.remote_ip, lwip.ip.current_iphdr_src) &&
+					ip_addr.ip_addr_cmp(pcb.local_ip, lwip.ip.current_iphdr_dest)) {
 
 					/* Move this PCB to the front of the list so that subsequent
 					   lookups will be faster (we exploit locality in TCP segment
@@ -176,8 +186,8 @@ namespace uITron3
 					lwip.LWIP_ASSERT("tcp_input: TIME-WAIT pcb.state == TIME-WAIT", pcb.state == tcp_state.TIME_WAIT);
 					if (pcb.remote_port == tcphdr.src &&
 						pcb.local_port == tcphdr.dest &&
-						ip_addr.ip_addr_cmp(pcb.remote_ip, lwip.current_iphdr_src) &&
-						ip_addr.ip_addr_cmp(pcb.local_ip, lwip.current_iphdr_dest)) {
+						ip_addr.ip_addr_cmp(pcb.remote_ip, lwip.ip.current_iphdr_src) &&
+						ip_addr.ip_addr_cmp(pcb.local_ip, lwip.ip.current_iphdr_dest)) {
 						/* We don't really care enough to move this PCB to the front
 						   of the list since we are not very likely to receive that
 						   many segments for connections in TIME-WAIT. */
@@ -194,7 +204,7 @@ namespace uITron3
 				for (lpcb = tcp_listen_pcbs.listen_pcbs; lpcb != null; lpcb = (tcp_pcb_listen)lpcb.next) {
 					if (lpcb.local_port == tcphdr.dest) {
 #if SO_REUSE
-						if (ip_addr.ip_addr_cmp(lpcb.local_ip, lwip.current_iphdr_dest)) {
+						if (ip_addr.ip_addr_cmp(lpcb.local_ip, lwip.ip.current_iphdr_dest)) {
 							/* found an exact match */
 							break;
 						}
@@ -392,7 +402,7 @@ namespace uITron3
 					++lwip.lwip_stats.tcp.proterr;
 					++lwip.lwip_stats.tcp.drop;
 					tcp_rst(ackno, seqno + tcplen,
-						lwip.ip_current_dest_addr(), lwip.ip_current_src_addr(),
+						lwip.ip.ip_current_dest_addr(), lwip.ip.ip_current_src_addr(),
 						tcphdr.dest, tcphdr.src);
 				}
 				lwip.pbuf_free(p);
@@ -435,8 +445,8 @@ namespace uITron3
 				/* For incoming segments with the ACK flag set, respond with a
 				   RST. */
 				lwip.LWIP_DEBUGF(opt.TCP_RST_DEBUG, "tcp_listen_input: ACK in tcp_state.LISTEN, sending reset\n");
-				tcp_rst(ackno, seqno + tcplen, lwip.ip_current_dest_addr(),
-				  lwip.ip_current_src_addr(), tcphdr.dest, tcphdr.src);
+				tcp_rst(ackno, seqno + tcplen, lwip.ip.ip_current_dest_addr(),
+				  lwip.ip.ip_current_src_addr(), tcphdr.dest, tcphdr.src);
 			}
 			else if ((flags & tcp.TCP_SYN) != 0) {
 				lwip.LWIP_DEBUGF(opt.TCP_DEBUG, "TCP connection request {0} . {1}.\n", tcphdr.src, tcphdr.dest);
@@ -459,9 +469,9 @@ namespace uITron3
 				pcb.accepts_pending++;
 #endif // TCP_LISTEN_BACKLOG
 				/* Set up the new PCB. */
-				ip_addr.ip_addr_copy(npcb.local_ip, lwip.current_iphdr_dest);
+				ip_addr.ip_addr_copy(npcb.local_ip, lwip.ip.current_iphdr_dest);
 				npcb.local_port = pcb.local_port;
-				ip_addr.ip_addr_copy(npcb.remote_ip, lwip.current_iphdr_src);
+				ip_addr.ip_addr_copy(npcb.remote_ip, lwip.ip.current_iphdr_src);
 				npcb.remote_port = tcphdr.src;
 				npcb.state = tcp_state.SYN_RCVD;
 				npcb.rcv_nxt = seqno + 1;
@@ -524,7 +534,7 @@ namespace uITron3
 				   should be sent in reply */
 				if (tcp.TCP_SEQ_BETWEEN(seqno, pcb.rcv_nxt, pcb.rcv_nxt + pcb.rcv_wnd)) {
 					/* If the SYN is in the window it is an error, send a reset */
-					tcp_rst(ackno, seqno + tcplen, lwip.ip_current_dest_addr(), lwip.ip_current_src_addr(),
+					tcp_rst(ackno, seqno + tcplen, lwip.ip.ip_current_dest_addr(), lwip.ip.ip_current_src_addr(),
 						tcphdr.dest, tcphdr.src);
 					return err_t.ERR_OK;
 				}
@@ -660,7 +670,7 @@ namespace uITron3
 				/* received ACK? possibly a half-open connection */
 				else if ((flags & tcp.TCP_ACK) != 0) {
 					/* send a RST to bring the other side in a non-synchronized state. */
-					tcp_rst(ackno, seqno + tcplen, lwip.ip_current_dest_addr(), lwip.ip_current_src_addr(),
+					tcp_rst(ackno, seqno + tcplen, lwip.ip.ip_current_dest_addr(), lwip.ip.ip_current_src_addr(),
 						tcphdr.dest, tcphdr.src);
 				}
 				break;
@@ -704,7 +714,7 @@ namespace uITron3
 					}
 					else {
 						/* incorrect ACK number, send RST */
-						tcp_rst(ackno, seqno + tcplen, lwip.ip_current_dest_addr(), lwip.ip_current_src_addr(),
+						tcp_rst(ackno, seqno + tcplen, lwip.ip.ip_current_dest_addr(), lwip.ip.ip_current_src_addr(),
 							tcphdr.dest, tcphdr.src);
 					}
 				}

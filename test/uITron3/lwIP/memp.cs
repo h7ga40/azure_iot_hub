@@ -157,7 +157,7 @@ namespace uITron3
 				memp = new netconn(this);
 				break;
 #endif
-#if false //!NO_SYS
+#if !NO_SYS
 			case memp_t.MEMP_TCPIP_MSG_API:
 				memp = new tcpip_msg(this);
 				break;
@@ -175,7 +175,7 @@ namespace uITron3
 				memp = new igmp_group(this);
 				break;
 #endif
-#if false //(!NO_SYS || (NO_SYS && !NO_SYS_NO_TIMERS))
+#if (!NO_SYS || (NO_SYS && !NO_SYS_NO_TIMERS))
 			case memp_t.MEMP_SYS_TIMEOUT:
 				memp = new sys_timeo(this);
 				break;

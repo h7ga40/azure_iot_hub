@@ -1,4 +1,5 @@
 ﻿using SimBase;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using uITron3;
@@ -9,6 +10,10 @@ namespace SimEnv
 	{
 		private Target m_Taget;
 		private List<IUnitInterface> m_Interfaces = new List<IUnitInterface>();
+		lwip m_lwIP;
+		netif m_Netif;
+		PacketBridge m_IPPacketBridge;
+		eth_addr m_MacAddr;
 
 		public Unit(string unitName, Target main, ulong macAddr, uint addr, uint subNet)
 		{
@@ -22,10 +27,22 @@ namespace SimEnv
 			m_Taget.OnIdle = UnitOnIdle;
 			m_Taget.OnOutput = UnitOnOutput;
 
-			main.SetIPv4Addr(addr, subNet);
-			main.IPPacketBridge = new PacketBridge(main, 256);
-			m_Taget.PacketBridges.Add(main.IPPacketBridge);
-			EtherIF = new EtherIF(this, "TEthernet", "EtherIF", main.IPPacketBridge.IFKind, macAddr);
+			m_lwIP = m_Taget.lwip;
+			m_MacAddr = new eth_addr(macAddr);
+			var local_addr = new ip_addr(0xC0A80164);
+			var subnet = new ip_addr(0xFFFFFF00);
+			var gate_way_addr = new ip_addr(0xC0A80101);
+
+			etharp.etharp_init(m_lwIP);
+
+			m_Netif = new netif(m_lwIP, "eth0", m_lwIP.etharp.etharp_output, netif_linkoutput);
+
+			m_Taget.AddNetIf(m_Netif, local_addr, subnet, gate_way_addr, m_Netif, netif_init, m_lwIP.etharp.ethernet_input);
+
+			m_IPPacketBridge = new PacketBridge(m_Taget, 256);
+			m_IPPacketBridge.InputDataHandler = InputDataHandler;
+			m_Taget.PacketBridges.Add(m_IPPacketBridge);
+			EtherIF = new EtherIF(this, "TEthernet", "EtherIF", m_IPPacketBridge.IFKind, macAddr);
 			EtherIF.Init(addr, subNet);
 
 			m_Interfaces.Add(EtherIF);
@@ -34,6 +51,53 @@ namespace SimEnv
 			m_Interfaces.Add(CommandIF);
 
 			Itron.Init();
+		}
+
+		private ER InputDataHandler(byte[] packet)
+		{
+			pbuf p = m_lwIP.pbuf_alloc(pbuf_layer.PBUF_RAW, (ushort)packet.Length, pbuf_type.PBUF_POOL);
+			int pos = 0, rest = packet.Length;
+
+			for (pbuf q = p; q != null; q = q.next) {
+				int len = rest;
+				if (len > q.len)
+					len = q.len;
+
+				Buffer.BlockCopy(packet, pos, q.payload.data, q.payload.offset, len);
+				pos += len;
+				rest -= len;
+			}
+
+			m_Netif.input(p, m_Netif);
+
+			return ER.E_OK;
+		}
+
+		private err_t netif_init(netif netif)
+		{
+			pointer.memcpy(netif.hwaddr, m_MacAddr, netif.hwaddr_len);
+
+			return err_t.ERR_OK;
+		}
+
+		private err_t netif_linkoutput(netif netif, pbuf p)
+		{
+			int pos = 0, rest = p.tot_len;
+			byte[] packet = new byte[rest];
+
+			for (pbuf q = p; q != null; q = q.next) {
+				int len = rest;
+				if (len > q.len)
+					len = q.len;
+
+				Buffer.BlockCopy(q.payload.data, q.payload.offset, packet, pos, len);
+				pos += len;
+				rest -= len;
+			}
+
+			m_IPPacketBridge.OutputData(packet);
+
+			return err_t.ERR_OK;
 		}
 
 		public string UnitName { get; set; }

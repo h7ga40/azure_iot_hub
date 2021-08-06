@@ -16,6 +16,13 @@ namespace uITron3
 
 		public int old_level;
 		public int lev;
+
+		/** Return code for timeouts from sys_arch_mbox_fetch and sys_arch_sem_wait */
+		public const int SYS_ARCH_TIMEOUT = unchecked((int)0xffffffff);
+
+		/** sys_mbox_tryfetch() returns SYS_MBOX_EMPTY if appropriate.
+		 * For now we use the same magic value, but we allow this to change in future.
+		 */
 		public const int SYS_MBOX_EMPTY = -1;
 
 		public sys(lwip lwip, Nucleus nucleus)
@@ -62,14 +69,29 @@ namespace uITron3
 			Monitor.Exit(mem_mutex);
 		}
 
+		internal int sys_arch_mbox_fetch<P>(sys_mbox_t<P> mbox, out P msg, int tmout) where P : class
+		{
+			return mbox.fetch(out msg, tmout);
+		}
+
+		internal bool sys_mbox_valid<P>(sys_mbox_t<P> mbox) where P : class
+		{
+			return mbox != null;
+		}
+
+		internal err_t sys_mbox_post<P>(sys_mbox_t<P> mbox, P msg) where P : class
+		{
+			return mbox.post(msg);
+		}
+
+		internal err_t sys_mbox_trypost<P>(sys_mbox_t<P> mbox, P msg) where P : class
+		{
+			return mbox.trypost(msg);
+		}
+
 		internal static void sys_init(lwip lwip, Nucleus nucleus)
 		{
 			lwip.sys = new sys(lwip, nucleus);
-		}
-
-		internal void tcp_timer_needed()
-		{
-
 		}
 	}
 
@@ -80,15 +102,64 @@ namespace uITron3
 
 	public class sys_mutex_t
 	{
-
 	}
 
-	public class tcpip
+	public class sys_mbox_t<P> where P : class
 	{
-		public delegate void tcpip_callback_fn(object arg);
+		Mutex mutex = new Mutex();
+		Queue<P> msgs = new Queue<P>();
+		AutoResetEvent @event = new AutoResetEvent(false);
 
-		public static err_t tcpip_callback_with_block(tcpip_callback_fn function, object arg, byte block)
+		internal int fetch(out P msg, int tmout)
 		{
+			if (tmout == 0) {
+				tmout = Timeout.Infinite;
+			}
+
+			mutex.WaitOne();
+			if (msgs.Count == 0) {
+				mutex.ReleaseMutex();
+
+				if (tmout == 0) {
+					msg = null;
+					return sys.SYS_MBOX_EMPTY;
+				}
+				else if (!@event.WaitOne(tmout)) {
+					msg = null;
+					return sys.SYS_ARCH_TIMEOUT;
+				}
+
+				mutex.WaitOne();
+			}
+			msg = msgs.Dequeue();
+			mutex.ReleaseMutex();
+
+			return 0;
+		}
+
+		internal err_t post(P msg)
+		{
+			mutex.WaitOne();
+
+			msgs.Enqueue(msg);
+
+			mutex.ReleaseMutex();
+
+			@event.Set();
+
+			return err_t.ERR_OK;
+		}
+
+		internal err_t trypost(P msg)
+		{
+			mutex.WaitOne();
+
+			msgs.Enqueue(msg);
+
+			mutex.ReleaseMutex();
+
+			@event.Set();
+
 			return err_t.ERR_OK;
 		}
 	}

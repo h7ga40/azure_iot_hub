@@ -380,7 +380,7 @@ namespace uITron3
 			lwip.LWIP_DEBUGF(opt.TCP_OUTPUT_DEBUG, "tcp_write(pcb={0}, data={1}, len={2}, apiflags={3})\n",
 			  pcb, arg, len, (ushort)apiflags);
 			if (lwip.LWIP_ERROR("tcp_write: arg == null (programmer violates API)",
-					   arg != null))
+					arg != null))
 				return err_t.ERR_ARG;
 
 			err = tcp_write_checks(pcb, len);
@@ -882,11 +882,11 @@ namespace uITron3
 
 #if CHECKSUM_GEN_TCP
 			tcphdr.chksum = lwip.inet_chksum_pseudo(p, pcb.local_ip, pcb.remote_ip,
-				  lwip.IP_PROTO_TCP, p.tot_len);
+				ip.IP_PROTO_TCP, p.tot_len);
 #endif
 #if LWIP_NETIF_HWADDRHINT
-			lwip.ip_output_hinted(p, pcb.local_ip, pcb.remote_ip, pcb.ttl, pcb.tos,
-				lwip.IP_PROTO_TCP, pcb.addr_hint);
+			lwip.ip.ip_output_hinted(p, pcb.local_ip, pcb.remote_ip, pcb.ttl, pcb.tos,
+				ip.IP_PROTO_TCP, pcb.addr_hint);
 #else // LWIP_NETIF_HWADDRHINT
 			lwip.ip_output(p, pcb.local_ip, pcb.remote_ip, pcb.ttl, pcb.tos,
 				lwip.IP_PROTO_TCP);
@@ -1105,7 +1105,7 @@ namespace uITron3
 			/* If we don't have a local IP address, we get one by
 			   calling ip.ip_route(). */
 			if (ip_addr.ip_addr_isany(pcb.local_ip)) {
-				ip_addr.ip_addr_copy(pcb.local_ip, lwip.ip_addr);
+				ip_addr.ip_addr_copy(pcb.local_ip, lwip.ip.ip_addr);
 			}
 
 			if (pcb.rttest == 0) {
@@ -1132,7 +1132,7 @@ namespace uITron3
 				uint acc;
 #if TCP_CHECKSUM_ON_COPY_SANITY_CHECK
 				ushort chksum_slow = lwip.inet_chksum_pseudo(seg.p, pcb.local_ip,
-					   pcb.remote_ip, lwip.IP_PROTO_TCP, seg.p.tot_len);
+					   pcb.remote_ip, ip.IP_PROTO_TCP, seg.p.tot_len);
 #endif // TCP_CHECKSUM_ON_COPY_SANITY_CHECK
 				if ((seg.flags & tcp_seg.TF_SEG_DATA_CHECKSUMMED) == 0) {
 					lwip.LWIP_ASSERT("data included but not checksummed",
@@ -1142,7 +1142,7 @@ namespace uITron3
 				/* rebuild TCP header checksum (TCP header changes for retransmissions!) */
 				acc = lwip.inet_chksum_pseudo_partial(seg.p, pcb.local_ip,
 						 pcb.remote_ip,
-						 lwip.IP_PROTO_TCP, seg.p.tot_len, (ushort)(tcp_hdr.TCPH_HDRLEN(seg.tcphdr) * 4));
+						 ip.IP_PROTO_TCP, seg.p.tot_len, (ushort)(tcp_hdr.TCPH_HDRLEN(seg.tcphdr) * 4));
 				/* add payload checksum */
 				if (seg.chksum_swapped) {
 					seg.chksum = lwip.SWAP_BYTES_IN_WORD(seg.chksum);
@@ -1168,8 +1168,8 @@ namespace uITron3
 			++lwip.lwip_stats.tcp.xmit;
 
 #if LWIP_NETIF_HWADDRHINT
-			lwip.ip_output_hinted(seg.p, pcb.local_ip, pcb.remote_ip, pcb.ttl, pcb.tos,
-				lwip.IP_PROTO_TCP, pcb.addr_hint);
+			lwip.ip.ip_output_hinted(seg.p, pcb.local_ip, pcb.remote_ip, pcb.ttl, pcb.tos,
+				ip.IP_PROTO_TCP, pcb.addr_hint);
 #else // LWIP_NETIF_HWADDRHINT
 			lwip.ip_output(seg.p, pcb.local_ip, pcb.remote_ip, pcb.ttl, pcb.tos,
 				lwip.IP_PROTO_TCP);
@@ -1222,12 +1222,12 @@ namespace uITron3
 
 #if CHECKSUM_GEN_TCP
 			tcphdr.chksum = lwip.inet_chksum_pseudo(p, local_ip, remote_ip,
-				lwip.IP_PROTO_TCP, p.tot_len);
+				ip.IP_PROTO_TCP, p.tot_len);
 #endif
 			++lwip.lwip_stats.tcp.xmit;
 			//snmp.snmp_inc_tcpoutrsts();
 			/* Send output with hardcoded TTL since we have no access to the pcb */
-			lwip.ip_output(p, local_ip, remote_ip, opt.TCP_TTL, 0, lwip.IP_PROTO_TCP);
+			lwip.ip.ip_output(p, local_ip, remote_ip, opt.TCP_TTL, 0, ip.IP_PROTO_TCP);
 			lwip.pbuf_free(p);
 			lwip.LWIP_DEBUGF(opt.TCP_RST_DEBUG, "tcp_rst: seqno {0} ackno {1}.\n", seqno, ackno);
 		}
@@ -1384,13 +1384,13 @@ namespace uITron3
 
 #if CHECKSUM_GEN_TCP
 			tcphdr.chksum = lwip.inet_chksum_pseudo(p, pcb.local_ip, pcb.remote_ip,
-												lwip.IP_PROTO_TCP, p.tot_len);
+												ip.IP_PROTO_TCP, p.tot_len);
 #endif
 			++lwip.lwip_stats.tcp.xmit;
 
 			/* Send output to IP */
 #if LWIP_NETIF_HWADDRHINT
-			lwip.ip_output_hinted(p, pcb.local_ip, pcb.remote_ip, pcb.ttl, 0, lwip.IP_PROTO_TCP,
+			lwip.ip.ip_output_hinted(p, pcb.local_ip, pcb.remote_ip, pcb.ttl, 0, ip.IP_PROTO_TCP,
 				pcb.addr_hint);
 #else // LWIP_NETIF_HWADDRHINT
 			lwip.ip_output(p, pcb.local_ip, pcb.remote_ip, pcb.ttl, 0, lwip.IP_PROTO_TCP);
@@ -1465,13 +1465,13 @@ namespace uITron3
 
 #if CHECKSUM_GEN_TCP
 			tcphdr.chksum = lwip.inet_chksum_pseudo(p, pcb.local_ip, pcb.remote_ip,
-												lwip.IP_PROTO_TCP, p.tot_len);
+												ip.IP_PROTO_TCP, p.tot_len);
 #endif
 			++lwip.lwip_stats.tcp.xmit;
 
 			/* Send output to IP */
 #if LWIP_NETIF_HWADDRHINT
-			lwip.ip_output_hinted(p, pcb.local_ip, pcb.remote_ip, pcb.ttl, 0, lwip.IP_PROTO_TCP,
+			lwip.ip.ip_output_hinted(p, pcb.local_ip, pcb.remote_ip, pcb.ttl, 0, ip.IP_PROTO_TCP,
 				pcb.addr_hint);
 #else // LWIP_NETIF_HWADDRHINT
 			lwip.ip_output(p, pcb.local_ip, pcb.remote_ip, pcb.ttl, 0, lwip.IP_PROTO_TCP);

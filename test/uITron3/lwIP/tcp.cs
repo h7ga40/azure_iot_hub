@@ -736,7 +736,7 @@ namespace uITron3
 			   We do not dump tcp_state.TIME_WAIT pcb's; they can still be matched by incoming
 			   packets using both local and remote IP addresses and ports to distinguish.
 			 */
-			if (lwip.ip_get_option(pcb, sof.SOF_REUSEADDR)) {
+			if (ip.ip_get_option(pcb, sof.SOF_REUSEADDR)) {
 				max_pcb_list = NUM_TCP_PCB_LISTS_NO_TIME_WAIT;
 			}
 #endif // SO_REUSE
@@ -756,8 +756,8 @@ namespace uITron3
 						/* Omit checking for the same port if both pcbs have REUSEADDR set.
 						   For SO_REUSEADDR, the duplicate-check for a 5-tuple is done in
 						   tcp_connect. */
-						if (!lwip.ip_get_option(pcb, sof.SOF_REUSEADDR) ||
-							!lwip.ip_get_option(cpcb, sof.SOF_REUSEADDR))
+						if (!ip.ip_get_option(pcb, sof.SOF_REUSEADDR) ||
+							!ip.ip_get_option(cpcb, sof.SOF_REUSEADDR))
 #endif // SO_REUSE
 						{
 							if (ip_addr.ip_addr_isany(cpcb.local_ip) ||
@@ -818,7 +818,7 @@ namespace uITron3
 				return (tcp_pcb_listen)pcb;
 			}
 #if SO_REUSE
-			if (lwip.ip_get_option(pcb, sof.SOF_REUSEADDR)) {
+			if (ip.ip_get_option(pcb, sof.SOF_REUSEADDR)) {
 				/* Since sof.SOF_REUSEADDR allows reusing a local address before the pcb's usage
 				   is declared (listen-/connection-pcb), we have to make sure now that
 				   this port is only used once for every local IP. */
@@ -841,7 +841,7 @@ namespace uITron3
 			lpcb.state = tcp_state.LISTEN;
 			lpcb.prio = pcb.prio;
 			lpcb.so_options = pcb.so_options;
-			lwip.ip_set_option(lpcb, (byte)sof.SOF_ACCEPTCONN);
+			ip.ip_set_option(lpcb, (byte)sof.SOF_ACCEPTCONN);
 			lpcb.ttl = pcb.ttl;
 			lpcb.tos = pcb.tos;
 			ip_addr.ip_addr_copy(lpcb.local_ip, pcb.local_ip);
@@ -990,8 +990,14 @@ namespace uITron3
 
 			/* check if we have a route to the remote host */
 			if (ip_addr.ip_addr_isany(pcb.local_ip)) {
+				netif netif = lwip.ip.ip_route(pcb.remote_ip);
+				if (netif == null) {
+					/* Don't even try to send a SYN packet if we have no route
+					   since that will fail. */
+					return err_t.ERR_RTE;
+				}
 				/* Use the netif's IP address as local address. */
-				ip_addr.ip_addr_copy(pcb.local_ip, lwip.ip_addr);
+				ip_addr.ip_addr_copy(pcb.local_ip, netif.ip_addr);
 			}
 
 			old_local_port = pcb.local_port;
@@ -1002,7 +1008,7 @@ namespace uITron3
 				}
 			}
 #if SO_REUSE
-			if (lwip.ip_get_option(pcb, sof.SOF_REUSEADDR)) {
+			if (ip.ip_get_option(pcb, sof.SOF_REUSEADDR)) {
 				/* Since sof.SOF_REUSEADDR allows reusing a local address, we have to make sure
 				   now that the 5-tuple is unique. */
 				tcp_pcb cpcb;
@@ -1089,7 +1095,7 @@ namespace uITron3
 			}
 			while (pcb != null) {
 				lwip.LWIP_DEBUGF(opt.TCP_DEBUG, "tcp_slowtmr: processing active pcb\n");
-				lwip.LWIP_ASSERT("tcp_slowtmr: active pcb.state != tcp_state.CLOSED\n", pcb.state != tcp_state.CLOSED);
+				//lwip.LWIP_ASSERT("tcp_slowtmr: active pcb.state != tcp_state.CLOSED\n", pcb.state != tcp_state.CLOSED);
 				lwip.LWIP_ASSERT("tcp_slowtmr: active pcb.state != tcp_state.LISTEN\n", pcb.state != tcp_state.LISTEN);
 				lwip.LWIP_ASSERT("tcp_slowtmr: active pcb.state != TIME-WAIT\n", pcb.state != tcp_state.TIME_WAIT);
 				if (pcb.last_timer == tcp_timer_ctr) {
@@ -1176,7 +1182,7 @@ namespace uITron3
 				}
 
 				/* Check if KEEPALIVE should be sent */
-				if (lwip.ip_get_option(pcb, (byte)sof.SOF_KEEPALIVE) &&
+				if (ip.ip_get_option(pcb, (byte)sof.SOF_KEEPALIVE) &&
 				   ((pcb.state == tcp_state.ESTABLISHED) ||
 					(pcb.state == tcp_state.CLOSE_WAIT))) {
 					if ((uint)(tcp_ticks - pcb.tmr) >
@@ -1849,8 +1855,10 @@ namespace uITron3
 		public ushort tcp_eff_send_mss(ushort sendmss, ip_addr addr)
 		{
 			ushort mss_s;
+			netif outif;
 
-			mss_s = (ushort)(lwip.mtu - tcp.TCP_HLEN);
+			outif = lwip.ip.ip_route(addr);
+			mss_s = (ushort)(outif.mtu - tcp.TCP_HLEN);
 			/* RFC 1122, chap 4.2.2.6:
 			 * Eff.snd.MSS = min(SendMSS+20, MMS_S) - TCPhdrsize - IPoptionsize
 			 * We correct for TCP options in tcp_write(), and don't support IP options.
@@ -1982,7 +1990,7 @@ namespace uITron3
 		{
 			tcp_pcb_common pcb;
 			for (pcb = tcp_active_pcbs; pcb != null; pcb = pcb.next) {
-				lwip.LWIP_ASSERT("tcp_pcbs_sane: active pcb.state != tcp_state.CLOSED", pcb.state != tcp_state.CLOSED);
+				//lwip.LWIP_ASSERT("tcp_pcbs_sane: active pcb.state != tcp_state.CLOSED", pcb.state != tcp_state.CLOSED);
 				lwip.LWIP_ASSERT("tcp_pcbs_sane: active pcb.state != tcp_state.LISTEN", pcb.state != tcp_state.LISTEN);
 				lwip.LWIP_ASSERT("tcp_pcbs_sane: active pcb.state != TIME-WAIT", pcb.state != tcp_state.TIME_WAIT);
 			}

@@ -43,6 +43,8 @@ namespace uITron3
 		PacketBridge m_IPPacketBridge;
 		long m_Lock;
 
+		public lwip lwip { get { return m_lwIP; } }
+
 		public Nucleus(IKernel kernel, int sysTmrIntNo, TMO sysTmrIntv)
 		{
 			m_Kernel = kernel;
@@ -56,7 +58,7 @@ namespace uITron3
 
 			m_SysTime.Value = 0;
 			m_CurrentTask = null;
-			m_lwIP = new lwip(ip_output);
+			m_lwIP = new lwip();
 #if LWIP_STATS
 			stats.stats_init();
 #endif
@@ -68,6 +70,15 @@ namespace uITron3
 
 			udp.udp_init(m_lwIP);
 			tcp.tcp_init(m_lwIP);
+
+			m_lwIP.sys.sys_timeouts_init();
+
+			tcpip.tcpip_init(m_lwIP);
+		}
+
+		private err_t netif_linkoutput(netif netif, pbuf p)
+		{
+			throw new NotImplementedException();
 		}
 
 		public int SysTmrIntNo { get { return m_SysTmrIntNo; } }
@@ -1526,65 +1537,11 @@ namespace uITron3
 			return null;
 		}
 
-		public PacketBridge IPPacketBridge
+		public void AddNetIf(netif netif, ip_addr local_addr, ip_addr subnet, ip_addr gw, object state, netif_init_fn init, netif_input_fn input)
 		{
-			get { return m_IPPacketBridge; }
-			set
-			{
-				if (m_IPPacketBridge != null)
-					m_IPPacketBridge.InputDataHandler = null;
-				m_IPPacketBridge = value;
-				m_IPPacketBridge.InputDataHandler = new PacketBridgeInputData(IPPacketBridge_InputData);
-			}
-		}
-
-		public ip_addr IP4Addr { get { return m_lwIP.ip_addr; } }
-		public ip_addr SubNetMask { get { return m_lwIP.netmask; } }
-
-		public void SetIPv4Addr(uint addr, uint mask)
-		{
-			m_lwIP.ip_addr.addr = lwip.lwip_htonl(addr);
-			m_lwIP.netmask.addr = lwip.lwip_htonl(mask);
-		}
-
-		private ER IPPacketBridge_InputData(byte[] data)
-		{
-			if (data[0] == 4) {
-				pointer ipv4;
-				int len;
-				ip_addr src, dst;
-				byte proto;
-
-				ipv4 = Itron.CastIp4Packet(data, out len, out src, out dst, out proto);
-
-				m_lwIP.input(ipv4, len, src, dst, proto);
-
-				return ER.E_OK;
-			}
-			else if (data[0] == 6) {
-				pointer ipv6;
-				int len;
-				ip6_addr src, dst;
-				byte proto;
-
-				ipv6 = Itron.CastIp6Packet(data, out len, out src, out dst, out proto);
-
-				//m_lwIP.input(ipv6, len, src, dst, proto);
-
-				return ER.E_OK;
-			}
-
-			return ER.E_PAR;
-		}
-
-		private void ip_output(lwip netif, byte[] packet, ip_addr src, ip_addr dest, byte proto)
-		{
-			if (m_IPPacketBridge == null)
-				return;
-
-			byte[] data = Itron.GetIp4Packet(new pointer(packet, 0), packet.Length, src, dest, proto);
-
-			m_IPPacketBridge.OutputData(data);
+			m_lwIP.netif_add(netif, local_addr, subnet, gw, state, init, input);
+			m_lwIP.netif_set_default(netif);
+			m_lwIP.netif_set_up(netif);
 		}
 	}
 }
