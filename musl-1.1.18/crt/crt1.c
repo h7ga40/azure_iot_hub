@@ -5,9 +5,13 @@
 #include "crt_arch.h"
 
 int main();
+#ifdef __c2__
+void _init();
+void _fini();
+#else
 void _init() __attribute__((weak));
 void _fini() __attribute__((weak));
-#ifndef __c2__
+
 _Noreturn
 #endif
 int __libc_start_main(int (*)(), int, char **,
