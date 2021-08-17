@@ -131,7 +131,7 @@ namespace SystemSim
 				}
 			}
 
-			ip_addr addr = new ip_addr(0xC0A88954), mask = new ip_addr(0xFFFFFF00);
+			ip_addr addr = new ip_addr(192, 168, 137, 84), mask = new ip_addr(255, 255, 255, 0);
 
 			m_PcapIF.Init(addr.addr, mask.addr);
 

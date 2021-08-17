@@ -29,9 +29,9 @@ namespace SimEnv
 
 			m_lwIP = m_Taget.lwip;
 			m_MacAddr = new eth_addr(macAddr);
-			var local_addr = new ip_addr(0xC0A80164);
-			var subnet = new ip_addr(0xFFFFFF00);
-			var gate_way_addr = new ip_addr(0xC0A80101);
+			var local_addr = new ip_addr(192, 168, 1, 100);
+			var subnet = new ip_addr(255, 255, 255, 0);
+			var gate_way_addr = new ip_addr(192, 168, 1, 1);
 
 			etharp.etharp_init(m_lwIP);
 
