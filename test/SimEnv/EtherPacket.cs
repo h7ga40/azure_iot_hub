@@ -54,8 +54,8 @@ namespace SimEnv
 
 		public static int Compare(byte[] buf1, int ofs1, byte[] buf2, int ofs2, int len)
 		{
-			int end = ofs1 + len;
-			int ret = 0;
+			var end = ofs1 + len;
+			var ret = 0;
 
 			for (; ofs1 < end; ofs1++, ofs2++) {
 				ret = buf2[ofs2] - buf1[ofs1];
@@ -122,7 +122,7 @@ namespace SimEnv
 
 		public void SetIPCheckSum()
 		{
-			ushort chksum = HeaderChecksum;
+			var chksum = HeaderChecksum;
 
 			HeaderChecksum = 0;
 
@@ -213,11 +213,11 @@ namespace SimEnv
 
 		internal void SetICMPChecksum(ushort len, ip6_addr source, ip6_addr destination)
 		{
-			ushort chksum = ICMPChecksum;
+			var chksum = ICMPChecksum;
 
 			ICMPChecksum = 0;
 
-			pbuf p = new pbuf(null, this) {
+			var p = new pbuf(null, this) {
 				payload = this,
 				len = len
 			};
@@ -523,11 +523,11 @@ namespace SimEnv
 
 		public void SetUDPChecksum(ushort len, ip_addr source, ip_addr destination)
 		{
-			ushort chksum = UDPChecksum;
+			var chksum = UDPChecksum;
 
 			UDPChecksum = 0;
 
-			pbuf p = new pbuf(null, this) {
+			var p = new pbuf(null, this) {
 				payload = this,
 				len = len
 			};
@@ -539,11 +539,11 @@ namespace SimEnv
 
 		internal void SetUDPChecksum(ushort len, ip6_addr source, ip6_addr destination)
 		{
-			ushort chksum = UDPChecksum;
+			var chksum = UDPChecksum;
 
 			UDPChecksum = 0;
 
-			pbuf p = new pbuf(null, this) {
+			var p = new pbuf(null, this) {
 				payload = this,
 				len = len
 			};
@@ -609,11 +609,11 @@ namespace SimEnv
 
 		public void SetTCPChecksum(ushort len, ip_addr source, ip_addr destination)
 		{
-			ushort chksum = TCPChecksum;
+			var chksum = TCPChecksum;
 
 			TCPChecksum = 0;
 
-			pbuf p = new pbuf(null, this) {
+			var p = new pbuf(null, this) {
 				payload = this,
 				len = len
 			};

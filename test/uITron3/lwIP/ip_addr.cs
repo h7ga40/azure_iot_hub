@@ -65,6 +65,11 @@ namespace uITron3
 		{
 		}
 
+		public ip_addr(byte addr1, byte addr2, byte addr3, byte addr4)
+			: base(new byte[] { addr1, addr2, addr3, addr4 }, 0)
+		{
+		}
+
 		public ip_addr(pointer buffer)
 			: base(buffer.data, buffer.offset)
 		{

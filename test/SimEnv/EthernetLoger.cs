@@ -13,7 +13,7 @@ namespace SimEnv
 
 		public EthernetLoger()
 		{
-			Random random = new Random();
+			var random = new Random();
 			_macaddr = (ulong)(random.NextDouble() * 0x1000000000000UL) & 0xFEFFFFFFFFFFUL | 0x020000000000UL;
 		}
 
@@ -33,7 +33,7 @@ namespace SimEnv
 
 		public void Receive(EtherPacket packet)
 		{
-			byte[] data = new byte[packet.Length];
+			var data = new byte[packet.Length];
 			pointer.memcpy(new pointer(data), packet, data.Length);
 			m_EthernetLog.Add(new EthernetLogItem(DateTime.Now, new EtherPacket(data)));
 			m_Changed = true;
@@ -59,19 +59,19 @@ namespace SimEnv
 
 		public string Type {
 			get {
-				ushort type = lwip.PP_NTOHS(BitConverter.ToUInt16(m_Data.data, m_Data.offset + 12));
+				var type = lwip.PP_NTOHS(BitConverter.ToUInt16(m_Data.data, m_Data.offset + 12));
 				switch (type) {
 				case EtherPacket.ETHTYPE_ARP:
 					return "ARP";
 				case EtherPacket.ETHTYPE_IP: {
-						IPv4Packet ipv4 = new IPv4Packet(m_Data, EtherPacket.length);
+						var ipv4 = new IPv4Packet(m_Data, EtherPacket.length);
 						switch (ipv4.Protocol) {
 						case IPv4Packet.IP_PROTO_ICMP:
 							return "ICMP";
 						case IPv4Packet.IP_PROTO_IGMP:
 							return "IGMP";
 						case IPv4Packet.IP_PROTO_UDP: {
-								UDPPacket udp = new UDPPacket(ipv4, IPv4Packet.length);
+								var udp = new UDPPacket(ipv4, IPv4Packet.length);
 								if (udp.DestinationPort == 0x43) {
 									return "DHCP";
 								}
@@ -86,7 +86,7 @@ namespace SimEnv
 						}
 					}
 				case EtherPacket.ETHTYPE_IPV6: {
-						IPv6Packet ipv6 = new IPv6Packet(m_Data, EtherPacket.length);
+						var ipv6 = new IPv6Packet(m_Data, EtherPacket.length);
 						switch (ipv6.NextHeader) {
 						case IPv6Packet.IP_PROTO_ICMPV6:
 							return "ICMPv6";

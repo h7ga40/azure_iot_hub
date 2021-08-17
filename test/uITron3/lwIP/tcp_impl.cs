@@ -124,7 +124,7 @@ namespace uITron3
 		pointer _chksum;
 		pointer _urgp;
 
-		public tcp_hdr(byte[] buffer, int offset)
+		public tcp_hdr(byte[] buffer, int offset = 0)
 			: base(buffer, offset)
 		{
 			_src = new pointer(data, offset + 0); /* ushort */
@@ -137,13 +137,8 @@ namespace uITron3
 			_urgp = new pointer(data, offset + 18); /* ushort */
 		}
 
-		public tcp_hdr(byte[] buffer)
-			: this(buffer, 0)
-		{
-		}
-
-		public tcp_hdr(pointer buffer)
-			: this(buffer.data, buffer.offset)
+		public tcp_hdr(pointer buffer, int offset = 0)
+			: this(buffer.data, buffer.offset + offset)
 		{
 		}
 

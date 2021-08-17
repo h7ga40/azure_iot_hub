@@ -869,7 +869,16 @@ namespace SystemSim
 			m_PacketFields.Add(new PacketViewItem("ウィンドウサイズ", packet.WindowSize.ToString(), packet, TCPPacket.Fields.WindowSize.offset, TCPPacket.Fields.WindowSize.size));
 			m_PacketFields.Add(new PacketViewItem("TCPチェックサム", packet.TCPChecksum.ToString(), packet, TCPPacket.Fields.TCPChecksum.offset, TCPPacket.Fields.TCPChecksum.size));
 			m_PacketFields.Add(new PacketViewItem("緊急ポインター", packet.UrgentPointer.ToString(), packet, TCPPacket.Fields.UrgentPointer.offset, TCPPacket.Fields.UrgentPointer.size));
-			m_PacketFields.Add(new PacketViewItem("データ", "サイズ：" + (length - TCPPacket.length).ToString(), packet, TCPPacket.length, length - TCPPacket.length));
+			int dofs = (packet.DataOffset >> 4) * 4;
+			int len = dofs - TCPPacket.length;
+			if (len > 0) {
+				m_PacketFields.Add(new PacketViewItem("オプション", "サイズ：" + len.ToString(), packet, TCPPacket.length, len));
+			}
+			len = length - dofs;
+			//m_PacketFields.Add(new PacketViewItem("データ", "サイズ：" + (length - TCPPacket.length).ToString(), packet, TCPPacket.length, length - TCPPacket.length));
+			if (len > 256)
+				len = 256;
+			m_PacketFields.Add(new PacketViewItem("データ", Encoding.ASCII.GetString(packet.data, packet.offset + dofs, len), packet, dofs, len));
 		}
 
 		private string GetHexString(pointer packet, int pos, int len, string p)
