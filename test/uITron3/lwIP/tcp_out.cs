@@ -896,6 +896,28 @@ namespace uITron3
 			return err_t.ERR_OK;
 		}
 
+		class Ref<T>
+		{
+			Action<T> setter;
+			Func<T> getter;
+
+			public Ref(Action<T> setter, Func<T> getter)
+			{
+				this.setter = setter;
+				this.getter = getter;
+			}
+
+			public void set(T value)
+			{
+				setter(value);
+			}
+
+			public T get()
+			{
+				return getter();
+			}
+		}
+
 		/**
 		 * Find out what we can send and send it
 		 *
@@ -1019,13 +1041,13 @@ namespace uITron3
 						 * this case. -STJ Jul 27, 2004 */
 						if (tcp.TCP_SEQ_LT(lwip.lwip_ntohl(seg.tcphdr.seqno), lwip.lwip_ntohl(useg.tcphdr.seqno))) {
 							/* add segment to before tail of unacked list, keeping the list sorted */
-							tcp_seg cur_seg = pcb.unacked;
-							while (cur_seg != null &&
-							  tcp.TCP_SEQ_LT(lwip.lwip_ntohl((cur_seg).tcphdr.seqno), lwip.lwip_ntohl(seg.tcphdr.seqno))) {
-								cur_seg = cur_seg.next;
+							Ref<tcp_seg> cur_seg = new Ref<tcp_seg>((a) => { pcb.unacked = a; }, () => pcb.unacked);
+							while (cur_seg.get() != null &&
+								tcp.TCP_SEQ_LT(lwip.lwip_ntohl(cur_seg.get().tcphdr.seqno), lwip.lwip_ntohl(seg.tcphdr.seqno))) {
+								cur_seg = new Ref<tcp_seg>((a) => { cur_seg.get().next = a; }, () => cur_seg.get().next);
 							}
-							seg.next = (cur_seg);
-							(cur_seg) = seg;
+							seg.next = cur_seg.get();
+							cur_seg.set(seg);
 						}
 						else {
 							/* add segment to tail of unacked list */
@@ -1277,7 +1299,7 @@ namespace uITron3
 		public static void tcp_rexmit(tcp_pcb pcb)
 		{
 			tcp_seg seg;
-			tcp_seg cur_seg;
+			Ref<tcp_seg> cur_seg;
 
 			if (pcb.unacked == null) {
 				return;
@@ -1288,13 +1310,13 @@ namespace uITron3
 			seg = pcb.unacked;
 			pcb.unacked = seg.next;
 
-			cur_seg = pcb.unsent;
-			while (cur_seg != null &&
-			  tcp.TCP_SEQ_LT(lwip.lwip_ntohl((cur_seg).tcphdr.seqno), lwip.lwip_ntohl(seg.tcphdr.seqno))) {
-				cur_seg = cur_seg.next;
+			cur_seg = new Ref<tcp_seg>((a) => { pcb.unsent = a; }, () => pcb.unsent);
+			while (cur_seg.get() != null &&
+				tcp.TCP_SEQ_LT(lwip.lwip_ntohl(cur_seg.get().tcphdr.seqno), lwip.lwip_ntohl(seg.tcphdr.seqno))) {
+				cur_seg = new Ref<tcp_seg>((a) => { cur_seg.get().next = a; }, () => cur_seg.get().next);
 			}
-			seg.next = cur_seg;
-			cur_seg = seg;
+			seg.next = cur_seg.get();
+			cur_seg.set(seg);
 #if TCP_OVERSIZE
 			if (seg.next == null) {
 				/* the retransmitted segment is last in unsent, so reset unsent_oversize */
