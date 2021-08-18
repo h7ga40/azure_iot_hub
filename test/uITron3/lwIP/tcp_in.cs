@@ -301,7 +301,7 @@ namespace uITron3
 						   application that the connection is dead before we
 						   deallocate the PCB. */
 						TCP_EVENT_ERR(pcb.errf, pcb.callback_arg, err_t.ERR_RST);
-						tcp_pcb_remove(tcp_active_pcbs, pcb);
+						tcp_pcb_remove(ref tcp_active_pcbs, pcb);
 						lwip.memp_free(memp_t.MEMP_TCP_PCB, pcb);
 					}
 					else if ((recv_flags & tcp.TF_CLOSED) != 0) {
@@ -313,7 +313,7 @@ namespace uITron3
 							   ensure the application doesn't continue using the PCB. */
 							TCP_EVENT_ERR(pcb.errf, pcb.callback_arg, err_t.ERR_CLSD);
 						}
-						tcp_pcb_remove(tcp_active_pcbs, pcb);
+						tcp_pcb_remove(ref tcp_active_pcbs, pcb);
 						lwip.memp_free(memp_t.MEMP_TCP_PCB, pcb);
 					}
 					else {

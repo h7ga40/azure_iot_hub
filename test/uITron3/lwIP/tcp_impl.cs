@@ -462,10 +462,10 @@ namespace uITron3
 			} while (false);
 		}
 
-		public void TCP_PCB_REMOVE_ACTIVE(tcp_pcb_common pcb)
+		public void TCP_PCB_REMOVE_ACTIVE(tcp_pcb pcb)
 		{
 			do {
-				tcp_pcb_remove(tcp_active_pcbs, pcb);
+				tcp_pcb_remove(ref tcp_active_pcbs, pcb);
 				tcp_active_pcbs_changed = 1;
 			} while (false);
 		}

@@ -510,13 +510,13 @@ namespace uITron3
 				break;
 			case tcp_state.LISTEN:
 				err = err_t.ERR_OK;
-				tcp_pcb_remove(tcp_listen_pcbs.pcbs, pcb);
+				tcp_pcb_remove(ref tcp_listen_pcbs.pcbs, pcb);
 				lwip.memp_free(memp_t.MEMP_TCP_PCB_LISTEN, pcb);
 				pcb = null;
 				break;
 			case tcp_state.SYN_SENT:
 				err = err_t.ERR_OK;
-				TCP_PCB_REMOVE_ACTIVE(pcb);
+				TCP_PCB_REMOVE_ACTIVE((tcp_pcb)pcb);
 				lwip.memp_free(memp_t.MEMP_TCP_PCB, pcb);
 				pcb = null;
 				//snmp.snmp_inc_tcpattemptfails();
@@ -662,7 +662,7 @@ namespace uITron3
 			   are in an active state, call the receive function associated with
 			   the PCB with a null argument, and send an RST to the remote end. */
 			if (pcb.state == tcp_state.TIME_WAIT) {
-				tcp_pcb_remove(tcp_tw_pcbs, pcb);
+				tcp_pcb_remove(ref tcp_tw_pcbs, pcb);
 				lwip.memp_free(memp_t.MEMP_TCP_PCB, pcb);
 			}
 			else {
@@ -1095,7 +1095,7 @@ namespace uITron3
 			}
 			while (pcb != null) {
 				lwip.LWIP_DEBUGF(opt.TCP_DEBUG, "tcp_slowtmr: processing active pcb\n");
-				//lwip.LWIP_ASSERT("tcp_slowtmr: active pcb.state != tcp_state.CLOSED\n", pcb.state != tcp_state.CLOSED);
+				lwip.LWIP_ASSERT("tcp_slowtmr: active pcb.state != tcp_state.CLOSED\n", pcb.state != tcp_state.CLOSED);
 				lwip.LWIP_ASSERT("tcp_slowtmr: active pcb.state != tcp_state.LISTEN\n", pcb.state != tcp_state.LISTEN);
 				lwip.LWIP_ASSERT("tcp_slowtmr: active pcb.state != TIME-WAIT\n", pcb.state != tcp_state.TIME_WAIT);
 				if (pcb.last_timer == tcp_timer_ctr) {
@@ -1806,14 +1806,14 @@ namespace uITron3
 		 * @param pcblist PCB list to purge.
 		 * @param pcb tcp_pcb to purge. The pcb itself is NOT deallocated!
 		 */
-		public void tcp_pcb_remove(tcp_pcb_common pcblist, tcp_pcb_common pcb)
+		public void tcp_pcb_remove<T>(ref T pcblist, T pcb) where T : tcp_pcb_common
 		{
 			TCP_RMV(ref pcblist, pcb);
 
 			tcp_pcb_purge(pcb);
 
 			if (pcb.state != tcp_state.LISTEN) {
-				tcp_pcb _pcb = (tcp_pcb)pcb;
+				tcp_pcb _pcb = pcb as tcp_pcb;
 				/* if there is an outstanding delayed ACKs, send it */
 				if (_pcb.state != tcp_state.TIME_WAIT &&
 					(_pcb.flags & tcp_pcb.TF_ACK_DELAY) != 0) {
@@ -1990,7 +1990,7 @@ namespace uITron3
 		{
 			tcp_pcb_common pcb;
 			for (pcb = tcp_active_pcbs; pcb != null; pcb = pcb.next) {
-				//lwip.LWIP_ASSERT("tcp_pcbs_sane: active pcb.state != tcp_state.CLOSED", pcb.state != tcp_state.CLOSED);
+				lwip.LWIP_ASSERT("tcp_pcbs_sane: active pcb.state != tcp_state.CLOSED", pcb.state != tcp_state.CLOSED);
 				lwip.LWIP_ASSERT("tcp_pcbs_sane: active pcb.state != tcp_state.LISTEN", pcb.state != tcp_state.LISTEN);
 				lwip.LWIP_ASSERT("tcp_pcbs_sane: active pcb.state != TIME-WAIT", pcb.state != tcp_state.TIME_WAIT);
 			}

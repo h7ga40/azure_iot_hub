@@ -896,28 +896,6 @@ namespace uITron3
 			return err_t.ERR_OK;
 		}
 
-		class Ref<T>
-		{
-			Action<T> setter;
-			Func<T> getter;
-
-			public Ref(Action<T> setter, Func<T> getter)
-			{
-				this.setter = setter;
-				this.getter = getter;
-			}
-
-			public void set(T value)
-			{
-				setter(value);
-			}
-
-			public T get()
-			{
-				return getter();
-			}
-		}
-
 		/**
 		 * Find out what we can send and send it
 		 *

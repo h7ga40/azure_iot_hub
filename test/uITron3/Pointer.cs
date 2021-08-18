@@ -1028,4 +1028,26 @@ namespace uITron3
 			set { _info.set(this, index, value); }
 		}
 	}
+
+	public class Ref<T>
+	{
+		Action<T> setter;
+		Func<T> getter;
+
+		public Ref(Action<T> setter, Func<T> getter)
+		{
+			this.setter = setter;
+			this.getter = getter;
+		}
+
+		public void set(T value)
+		{
+			setter(value);
+		}
+
+		public T get()
+		{
+			return getter();
+		}
+	}
 }
